@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>chok2-examples</artifactId>
+	<packaging>pom</packaging>
+
+	<name>chok2-examples</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<modules>
+		<module>oauth2-examples/oauth2-resource-server</module>
+		<module>oauth2-examples/oauth2-authorization-server</module>
+	</modules>
+
+	<parent>
+		<groupId>com.chok2</groupId>
+		<artifactId>chok2-parent</artifactId>
+		<version>2.0.0</version>
+		<relativePath>../chok2-parent/pom.xml</relativePath>
+	</parent>
+</project>
