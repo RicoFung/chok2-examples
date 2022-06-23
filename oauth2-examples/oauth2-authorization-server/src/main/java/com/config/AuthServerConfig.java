@@ -47,16 +47,73 @@ public class AuthServerConfig
 	// 仅用于【注册方式：数据库】
 	@Autowired
 	TbUserInfo0aService tbUserInfo0aService;
-
+	
+	/**
+	 * 默认
+	 * @param http
+	 * @return
+	 * @throws Exception
+	 */
 	@Bean
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception
 	{
+		// 默认配置
 		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
 		// 仅用于【注册方式：数据库】
 		http.userDetailsService(tbUserInfo0aService);
 		return http.formLogin(Customizer.withDefaults()).build();
 	}
+	
+	/**
+	 *  自定义端点逻辑示例
+	 */
+//	public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception
+//	{
+//		// 参考源码： OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+//		OAuth2AuthorizationServerConfigurer<HttpSecurity> authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer<>();
+//		RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
+//		http.requestMatcher(endpointsMatcher)
+//				.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
+//				.csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher)).apply(authorizationServerConfigurer);
+//		// token 端点
+//		authorizationServerConfigurer.tokenEndpoint(
+//				tokenEndpoint -> tokenEndpoint.accessTokenResponseHandler(new AuthenticationSuccessHandler()
+//				{
+//					@Override
+//					public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+//							Authentication authentication) throws IOException, ServletException
+//					{
+//						OAuth2AccessTokenAuthenticationToken clientAuthentication = (OAuth2AccessTokenAuthenticationToken) authentication;
+//						System.out.println("***********************************");
+//						System.out.println("THE ACCESS TOKEN ...");
+//						System.out.println("***********************************");
+//						System.out.println(clientAuthentication.getAccessToken().getTokenValue());
+//
+//					}
+//				}));
+//		// revoke 端点
+//		authorizationServerConfigurer.tokenRevocationEndpoint(tokenRevocationEndpoint -> tokenRevocationEndpoint
+//				.revocationResponseHandler(new AuthenticationSuccessHandler()
+//				{
+//					@Override
+//					public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+//							Authentication authentication) throws IOException, ServletException
+//					{
+//						OAuth2TokenRevocationAuthenticationToken authenticationToken = (OAuth2TokenRevocationAuthenticationToken) authentication;
+//						System.out.println("***********************************");
+//						System.out.println("THE REVOKE TOKEN ...");
+//						System.out.println("***********************************");
+//						System.out.println(authenticationToken.getToken());
+//						// 将 revoke token 加入黑名单逻辑(Redis)
+//						redisTemplate.opsForHash().put("TOKEN_BLACK_LIST", authenticationToken.getName(),
+//								authenticationToken.getToken());
+//					}
+//				}));
+//		// 仅用于【注册方式：数据库】
+//		http.userDetailsService(tbUserInfo0aService);
+//		return http.formLogin(Customizer.withDefaults()).build();
+//	}
 
 	/**
 	 * 【注册方式：数据库】 认证方式：CLIENT_SECRET_BASIC 注意：OPENID 不可单独使用
@@ -69,7 +126,7 @@ public class AuthServerConfig
 		// DB 有数据
 		JdbcRegisteredClientRepository registeredClientRepository = new JdbcRegisteredClientRepository(jdbcTemplate);
 		return registeredClientRepository;
-		// DB 无数据
+		// DB 无数据（即：启动时才写库）
 		// RegisteredClient registeredClient =
 		// RegisteredClient.withId(UUID.randomUUID().toString())
 		// .clientId("rico-client")
@@ -119,6 +176,7 @@ public class AuthServerConfig
 
 	/**
 	 * 【注册方式：内存】 认证方式：CLIENT_SECRET_BASIC 注意：OPENID 不可单独使用
+	 * http://auth-server:9000/oauth2/authorize?client_id=rico-client&client_secret=123&response_type=code&scope=test.read&redirect_uri=https://www.baidu.com
 	 * 
 	 * @return
 	 */
@@ -143,48 +201,6 @@ public class AuthServerConfig
 	// .redirectUri("https://oidcdebugger.com/debug")
 	// .scope(OidcScopes.OPENID)
 	// .scope("test.read")
-	// .build();
-	// return new InMemoryRegisteredClientRepository(registeredClient);
-	// }
-
-	/**
-	 * 【调试】 认证方式: CLIENT_SECRET_BASIC 测试地址:
-	 * http://auth-server:9000/oauth2/authorize?client_id=rico-client&client_secret=123&response_type=code&scope=test.read&redirect_uri=https://www.baidu.com
-	 */
-	// @Bean
-	// public RegisteredClientRepository registeredClientRepository() {
-	// RegisteredClient registeredClient =
-	// RegisteredClient.withId(UUID.randomUUID().toString())
-	// .clientId("rico-client")
-	// .clientSecret("{noop}123")
-	// .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-	// .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-	// .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-	//// .redirectUri("https://www.baidu.com")
-	// .redirectUri("http://127.0.0.1:8080/test/info")
-	// .scope("test.read")
-	// .build();
-	// return new InMemoryRegisteredClientRepository(registeredClient);
-	// }
-
-	/**
-	 * 【调试】 认证方式: CLIENT_SECRET_POST 测试地址:
-	 * http://auth-server:9000/oauth2/authorize?client_id=rico-client&client_secret=123&response_type=code&scope=test.read&redirect_uri=https://oidcdebugger.com/debug
-	 */
-	// @Bean
-	// public RegisteredClientRepository registeredClientRepository() {
-	// RegisteredClient registeredClient =
-	// RegisteredClient.withId(UUID.randomUUID().toString())
-	// .clientId("rico-client")
-	// .clientSecret("{noop}123")
-	// .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
-	// .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-	// .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-	// .redirectUri("http://127.0.0.1:8080/login/oauth2/code/rico-client-oidc")
-	// .redirectUri("http://127.0.0.1:8080/authorized")
-	// .redirectUri("http://127.0.0.1:8080/test/oidc")
-	// .redirectUri("https://oidcdebugger.com/debug")
-	// .scope(OidcScopes.OPENID)
 	// .build();
 	// return new InMemoryRegisteredClientRepository(registeredClient);
 	// }

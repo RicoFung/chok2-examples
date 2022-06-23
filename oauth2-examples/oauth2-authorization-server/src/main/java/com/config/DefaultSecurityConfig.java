@@ -17,20 +17,24 @@ package com.config;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+import java.io.IOException;
 import java.util.Arrays;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-/**
- * @author felord.cn
- */
 @EnableWebSecurity(debug = true)
 public class DefaultSecurityConfig
 {
@@ -54,6 +58,21 @@ public class DefaultSecurityConfig
 				// .antMatchers("/oauth2/token").permitAll()
 //				 .antMatchers("/favicon.ico").permitAll()
 				.anyRequest().authenticated()).formLogin(withDefaults());
+
+		http.logout()
+		.logoutSuccessHandler(new LogoutSuccessHandler() {
+			@Override
+			public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
+					Authentication authentication) throws IOException, ServletException
+			{
+				// 重定向至：/oauth2/authorize?
+				String authorizeHost = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/oauth2/authorize?";
+				String queryString = request.getHeader("referer").split("\\?")[1];
+				String url = authorizeHost + queryString;
+				response.sendRedirect(url);
+			}
+		})
+		;
 		return http.build();
 	}
 
@@ -66,6 +85,7 @@ public class DefaultSecurityConfig
 	// .build();
 	// return new InMemoryUserDetailsManager(user);
 	// }
+	
 	
 //	@Bean
 //	UserDetailsService users()
