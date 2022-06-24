@@ -15,11 +15,14 @@ import java.util.UUID;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -44,12 +47,17 @@ import chok.common.BeanFactory;
 @Configuration(proxyBeanMethods = false)
 public class AuthServerConfig
 {
+	private final Logger log = LoggerFactory.getLogger(getClass());
+
 	// 仅用于【注册方式：数据库】
 	@Autowired
-	TbUserInfo0aService tbUserInfo0aService;
-	
+	TbUserInfo0aService			tbUserInfo0aService;
+	@Autowired
+	RedisTemplate<String, ?>	redisTemplate;
+
 	/**
 	 * 默认
+	 * 
 	 * @param http
 	 * @return
 	 * @throws Exception
@@ -64,12 +72,14 @@ public class AuthServerConfig
 		http.userDetailsService(tbUserInfo0aService);
 		return http.formLogin(Customizer.withDefaults()).build();
 	}
-	
+
 	/**
-	 *  自定义端点逻辑示例
+	 * 自定义端点逻辑示例
 	 */
 //	public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception
 //	{
+//		// 仅用于【注册方式：数据库】
+//		http.userDetailsService(tbUserInfo0aService);
 //		// 参考源码： OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
 //		OAuth2AuthorizationServerConfigurer<HttpSecurity> authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer<>();
 //		RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
@@ -77,41 +87,96 @@ public class AuthServerConfig
 //				.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
 //				.csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher)).apply(authorizationServerConfigurer);
 //		// token 端点
-//		authorizationServerConfigurer.tokenEndpoint(
-//				tokenEndpoint -> tokenEndpoint.accessTokenResponseHandler(new AuthenticationSuccessHandler()
-//				{
-//					@Override
-//					public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-//							Authentication authentication) throws IOException, ServletException
-//					{
-//						OAuth2AccessTokenAuthenticationToken clientAuthentication = (OAuth2AccessTokenAuthenticationToken) authentication;
-//						System.out.println("***********************************");
-//						System.out.println("THE ACCESS TOKEN ...");
-//						System.out.println("***********************************");
-//						System.out.println(clientAuthentication.getAccessToken().getTokenValue());
-//
-//					}
-//				}));
+//		// authorizationServerConfigurer.tokenEndpoint(
+//		// tokenEndpoint -> tokenEndpoint.accessTokenResponseHandler(new
+//		// AuthenticationSuccessHandler()
+//		// {
+//		// @Override
+//		// public void onAuthenticationSuccess(HttpServletRequest request,
+//		// HttpServletResponse response,
+//		// Authentication authentication) throws IOException, ServletException
+//		// {
+//		// OAuth2AccessTokenAuthenticationToken clientAuthentication =
+//		// (OAuth2AccessTokenAuthenticationToken) authentication;
+//		// System.out.println("***********************************");
+//		// System.out.println("THE ACCESS TOKEN ...");
+//		// System.out.println("***********************************");
+//		// System.out.println(clientAuthentication.getAccessToken().getTokenValue());
+//		//
+//		// }
+//		// }));
 //		// revoke 端点
-//		authorizationServerConfigurer.tokenRevocationEndpoint(tokenRevocationEndpoint -> tokenRevocationEndpoint
-//				.revocationResponseHandler(new AuthenticationSuccessHandler()
-//				{
-//					@Override
-//					public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-//							Authentication authentication) throws IOException, ServletException
-//					{
-//						OAuth2TokenRevocationAuthenticationToken authenticationToken = (OAuth2TokenRevocationAuthenticationToken) authentication;
-//						System.out.println("***********************************");
-//						System.out.println("THE REVOKE TOKEN ...");
-//						System.out.println("***********************************");
-//						System.out.println(authenticationToken.getToken());
-//						// 将 revoke token 加入黑名单逻辑(Redis)
-//						redisTemplate.opsForHash().put("TOKEN_BLACK_LIST", authenticationToken.getName(),
-//								authenticationToken.getToken());
-//					}
-//				}));
-//		// 仅用于【注册方式：数据库】
-//		http.userDetailsService(tbUserInfo0aService);
+////		authorizationServerConfigurer.tokenRevocationEndpoint(tokenRevocationEndpoint -> tokenRevocationEndpoint
+////				.revocationResponseHandler(new AuthenticationSuccessHandler()
+////				{
+////					@SuppressWarnings({ "unchecked", "rawtypes" })
+////					@Override
+////					public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+////							Authentication authentication) throws IOException, ServletException
+////					{
+////						ObjectMapper objectMapper = new ObjectMapper();
+////						RestResult result = new RestResult();
+////						try
+////						{
+////							// 将 revoke token 加入黑名单逻辑(Redis)
+////							OAuth2TokenRevocationAuthenticationToken authenticationToken = (OAuth2TokenRevocationAuthenticationToken) authentication;
+////							log.debug("[REVOKE_TOKEN] => {}", authenticationToken.getToken());
+////							SetOperations setOps = redisTemplate.opsForSet();
+////							setOps.add("TOKEN_BLACK_LIST", authenticationToken.getToken());
+////						}
+////						catch (Exception e)
+////						{
+////							result.setSuccess(false);
+////							result.setCode(RestConstants.ERROR_CODE3);
+////							result.setMsg(e.getMessage());
+////						}
+////						finally
+////						{
+////							result.setPath(request.getServletPath());
+////							result.setTimestamp(String.valueOf(new Date().getTime()));
+////							response.setContentType("application/json;charset=UTF-8");
+////							try
+////							{
+////								objectMapper.writeValue(response.getOutputStream(), result);
+////							}
+////							catch (Exception e)
+////							{
+////								log.error(objectMapper.writeValueAsString(e));
+////							}
+////							finally
+////							{
+////								log.error(objectMapper.writeValueAsString(result));
+////							}
+////						}
+////					}
+////				}).errorResponseHandler(new AuthenticationFailureHandler()
+////				{
+////					@Override
+////					public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+////							AuthenticationException exception) throws IOException, ServletException
+////					{
+////						ObjectMapper objectMapper = new ObjectMapper();
+////						RestResult result = new RestResult();
+////						result.setSuccess(false);
+////						result.setCode(RestConstants.ERROR_CODE3);
+////						result.setMsg(exception.getMessage());
+////						result.setPath(request.getServletPath());
+////						result.setTimestamp(String.valueOf(new Date().getTime()));
+////						response.setContentType("application/json;charset=UTF-8");
+////						try
+////						{
+////							objectMapper.writeValue(response.getOutputStream(), result);
+////						}
+////						catch (Exception e)
+////						{
+////							log.error(objectMapper.writeValueAsString(e));
+////						}
+////						finally
+////						{
+////							log.error(objectMapper.writeValueAsString(result));
+////						}
+////					}
+////				}));
 //		return http.formLogin(Customizer.withDefaults()).build();
 //	}
 
