@@ -27,12 +27,18 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import org.springframework.security.oauth2.core.oidc.OidcScopes;
+import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationConsentService;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.config.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -189,34 +195,57 @@ public class AuthServerConfig
 	public RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate)
 	{
 		// DB 有数据
+//		JdbcRegisteredClientRepository registeredClientRepository = new JdbcRegisteredClientRepository(jdbcTemplate);
+//		return registeredClientRepository;
+		
+		// DB 无数据（即：启动时才写库，生产环境禁用）
+		// -------------------- //
+		// PKCE [N]
+		// -------------------- //
+		RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
+				.clientId("rico-client").clientSecret("{noop}123")
+				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+				// 回调地址名单，不在此列将被拒绝 而且只能使用IP或者域名 不能使用 localhost
+				// client 为 springboot 的回调地址
+				.redirectUri("http://127.0.0.1:8080/login/oauth2/code/rico-client-oidc")
+				.redirectUri("http://127.0.0.1:8080/authorized")
+				// client 为 vue 的回调地址
+				.redirectUri("http://127.0.0.1:7090/spring-oauth2-code-v1") // 非弹窗
+				.redirectUri("http://127.0.0.1:7090/oauth2/callback") // 弹窗
+				// client 为外网服务的回调地址
+				.redirectUri("https://oidcdebugger.com/debug")
+				//
+				.scope(OidcScopes.OPENID).scope("test.read").build();
+
+		// -------------------- //
+		// PKCE [Y]
+		// -------------------- //
+		RegisteredClient registeredPkceClient = RegisteredClient.withId(UUID.randomUUID().toString())
+				.clientId("rico-client-pkce").clientSecret("{noop}123")
+				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+				// client 为 vue 的回调地址
+				.redirectUri("http://127.0.0.1:7090/oauth2/callback-pkce") // 弹窗
+				// client 为外网服务的回调地址
+				.redirectUri("https://oidcdebugger.com/debug")
+				//
+				.scope(OidcScopes.OPENID).scope("test.read")
+				// 高级配置
+				.clientSettings(ClientSettings.builder()
+						//
+						.tokenEndpointAuthenticationSigningAlgorithm(SignatureAlgorithm.RS256)
+						// 开启 PKCE
+						.requireProofKey(true).build())
+				.build();
+
+		// Save registered client in db as if in-memory
 		JdbcRegisteredClientRepository registeredClientRepository = new JdbcRegisteredClientRepository(jdbcTemplate);
+		registeredClientRepository.save(registeredClient);
+		registeredClientRepository.save(registeredPkceClient);
 		return registeredClientRepository;
-		// DB 无数据（即：启动时才写库）
-		// RegisteredClient registeredClient =
-		// RegisteredClient.withId(UUID.randomUUID().toString())
-		// .clientId("rico-client")
-		// .clientSecret("{noop}123")
-		// .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-		// .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-		// .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-		// // 回调地址名单，不在此列将被拒绝 而且只能使用IP或者域名 不能使用 localhost
-		// // client 为 springboot 的回调地址
-		// .redirectUri("http://127.0.0.1:8080/login/oauth2/code/rico-client-oidc")
-		// .redirectUri("http://127.0.0.1:8080/authorized")
-		// // client 为 vue 的回调地址
-		// .redirectUri("http://127.0.0.1:7090/spring-oauth2-code-v1") // 非弹窗
-		// .redirectUri("http://127.0.0.1:7090/oauth2/callback") // 弹窗
-		// // client 为外网服务的回调地址
-		// .redirectUri("https://oidcdebugger.com/debug")
-		// .scope(OidcScopes.OPENID)
-		// .scope("test.read")
-		// .build();
-		//
-		// // Save registered client in db as if in-memory
-		// JdbcRegisteredClientRepository registeredClientRepository = new
-		// JdbcRegisteredClientRepository(jdbcTemplate);
-		// registeredClientRepository.save(registeredClient);
-		// return registeredClientRepository;
 	}
 
 	@Bean
