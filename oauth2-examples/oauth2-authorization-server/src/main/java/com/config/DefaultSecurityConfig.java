@@ -54,12 +54,25 @@ public class DefaultSecurityConfig
 	@Bean
 	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception
 	{
-		http.authorizeRequests(authorizeRequests -> authorizeRequests
-				// .antMatchers("/oauth2/token").permitAll()
-//				 .antMatchers("/favicon.ico").permitAll()
-				.anyRequest().authenticated()).formLogin(withDefaults());
+		// 默认登录页
+//		http
+//		.formLogin(withDefaults())
+//		.authorizeRequests(authorizeRequests -> authorizeRequests
+//				.anyRequest().authenticated())
+//		;
+		
+		// 自定义登录页
+		http
+		.formLogin(form -> form.loginPage("/login").loginProcessingUrl("/login"))
+		.authorizeRequests(authorizeRequests -> authorizeRequests
+				// 放开自定义登录访问权限
+				.antMatchers("/login").permitAll()
+				.anyRequest().authenticated())
+		;
 
-		http.logout()
+		// 自定义登出
+		http
+		.logout()
 		.logoutSuccessHandler(new LogoutSuccessHandler() {
 			@Override
 			public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
