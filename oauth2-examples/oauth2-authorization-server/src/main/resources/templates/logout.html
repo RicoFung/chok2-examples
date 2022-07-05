@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>登出页面</title>
+</head>
+<body>
+	<h3>登出</h3>
+	<form th:action="@{/logout}" method="post">
+		<table>
+			<tr>
+				<td colspan="2">
+					<button type="submit">登出</button>
+				</td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>

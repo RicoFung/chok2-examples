@@ -15,29 +15,31 @@
  */
 package com.config;
 
+
 import static org.springframework.security.config.Customizer.withDefaults;
 
-import java.io.IOException;
 import java.util.Arrays;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.domain.erp.service.TbUserInfo0aService;
+
 @EnableWebSecurity(debug = true)
 public class DefaultSecurityConfig
 {
+	@Autowired
+	TbUserInfo0aService		tbUserInfo0aService;
+//	@Autowired
+//	CusUserInfo0aService	cusUserInfo0aService;
+	
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource()
 	{
@@ -52,13 +54,15 @@ public class DefaultSecurityConfig
 	}
 
 	@Bean
+//	@Order(Ordered.HIGHEST_PRECEDENCE)
 	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception
 	{
-		// 默认登录页
+		// 默认登录/登出页
 //		http
 //		.formLogin(withDefaults())
 //		.authorizeRequests(authorizeRequests -> authorizeRequests
 //				.anyRequest().authenticated())
+//		.userDetailsService(tbUserInfo0aService)
 //		;
 		
 		// 自定义登录页
@@ -68,23 +72,24 @@ public class DefaultSecurityConfig
 				// 放开自定义登录访问权限
 				.antMatchers("/login").permitAll()
 				.anyRequest().authenticated())
+		.userDetailsService(tbUserInfo0aService)
 		;
 
 		// 自定义登出
 		http
 		.logout()
-		.logoutSuccessHandler(new LogoutSuccessHandler() {
-			@Override
-			public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
-					Authentication authentication) throws IOException, ServletException
-			{
-				// 重定向至：/oauth2/authorize?
-				String authorizeHost = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/oauth2/authorize?";
-				String queryString = request.getHeader("referer").split("\\?")[1];
-				String url = authorizeHost + queryString;
-				response.sendRedirect(url);
-			}
-		})
+		.logoutUrl("/logout")
+		.logoutSuccessHandler(((request, response, authentication) -> 
+		{
+			// 重定向至：/oauth2/authorize?
+			String authorizeHost = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/oauth2/authorize?";
+			String queryString = request.getHeader("referer").split("\\?")[1];
+			String url = authorizeHost + queryString;
+			response.sendRedirect(url);
+        }))
+		//清除认证信息
+        .clearAuthentication(true)
+        .invalidateHttpSession(true)
 		;
 		return http.build();
 	}

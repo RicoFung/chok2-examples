@@ -15,8 +15,6 @@ import java.util.UUID;
 
 import javax.sql.DataSource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,7 +40,6 @@ import org.springframework.security.oauth2.server.authorization.config.ClientSet
 import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.domain.erp.service.TbUserInfo0aService;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
@@ -53,11 +50,6 @@ import chok.common.BeanFactory;
 @Configuration(proxyBeanMethods = false)
 public class AuthServerConfig
 {
-	private final Logger log = LoggerFactory.getLogger(getClass());
-
-	// 仅用于【注册方式：数据库】
-	@Autowired
-	TbUserInfo0aService			tbUserInfo0aService;
 	@Autowired
 	RedisTemplate<String, ?>	redisTemplate;
 
@@ -74,8 +66,6 @@ public class AuthServerConfig
 	{
 		// 默认配置
 		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-		// 仅用于【注册方式：数据库】
-		http.userDetailsService(tbUserInfo0aService);
 		return http.formLogin(Customizer.withDefaults()).build();
 	}
 
