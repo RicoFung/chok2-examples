@@ -2,42 +2,30 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
 	<modelVersion>4.0.0</modelVersion>
-	<!--本Project識別 -->
+	
+	<groupId>com.chok</groupId>
 	<artifactId>oauth2-resource-server</artifactId>
-	<!--表示打包Project的型態,可能為Jar、war、ear或pom，若是使用了android 則為apk -->
+	<version>0.0.1</version>
 	<packaging>war</packaging>
-	<!--以下是給工具看的,主要是本Project的資訊 -->
 	<name>oauth2-resource-server</name>
-
-	<parent>
-		<groupId>com.chok2</groupId>
-		<artifactId>chok2-examples</artifactId>
-		<version>1.0.0</version>
-		<relativePath>../../pom.xml</relativePath>
-	</parent>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
 	<profiles>
 		<!-- Maven控制Spring Profile -->
 		<profile>
-			<id>local-dev</id>
+			<id>local</id>
 			<properties>
-				<profileActive>local-dev</profileActive>
+				<profileActive>local</profileActive>
 			</properties>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-		</profile>
-		<profile>
-			<id>local-uat</id>
-			<properties>
-				<profileActive>local-uat</profileActive>
-			</properties>
 		</profile>
 		<profile>
 			<id>dev</id>
@@ -58,6 +46,23 @@
 			</properties>
 		</profile>
 	</profiles>
+
+	<!--  
+		使用 bom 方式代替 parent 方式：
+		1.支持多继承；
+		2.从此项目version与依赖库version分离 ；
+	-->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.chok2</groupId>
+				<artifactId>chok2-parent</artifactId>
+				<version>1.0.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 		<!-- logback-glef 用于发送消息至graylog -->
@@ -99,6 +104,17 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid-spring-boot-starter</artifactId>
 		</dependency>
+		<!-- inject span and trace IDs into log entries -->
+		<dependency>
+		   <groupId>org.springframework.cloud</groupId>
+		   <artifactId>spring-cloud-starter-sleuth</artifactId>
+		</dependency>
+		<!-- 
+		<dependency>
+		   <groupId>org.springframework.cloud</groupId>
+		   <artifactId>spring-cloud-starter-zipkin</artifactId>
+		</dependency>
+		 -->
 		<!-- db driver -->
 		<dependency>
 			<groupId>com.oracle</groupId>
@@ -194,12 +210,24 @@
 					<include>**/datasource-mybatis-${profileActive}.properties</include>
 					<include>**/datasource-jdbc-${profileActive}.properties</include>
 					<include>**/redisson-single-${profileActive}.yml</include>
+					<include>**/logback-spring.xml</include>
+					<include>**/logback-spring-${profileActive}.xml</include>
 					<include>**/i18n/*</include>
 					<include>**/img/*</include>
 					<include>**/templates/**</include>
 				</includes>
 			</resource>
 		</resources>
+		<plugins>
+			<plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-war-plugin</artifactId>
+		        <version>3.3.2</version>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+		</plugins>
 		<finalName>oauth2-resource-server</finalName>
 	</build>
 
