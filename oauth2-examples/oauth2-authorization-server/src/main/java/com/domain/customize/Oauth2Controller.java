@@ -18,9 +18,9 @@ public class Oauth2Controller
 		return "logout";
 	}
 	
-	@GetMapping("loginCustom")
-	public String loginCustom()
-	{
-		return "loginCustom";
-	}
+//	@GetMapping("loginCustom")
+//	public String loginCustom()
+//	{
+//		return "loginCustom";
+//	}
 }

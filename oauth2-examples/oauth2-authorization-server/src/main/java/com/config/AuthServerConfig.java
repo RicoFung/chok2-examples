@@ -60,7 +60,7 @@ public class AuthServerConfig
 	 * @return
 	 * @throws Exception
 	 */
-	@Bean
+	@Bean("authorizationServerSecurityFilterChain")
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception
 	{
