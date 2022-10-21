@@ -1,4 +1,4 @@
-package com.api.v3.tbdemo.controller.result;
+package com.api.v3.tbdemo.dto;
 
 import chok.devwork.springboot.pojo.ChokResultDTO;
 

@@ -1,4 +1,4 @@
-package com.api.v3.tbdemo.controller.param;
+package com.api.v3.tbdemo.dto;
 
 import com.api.v3.entity.TbDemo;
 

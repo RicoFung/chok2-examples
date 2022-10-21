@@ -1,4 +1,4 @@
-package com.api.v3.dao.tbdemo.param;
+package com.api.v3.dao.tbdemo.po;
 
 import com.api.v3.entity.TbDemo;
 

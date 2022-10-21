@@ -2,7 +2,6 @@ package com.api.v3.tbdemo.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -11,12 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.api.v3.tbdemo.controller.param.TbDemoGetOneParamDTO;
-import com.api.v3.tbdemo.controller.result.TbDemoGetOneResultDTO;
-import com.api.v3.tbdemo.controller.result.TbDemoGetOneResultMapper;
+import com.api.v3.tbdemo.dto.TbDemoGetListParamDTO;
+import com.api.v3.tbdemo.dto.TbDemoGetListResultDTO;
+import com.api.v3.tbdemo.dto.TbDemoGetOneParamDTO;
+import com.api.v3.tbdemo.dto.TbDemoGetOneResultDTO;
 import com.api.v3.tbdemo.service.TbDemoService;
-import com.api.v3.tbdemo.service.param.TbDemoGetOneParamBO;
-import com.api.v3.tbdemo.service.result.TbDemoGetOneResultBO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import chok.common.RestConstants;
@@ -63,13 +61,7 @@ public class TbDemoController //extends BaseRestController<TbDemo>
 //				restResult.setMsg(getValidMsgs(validResult));
 				return resultDTO;
 			}
-
-			TbDemoGetOneParamBO paramBO = new TbDemoGetOneParamBO();
-			BeanUtils.copyProperties(paramDTO, paramBO);
-			
-			TbDemoGetOneResultBO resultBO = service.getOne(paramBO);
-			
-			resultDTO = TbDemoGetOneResultMapper.INSTANCE.boToDto(resultBO);
+			resultDTO = service.getOne(paramDTO);
 		}
 		catch(Exception e)
 		{
@@ -81,29 +73,36 @@ public class TbDemoController //extends BaseRestController<TbDemo>
 		return resultDTO;
 	}
 	
-//	@Operation(summary = "列表")
-//	@RequestMapping(value = "/query", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-//	public RestResult query(@RequestBody TbDemoQueryDTO tbDemoQueryDTO)
-//	{
-//		restResult = new RestResult();
-//		try
-//		{
-//			if (log.isDebugEnabled())
-//			{
-//				log.debug("==> requestDto：{}", restMapper.writeValueAsString(tbDemoQueryDTO));
-//			}
-//			Map<String, Object> param = restMapper.convertValue(tbDemoQueryDTO, new TypeReference<Map<String, Object>>(){});
-//	        restResult.put("total", service.getCount(param));
-//			restResult.put("rows", service.queryDynamic(param));
-//		}
-//		catch (Exception e)
-//		{
-//			log.error("<== Exception：{}", e);
-//			restResult.setSuccess(false);
-//			restResult.setCode(RestConstants.ERROR_CODE1);
-//			restResult.setMsg(e.getMessage());
-//		}
-//		return restResult;
-//	}
+	@Operation(summary = "列表")
+	@RequestMapping(value = "/getList", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	public TbDemoGetListResultDTO getList(@RequestBody @Validated TbDemoGetListParamDTO paramDTO, BindingResult validResult) 
+	{
+		TbDemoGetListResultDTO resultDTO = new TbDemoGetListResultDTO();
+		try
+		{
+			if (log.isDebugEnabled())
+			{
+				log.debug("==> requestDto：{}", objMapper.writeValueAsString(paramDTO));
+			}
+			if (validResult.hasErrors()) 
+			{
+				resultDTO.setSuccess(false);
+				resultDTO.setCode(RestConstants.ERROR_CODE1);
+				resultDTO.setMsg("自动校验不通过！");
+//				restResult.setMsg(getValidMsgs(validResult));
+				return resultDTO;
+			}
+			resultDTO = service.getList(paramDTO);
+		}
+		catch(Exception e)
+		{
+			log.error("<== Exception：{}", e);
+			resultDTO.setSuccess(false);
+			resultDTO.setCode(RestConstants.ERROR_CODE1);
+			resultDTO.setMsg(e.getMessage());
+		}
+		return resultDTO;
+	}
+	
 	
 }

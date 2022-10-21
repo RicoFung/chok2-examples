@@ -1,6 +1,8 @@
-package com.api.v3.entity;
+package com.api.v3.dao.tbdemo.po;
 
-public class TbDemoGetOneResult extends TbDemo
+import com.api.v3.entity.TbDemo;
+
+public class TbDemoGetOneResultPO extends TbDemo
 {
 
 	/**

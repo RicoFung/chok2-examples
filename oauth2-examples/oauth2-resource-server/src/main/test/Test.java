@@ -10,14 +10,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.Application;
 import com.api.v2.entity.TbDemo;
 import com.api.v2.tbdemo.service.TbDemoService;
-import com.api.v3.dao.tbdemo.param.TbDemoGetListParamPO;
-import com.api.v3.dao.tbdemo.param.TbDemoGetOneParamPO;
-import com.api.v3.entity.TbDemoGetListResult;
-import com.api.v3.entity.TbDemoGetOneResult;
-import com.api.v3.tbdemo.service.param.TbDemoGetListParamBO;
-import com.api.v3.tbdemo.service.param.TbDemoGetOneParamBO;
-
-import chok.devwork.springboot.pojo.ChokResultBO;
+import com.api.v3.dao.tbdemo.po.TbDemoGetListParamPO;
+import com.api.v3.dao.tbdemo.po.TbDemoGetListResultPO;
+import com.api.v3.dao.tbdemo.po.TbDemoGetOneParamPO;
+import com.api.v3.dao.tbdemo.po.TbDemoGetOneResultPO;
 
 
 @RunWith(SpringRunner.class)
@@ -54,34 +50,34 @@ public class Test
 	{
 		TbDemoGetOneParamPO paramPO = new TbDemoGetOneParamPO();
 		paramPO.setTcRowid(91402l);
-		TbDemoGetOneResult resultPO = v3Dao.getOne(paramPO);
+		TbDemoGetOneResultPO resultPO = v3Dao.getOne(paramPO);
 		logger.info("[resultPO <= {}]", resultPO.toString());
 	}
 	
 //	@org.junit.Test
-	public void testDaoGetList()
-	{
-		TbDemoGetListParamPO paramPO = new TbDemoGetListParamPO();
-		paramPO.setTcCode("c1");
-		List<TbDemoGetListResult> resultPO = v3Dao.getList(paramPO);
-		logger.info("[resultPO <= {}]", resultPO.toString());
-	}
+//	public void testDaoGetList()
+//	{
+//		TbDemoGetListParamPO paramPO = new TbDemoGetListParamPO();
+//		paramPO.setTcCode("c1");
+//		List<TbDemoGetListResultPO> resultPO = v3Dao.getList(paramPO);
+//		logger.info("[resultPO <= {}]", resultPO.toString());
+//	}
 	
-	@org.junit.Test
-	public void testServiceGetOne()
-	{
-		TbDemoGetOneParamBO paramBO = new TbDemoGetOneParamBO();
-		paramBO.setTcRowid(91402l);
-		ChokResultBO<TbDemoGetOneResult> resultBO = v3Service.getOne(paramBO);
-		logger.info("[{}]", resultBO.toString());
-	}
-	
-	@org.junit.Test
-	public void testServiceGetList()
-	{
-		TbDemoGetListParamBO paramBO = new TbDemoGetListParamBO();
-		paramBO.setTcCode("c1");
-		ChokResultBO<List<TbDemoGetListResult>> resultBO = v3Service.getList(paramBO);
-		logger.info("[{}]", resultBO.toString());
-	}
+//	@org.junit.Test
+//	public void testServiceGetOne()
+//	{
+//		TbDemoGetOneParamBO paramBO = new TbDemoGetOneParamBO();
+//		paramBO.setTcRowid(91402l);
+//		ChokResultBO<TbDemoGetOneResult> resultBO = v3Service.getOne(paramBO);
+//		logger.info("[{}]", resultBO.toString());
+//	}
+//	
+//	@org.junit.Test
+//	public void testServiceGetList()
+//	{
+//		TbDemoGetListParamBO paramBO = new TbDemoGetListParamBO();
+//		paramBO.setTcCode("c1");
+//		ChokResultBO<List<TbDemoGetListResult>> resultBO = v3Service.getList(paramBO);
+//		logger.info("[{}]", resultBO.toString());
+//	}
 }

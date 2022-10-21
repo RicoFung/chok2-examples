@@ -12,26 +12,58 @@
     </cache>
      -->
      
-	<sql id="columns">
-		T.TC_ROWID, 
-		T.TC_CODE, 
-		T.TC_NAME 
-	</sql>	
+	<sql id="dynamicColumns">
+		<choose>
+			<when test="@chok.devwork.Ognl@isNotEmpty(dynamicColumns) and @chok.devwork.Ognl@isNotNull(dynamicColumns)">
+			    <foreach collection ="dynamicColumns" item="col" index="index" separator=",">
+					<if test="col == 'tcRowid'">T.TC_ROWID</if>
+					<if test="col == 'tcCode'">T.TC_CODE</if>
+					<if test="col == 'tcName'">T.TC_NAME</if>
+			    </foreach>
+			</when>
+			<otherwise>
+				T.TC_ROWID, 
+				T.TC_CODE, 
+				T.TC_NAME 
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<sql id="dynamicOrder">
+		<choose>
+			<when test="@chok.devwork.Ognl@isNotEmpty(dynamicOrder)">
+				ORDER BY <foreach collection="dynamicOrder" index="index" item="item" separator=",">TT.<include refid="orderParse2" /> ${item.sortOrder}</foreach>  
+			</when>
+			<otherwise>
+				ORDER BY TT.TC_ROWID DESC
+			</otherwise>
+		</choose>
+	</sql>
+	<sql id="orderParse1">
+		<if test="sort == 'tcRowid'">TC_ROWID</if>
+		<if test="sort == 'tcCode'">TC_CODE</if>
+		<if test="sort == 'tcName'">TC_NAME</if>
+	</sql>
+	<sql id="orderParse2">
+		<if test="item.sortName == 'tcRowid'">TC_ROWID</if>
+		<if test="item.sortName == 'tcCode'">TC_CODE</if>
+		<if test="item.sortName == 'tcName'">TC_NAME</if>
+	</sql>
 	
 	<sql id="dynamicWhere">
 		<where>
-    		<if test="@chok.devwork.Ognl@isNotEmpty(tcRowid)"> AND T.TC_ROWID = #{tcRowid} </if>
-	       	<if test="@chok.devwork.Ognl@isNotEmpty(tcCode)"> AND T.TC_CODE LIKE '%'||#{tcCode}||'%'</if>
-	       	<if test="@chok.devwork.Ognl@isNotEmpty(tcName)"> AND T.TC_NAME LIKE '%'||#{tcName}||'%'</if>
-			<if test="@chok.devwork.Ognl@isNotEmpty(tcRowidArray)"> 
+    		<if test="@chok.devwork.Ognl@isNotEmpty(dynamicWhere.tcRowid)"> AND T.TC_ROWID = #{dynamicWhere.tcRowid} </if>
+	       	<if test="@chok.devwork.Ognl@isNotEmpty(dynamicWhere.tcCode)"> AND T.TC_CODE LIKE '%'||#{dynamicWhere.tcCode}||'%'</if>
+	       	<if test="@chok.devwork.Ognl@isNotEmpty(dynamicWhere.tcName)"> AND T.TC_NAME LIKE '%'||#{dynamicWhere.tcName}||'%'</if>
+			<if test="@chok.devwork.Ognl@isNotEmpty(dynamicWhere.tcRowidArray)"> 
 				AND T.TC_ROWID IN
-				<foreach collection="tcRowidArray" item="tcRowid" index="index" open="(" close=")" separator=",">#{tcRowid}</foreach>
+				<foreach collection="dynamicWhere.tcRowidArray" item="tcRowid" index="index" open="(" close=")" separator=",">#{tcRowid}</foreach>
 			</if>
 		</where>
 	</sql>	
 	
 	<!-- getOne -->
-	<resultMap type="com.api.v3.entity.TbDemoGetOneResult" id="getOneResult" >
+	<resultMap type="com.api.v3.dao.tbdemo.po.TbDemoGetOneResultPO" id="getOneResult" >
         <result property="tcRowid" column="TC_ROWID"/>
         <result property="tcCode" column="TC_CODE"/>
         <result property="tcName" column="TC_NAME"/>
@@ -43,11 +75,31 @@
 	</select>
 	
 	<!-- getList -->
-	<resultMap type="com.api.v3.entity.TbDemoGetListResult" id="getListResult" extends="getOneResult">
+	<resultMap type="com.api.v3.dao.tbdemo.po.TbDemoGetListResultPO" id="getListResult" extends="getOneResult">
 	</resultMap>
-	<select id="getList" parameterType="com.api.v3.dao.tbdemo.param.TbDemoGetListParamPO" resultType="list" resultMap="getListResult">
-		SELECT <include refid="columns"/> 
-		  FROM TB_DEMO T
-		<include refid="dynamicWhere" />
+	<select id="getList" parameterType="com.api.v3.dao.tbdemo.po.TbDemoGetListParamPO" resultType="list" resultMap="getListResult">
+		<choose>
+			<!-- 翻页 -->
+			<when test="@chok.devwork.Ognl@isNotEmpty(page) and @chok.devwork.Ognl@isNotEmpty(pagesize)">
+				SELECT * FROM (SELECT row_.*, ROWNUM rownum_ FROM(
+					SELECT TT.* FROM 
+					(
+						SELECT <include refid="dynamicColumns"/> FROM TB_DEMO T
+						<include refid="dynamicWhere" />
+					) TT
+					<include refid="dynamicOrder" />
+	            ) row_ WHERE rownum &lt;= #{page}*#{pagesize} ) 
+	            WHERE rownum_ &gt; (#{page}-1)*#{pagesize}
+			</when>
+			<!-- 非翻页 -->
+			<otherwise>
+				SELECT TT.* FROM 
+				(
+					SELECT <include refid="dynamicColumns"/> FROM TB_DEMO T
+					<include refid="dynamicWhere" />
+				) TT
+				<include refid="dynamicOrder" />
+			</otherwise>
+		</choose>
 	</select>
 </mapper>  
