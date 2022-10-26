@@ -10,11 +10,15 @@ import com.api.v3.dao.tbdemo.po.TbDemoGetListParamPO;
 import com.api.v3.dao.tbdemo.po.TbDemoGetListResultPO;
 import com.api.v3.dao.tbdemo.po.TbDemoGetOneParamPO;
 import com.api.v3.dao.tbdemo.po.TbDemoGetOneResultPO;
+import com.api.v3.entity.TbDemo;
 import com.api.v3.tbdemo.dto.ParamMapper;
+import com.api.v3.tbdemo.dto.TbDemoAddParamDTO;
+import com.api.v3.tbdemo.dto.TbDemoDelParamDTO;
 import com.api.v3.tbdemo.dto.TbDemoGetListParamDTO;
-import com.api.v3.tbdemo.dto.TbDemoGetListResultDTO;
 import com.api.v3.tbdemo.dto.TbDemoGetOneParamDTO;
-import com.api.v3.tbdemo.dto.TbDemoGetOneResultDTO;
+import com.api.v3.tbdemo.dto.TbDemoUpdParamDTO;
+
+import chok.devwork.springboot.pojo.ChokResultDTO;
 
 @Service
 public class TbDemoService
@@ -22,22 +26,44 @@ public class TbDemoService
 	@Autowired
 	TbDemoDao dao;
 	
-	public TbDemoGetOneResultDTO getOne(TbDemoGetOneParamDTO paramDTO) 
+	public ChokResultDTO<Object> add(TbDemoAddParamDTO paramDTO)
+	{
+		TbDemo po = ParamMapper.INSTANCE.dtoToPo(paramDTO);
+		dao.add(po);
+		ChokResultDTO<Object> resultDTO = new ChokResultDTO<Object>();
+		return resultDTO;
+	}
+	
+	public ChokResultDTO<Object> del(TbDemoDelParamDTO paramDTO)
+	{
+		dao.del(paramDTO.getTcRowidArray());
+		ChokResultDTO<Object> resultDTO = new ChokResultDTO<Object>();
+		return resultDTO;
+	}
+	
+	public ChokResultDTO<Object> upd(TbDemoUpdParamDTO paramDTO)
+	{
+		TbDemo po = ParamMapper.INSTANCE.dtoToPo(paramDTO);
+		dao.upd(po);
+		ChokResultDTO<Object> resultDTO = new ChokResultDTO<Object>();
+		return resultDTO;
+	}	
+	
+	public ChokResultDTO<TbDemoGetOneResultPO> getOne(TbDemoGetOneParamDTO paramDTO) 
 	{
 		TbDemoGetOneParamPO paramPO = ParamMapper.INSTANCE.dtoToPo(paramDTO);
 		TbDemoGetOneResultPO result = dao.getOne(paramPO);
-		TbDemoGetOneResultDTO resultDTO = new TbDemoGetOneResultDTO();
+		ChokResultDTO<TbDemoGetOneResultPO> resultDTO = new ChokResultDTO<TbDemoGetOneResultPO>();
 		resultDTO.setData(result);
 		return resultDTO;
 	}
 	
-	public TbDemoGetListResultDTO getList(TbDemoGetListParamDTO paramDTO) 
+	public ChokResultDTO<List<TbDemoGetListResultPO>> getList(TbDemoGetListParamDTO paramDTO) 
 	{
 		TbDemoGetListParamPO paramPO = ParamMapper.INSTANCE.dtoToPo(paramDTO);
 		List<TbDemoGetListResultPO> result = dao.getList(paramPO);
-		TbDemoGetListResultDTO resultDTO = new TbDemoGetListResultDTO();
+		ChokResultDTO<List<TbDemoGetListResultPO>> resultDTO = new ChokResultDTO<List<TbDemoGetListResultPO>>();
 		resultDTO.setData(result);
 		return resultDTO;
 	}
-	
 }

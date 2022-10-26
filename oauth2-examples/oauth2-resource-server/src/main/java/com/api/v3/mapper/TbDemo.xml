@@ -11,6 +11,64 @@
         <property name="readOnly" value="false" />
     </cache>
      -->
+
+      <!-- 自动生成id策略 -->
+    <insert id="add" parameterType="com.api.v3.entity.TbDemo">  
+       	<selectKey keyProperty="tcRowid" resultType="long" order="BEFORE">
+	         SELECT SEQ_TB_DEMO.NEXTVAL FROM DUAL
+	     </selectKey>
+       	INSERT INTO TB_DEMO 
+       	( TC_ROWID, TC_CODE, TC_NAME) 
+       	VALUES
+       	( #{tcRowid}, #{tcCode}, #{tcName})
+    </insert>  
+    
+    <insert id="addBatch">
+    	INSERT INTO TB_DEMO
+    	(
+        TC_ROWID,
+        TC_CODE,
+        TC_NAME
+        )
+	    SELECT SEQ_TB_DEMO.NEXTVAL, T.*
+        FROM 
+        (
+	    <foreach collection ="list" item="item" index="index" separator="UNION ALL">
+	    SELECT
+		#{item.tcCode} AS TC_CODE,
+		#{item.tcName} AS TC_NAME
+	    FROM DUAL
+	    </foreach>
+        ) T
+    </insert>
+	
+	<delete id="del">
+		DELETE FROM TB_DEMO T
+		 WHERE T.TC_ROWID IN
+		<foreach collection="array" item="tcRowid" index="index" open="(" close=")" separator=",">
+		  #{tcRowid}
+		</foreach>
+	</delete>
+	
+	<update id="upd" parameterType="com.api.v2.entity.TbDemo">
+		UPDATE TB_DEMO T
+		<set>
+        <if test="@chok.devwork.Ognl@isNotNull(tcCode)"> T.TC_CODE = #{tcCode},</if>
+        <if test="@chok.devwork.Ognl@isNotNull(tcName)"> T.TC_NAME = #{tcName}</if>
+        </set>
+         WHERE T.TC_ROWID = #{tcRowid}  
+	</update>
+  	
+  	<update id="updBatch">
+  		<foreach collection="list" index="index" item="item" open="begin" close=";end;" separator=";">
+	        UPDATE TB_DEMO T
+	        <set>
+		       <if test="@chok.devwork.Ognl@isNotEmpty(item.tcCode)"> T.TC_CODE = #{item.tcCode},</if>
+		       <if test="@chok.devwork.Ognl@isNotEmpty(item.tcName)"> T.TC_NAME = #{item.tcName},</if>
+	        </set>
+			WHERE T.TC_ROWID = #{item.tcRowid}  
+    	</foreach>
+  	</update>
      
 	<sql id="dynamicColumns">
 		<choose>
@@ -69,7 +127,7 @@
         <result property="tcName" column="TC_NAME"/>
 	</resultMap>
 	<select id="getOne" resultMap="getOneResult">
-		SELECT <include refid="columns"/> 
+		SELECT <include refid="dynamicColumns"/> 
 		  FROM TB_DEMO T 
 		 WHERE T.TC_ROWID = #{tcRowid}  	  
 	</select>

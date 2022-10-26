@@ -1,8 +1,9 @@
 package com.api.v3.tbdemo.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,21 +11,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.api.v3.dao.tbdemo.po.TbDemoGetListResultPO;
+import com.api.v3.dao.tbdemo.po.TbDemoGetOneResultPO;
+import com.api.v3.tbdemo.dto.TbDemoAddParamDTO;
+import com.api.v3.tbdemo.dto.TbDemoDelParamDTO;
 import com.api.v3.tbdemo.dto.TbDemoGetListParamDTO;
-import com.api.v3.tbdemo.dto.TbDemoGetListResultDTO;
 import com.api.v3.tbdemo.dto.TbDemoGetOneParamDTO;
-import com.api.v3.tbdemo.dto.TbDemoGetOneResultDTO;
+import com.api.v3.tbdemo.dto.TbDemoUpdParamDTO;
 import com.api.v3.tbdemo.service.TbDemoService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import chok.common.RestConstants;
+import chok.devwork.springboot.pojo.ChokResultDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "v3-TbDemo")
 @RestController(value = "v3TbDemoController")
 @RequestMapping("/api/v3/tbdemo")
-public class TbDemoController //extends BaseRestController<TbDemo>
+public class TbDemoController //extends BaseController
 {
 	// --------------------------------------------------------------------------------------- //
 	// value: 指定请求的实际地址， 比如 /action/info之类
@@ -35,74 +38,89 @@ public class TbDemoController //extends BaseRestController<TbDemo>
 	// headers： 指定request中必须包含某些指定的header值，才能让该方法处理请求
 	// --------------------------------------------------------------------------------------- //
 	
-	private final Logger log = LoggerFactory.getLogger(getClass());
+//	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private TbDemoService service;
 
-	private ObjectMapper objMapper = new ObjectMapper();
+	@Operation(summary = "新增")
+	@RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	public ChokResultDTO<Object> add(@RequestBody @Validated TbDemoAddParamDTO paramDTO, BindingResult validResult)
+	{
+		return new ControllerHandler<Object>().execute(paramDTO, validResult, new ControllerHandler.Callback<Object>() {
 
+			@Override
+			protected ChokResultDTO<Object> process(ChokResultDTO<Object> resultDTO, Authentication authentication, Long tcTime)
+					throws Exception
+			{
+				return service.add(paramDTO);
+			}
+			
+		});
+	}
+
+	@Operation(summary = "删除")
+	@RequestMapping(value = "/del", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	public ChokResultDTO<Object> del(@RequestBody @Validated TbDemoDelParamDTO paramDTO, BindingResult validResult) 
+	{
+		return new ControllerHandler<Object>().execute(paramDTO, validResult, new ControllerHandler.Callback<Object>() {
+
+			@Override
+			protected ChokResultDTO<Object> process(ChokResultDTO<Object> resultDTO, Authentication authentication, Long tcTime)
+					throws Exception
+			{
+				return service.del(paramDTO);
+			}
+			
+		});
+	}
+
+	@Operation(summary = "修改")
+	@RequestMapping(value = "/upd", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	public ChokResultDTO<Object> upd(@RequestBody @Validated TbDemoUpdParamDTO paramDTO, BindingResult validResult) 
+	{
+		return new ControllerHandler<Object>().execute(paramDTO, validResult, new ControllerHandler.Callback<Object>() {
+
+			@Override
+			protected ChokResultDTO<Object> process(ChokResultDTO<Object> resultDTO, Authentication authentication, Long tcTime)
+					throws Exception
+			{
+				return service.upd(paramDTO);
+			}
+			
+		});
+	}
+	
 	@Operation(summary = "明细")
 	@RequestMapping(value = "/getOne", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	public TbDemoGetOneResultDTO getOne(@RequestBody @Validated TbDemoGetOneParamDTO paramDTO, BindingResult validResult) 
+	public ChokResultDTO<TbDemoGetOneResultPO> getOne(@RequestBody @Validated TbDemoGetOneParamDTO paramDTO, BindingResult validResult) 
 	{
-		TbDemoGetOneResultDTO resultDTO = new TbDemoGetOneResultDTO();
-		try
-		{
-			if (log.isDebugEnabled())
+		return new ControllerHandler<TbDemoGetOneResultPO>().execute(paramDTO, validResult, new ControllerHandler.Callback<TbDemoGetOneResultPO>() {
+
+			@Override
+			protected ChokResultDTO<TbDemoGetOneResultPO> process(ChokResultDTO<TbDemoGetOneResultPO> resultDTO, Authentication authentication, Long tcTime)
+					throws Exception
 			{
-				log.debug("==> requestDto：{}", objMapper.writeValueAsString(paramDTO));
+				return service.getOne(paramDTO);
 			}
-			if (validResult.hasErrors()) 
-			{
-				resultDTO.setSuccess(false);
-				resultDTO.setCode(RestConstants.ERROR_CODE1);
-				resultDTO.setMsg("自动校验不通过！");
-//				restResult.setMsg(getValidMsgs(validResult));
-				return resultDTO;
-			}
-			resultDTO = service.getOne(paramDTO);
-		}
-		catch(Exception e)
-		{
-			log.error("<== Exception：{}", e);
-			resultDTO.setSuccess(false);
-			resultDTO.setCode(RestConstants.ERROR_CODE1);
-			resultDTO.setMsg(e.getMessage());
-		}
-		return resultDTO;
+			
+		});
 	}
 	
 	@Operation(summary = "列表")
 	@RequestMapping(value = "/getList", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	public TbDemoGetListResultDTO getList(@RequestBody @Validated TbDemoGetListParamDTO paramDTO, BindingResult validResult) 
+	public ChokResultDTO<List<TbDemoGetListResultPO>> getList(@RequestBody @Validated TbDemoGetListParamDTO paramDTO, BindingResult validResult) 
 	{
-		TbDemoGetListResultDTO resultDTO = new TbDemoGetListResultDTO();
-		try
-		{
-			if (log.isDebugEnabled())
+		return new ControllerHandler<List<TbDemoGetListResultPO>>().execute(paramDTO, validResult, new ControllerHandler.Callback<List<TbDemoGetListResultPO>>() {
+
+			@Override
+			protected ChokResultDTO<List<TbDemoGetListResultPO>> process(ChokResultDTO<List<TbDemoGetListResultPO>> resultDTO, Authentication authentication, Long tcTime)
+					throws Exception
 			{
-				log.debug("==> requestDto：{}", objMapper.writeValueAsString(paramDTO));
+				return service.getList(paramDTO);
 			}
-			if (validResult.hasErrors()) 
-			{
-				resultDTO.setSuccess(false);
-				resultDTO.setCode(RestConstants.ERROR_CODE1);
-				resultDTO.setMsg("自动校验不通过！");
-//				restResult.setMsg(getValidMsgs(validResult));
-				return resultDTO;
-			}
-			resultDTO = service.getList(paramDTO);
-		}
-		catch(Exception e)
-		{
-			log.error("<== Exception：{}", e);
-			resultDTO.setSuccess(false);
-			resultDTO.setCode(RestConstants.ERROR_CODE1);
-			resultDTO.setMsg(e.getMessage());
-		}
-		return resultDTO;
+			
+		});
 	}
-	
 	
 }

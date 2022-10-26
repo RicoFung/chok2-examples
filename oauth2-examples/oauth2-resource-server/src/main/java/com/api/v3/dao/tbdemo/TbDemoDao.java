@@ -13,6 +13,7 @@ import com.api.v3.dao.tbdemo.po.TbDemoGetListParamPO;
 import com.api.v3.dao.tbdemo.po.TbDemoGetListResultPO;
 import com.api.v3.dao.tbdemo.po.TbDemoGetOneParamPO;
 import com.api.v3.dao.tbdemo.po.TbDemoGetOneResultPO;
+import com.api.v3.entity.TbDemo;
 
 @Repository(value = "v3TbDemoDao")
 public class TbDemoDao //extends BaseDao<TbDemo,Long>
@@ -22,6 +23,21 @@ public class TbDemoDao //extends BaseDao<TbDemo,Long>
 	
 	@Resource//(name = "firstSqlSessionTemplate")
 	private SqlSession sqlSession;
+	
+	public void add(TbDemo po)
+	{
+		this.sqlSession.insert(getClass().getName()+"."+"add", po);
+	}
+	
+	public void del(String[] idArray)
+	{
+		this.sqlSession.delete(getClass().getName()+"."+"del", idArray);
+	}
+	
+	public void upd(TbDemo po)
+	{
+		this.sqlSession.update(getClass().getName()+"."+"upd", po);
+	}
 
 	public TbDemoGetOneResultPO getOne(TbDemoGetOneParamPO paramPO) 
 	{
