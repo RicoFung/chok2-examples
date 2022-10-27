@@ -10,10 +10,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.Application;
 import com.api.v2.entity.TbDemo;
 import com.api.v2.tbdemo.service.TbDemoService;
-import com.api.v3.dao.tbdemo.po.TbDemoGetListParamPO;
-import com.api.v3.dao.tbdemo.po.TbDemoGetListResultPO;
-import com.api.v3.dao.tbdemo.po.TbDemoGetOneParamPO;
-import com.api.v3.dao.tbdemo.po.TbDemoGetOneResultPO;
+import com.api.v3.dao.tbdemo.po.param.TbDemoGetListParamPO;
+import com.api.v3.dao.tbdemo.po.param.TbDemoGetOneParamPO;
+import com.api.v3.dao.tbdemo.po.result.TbDemoGetListResultPO;
+import com.api.v3.dao.tbdemo.po.result.TbDemoGetOneResultPO;
 
 
 @RunWith(SpringRunner.class)

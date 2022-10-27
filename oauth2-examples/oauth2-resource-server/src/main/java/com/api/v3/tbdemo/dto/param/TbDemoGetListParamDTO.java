@@ -1,4 +1,4 @@
-package com.api.v3.tbdemo.dto;
+package com.api.v3.tbdemo.dto.param;
 
 import java.io.Serializable;
 import java.util.List;
@@ -38,9 +38,6 @@ public class TbDemoGetListParamDTO implements Serializable
 	{
 		private static final long serialVersionUID = 1L;
 		
-		// tcRowid       db_column: TC_ROWID 
-		@Schema(title = "tcRowid", example = "")//, position = 4)
-		private java.lang.Long tcRowid;
 		// tcCode       db_column: TC_CODE 
 		@Schema(title = "tcCode", example = "")//, position = 5)
 		private java.lang.String tcCode;
@@ -50,15 +47,6 @@ public class TbDemoGetListParamDTO implements Serializable
 		
 		private String[] tcRowidArray;
 		
-		public void setTcRowid(java.lang.Long value) 
-		{
-			this.tcRowid = value;
-		}
-		
-		public java.lang.Long getTcRowid() 
-		{
-			return this.tcRowid;
-		}
 		public void setTcCode(java.lang.String value) 
 		{
 			this.tcCode = value;

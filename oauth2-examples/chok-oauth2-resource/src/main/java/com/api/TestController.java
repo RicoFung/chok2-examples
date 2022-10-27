@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import chok.common.RestConstants;
 import chok.common.RestResult;
-import chok.devwork.springboot.BaseRestController;
+import chok.devwork.BaseRestController;
 
 @RestController
 @RequestMapping("/test")

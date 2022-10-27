@@ -6,19 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.api.v3.dao.tbdemo.TbDemoDao;
-import com.api.v3.dao.tbdemo.po.TbDemoGetListParamPO;
-import com.api.v3.dao.tbdemo.po.TbDemoGetListResultPO;
-import com.api.v3.dao.tbdemo.po.TbDemoGetOneParamPO;
-import com.api.v3.dao.tbdemo.po.TbDemoGetOneResultPO;
+import com.api.v3.dao.tbdemo.po.param.TbDemoGetListParamPO;
+import com.api.v3.dao.tbdemo.po.param.TbDemoGetOneParamPO;
+import com.api.v3.dao.tbdemo.po.result.TbDemoGetListResultPO;
+import com.api.v3.dao.tbdemo.po.result.TbDemoGetOneResultPO;
 import com.api.v3.entity.TbDemo;
-import com.api.v3.tbdemo.dto.ParamMapper;
-import com.api.v3.tbdemo.dto.TbDemoAddParamDTO;
-import com.api.v3.tbdemo.dto.TbDemoDelParamDTO;
-import com.api.v3.tbdemo.dto.TbDemoGetListParamDTO;
-import com.api.v3.tbdemo.dto.TbDemoGetOneParamDTO;
-import com.api.v3.tbdemo.dto.TbDemoUpdParamDTO;
+import com.api.v3.tbdemo.dto.param.ParamMapper;
+import com.api.v3.tbdemo.dto.param.TbDemoAddParamDTO;
+import com.api.v3.tbdemo.dto.param.TbDemoDelParamDTO;
+import com.api.v3.tbdemo.dto.param.TbDemoGetListParamDTO;
+import com.api.v3.tbdemo.dto.param.TbDemoGetOneParamDTO;
+import com.api.v3.tbdemo.dto.param.TbDemoUpdParamDTO;
+import com.api.v3.tbdemo.dto.result.EpoResultDTO;
 
-import chok.devwork.springboot.pojo.ChokResultDTO;
+import chok.devwork.pojo.ChokResultDTO;
 
 @Service
 public class TbDemoService
@@ -63,6 +64,15 @@ public class TbDemoService
 		TbDemoGetListParamPO paramPO = ParamMapper.INSTANCE.dtoToPo(paramDTO);
 		List<TbDemoGetListResultPO> result = dao.getList(paramPO);
 		ChokResultDTO<List<TbDemoGetListResultPO>> resultDTO = new ChokResultDTO<List<TbDemoGetListResultPO>>();
+		resultDTO.setData(result);
+		return resultDTO;
+	}
+	
+	public EpoResultDTO<List<TbDemoGetListResultPO>> getEpoList(TbDemoGetListParamDTO paramDTO) 
+	{
+		TbDemoGetListParamPO paramPO = ParamMapper.INSTANCE.dtoToPo(paramDTO);
+		List<TbDemoGetListResultPO> result = dao.getList(paramPO);
+		EpoResultDTO<List<TbDemoGetListResultPO>> resultDTO = new EpoResultDTO<List<TbDemoGetListResultPO>>();
 		resultDTO.setData(result);
 		return resultDTO;
 	}

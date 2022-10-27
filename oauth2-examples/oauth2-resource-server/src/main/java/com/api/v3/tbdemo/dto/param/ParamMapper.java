@@ -1,10 +1,10 @@
-package com.api.v3.tbdemo.dto;
+package com.api.v3.tbdemo.dto.param;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-import com.api.v3.dao.tbdemo.po.TbDemoGetListParamPO;
-import com.api.v3.dao.tbdemo.po.TbDemoGetOneParamPO;
+import com.api.v3.dao.tbdemo.po.param.TbDemoGetListParamPO;
+import com.api.v3.dao.tbdemo.po.param.TbDemoGetOneParamPO;
 import com.api.v3.entity.TbDemo;
 import org.mapstruct.Mapping;
 

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.api.procdemo.entity.ProcDemo;
 
-import chok.devwork.springboot.BaseDao;
+import chok.devwork.BaseDao;
 
 @Repository
 public class ProcDemoDao extends BaseDao<ProcDemo,Long>

@@ -3,8 +3,10 @@ package com.api.v2.dao;
 import javax.annotation.Resource;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
-import chok.devwork.springboot.BaseDao;
+
 import com.api.v2.entity.TbDemo;
+
+import chok.devwork.BaseDao;
 
 @Repository(value = "v2TbDemoDao")
 public class TbDemoDao extends BaseDao<TbDemo,Long>

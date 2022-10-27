@@ -1,4 +1,4 @@
-package com.api.v3.dao.tbdemo.po;
+package com.api.v3.dao.tbdemo.po.param;
 
 import java.io.Serializable;
 import java.util.List;

@@ -23,7 +23,7 @@ import com.api.v1.tbdemo.service.TbDemoService;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import chok.common.RestResult;
-import chok.devwork.springboot.BaseRestController;
+import chok.devwork.BaseRestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 

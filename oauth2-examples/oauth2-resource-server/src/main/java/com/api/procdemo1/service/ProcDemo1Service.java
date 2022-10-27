@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import com.api.procdemo1.dao.ProcDemo1Dao;
 import com.api.procdemo1.entity.ProcDemo1;
 
-import chok.devwork.springboot.BaseDao;
-import chok.devwork.springboot.BaseService;
+import chok.devwork.BaseDao;
+import chok.devwork.BaseService;
 
 @Service
 public class ProcDemo1Service extends BaseService<ProcDemo1,Long>
