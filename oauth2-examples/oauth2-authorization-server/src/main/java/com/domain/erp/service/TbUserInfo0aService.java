@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import com.domain.erp.dao.TbUserInfo0aDao;
 import com.domain.erp.entity.TbUserInfo0a;
 
-import chok.devwork.springboot.BaseDao;
-import chok.devwork.springboot.BaseService;
+import chok.devwork.BaseDao;
+import chok.devwork.BaseService;
 
 @Service("tbUserInfo0aService")
 public class TbUserInfo0aService extends BaseService<TbUserInfo0a,Long> implements UserDetailsService

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.domain.erp.entity.TbUserInfo0a;
 
-import chok.devwork.springboot.BaseDao;
+import chok.devwork.BaseDao;
 
 @Repository
 public class TbUserInfo0aDao extends BaseDao<TbUserInfo0a,Long>

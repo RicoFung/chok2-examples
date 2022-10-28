@@ -23,7 +23,7 @@ import com.api.v3.tbdemo.dto.param.TbDemoUpdParamDTO;
 import com.api.v3.tbdemo.dto.result.EpoResultDTO;
 import com.api.v3.tbdemo.service.TbDemoService;
 
-import chok.devwork.controller.Handler;
+import chok.devwork.handler.CHandler;
 import chok.devwork.pojo.ChokResultDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,6 +33,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/api/v3/tbdemo")
 public class TbDemoController
 {
+
 	// ---------------------------------------------------------------------------------------
 	// //
 	// value: 指定请求的实际地址， 比如 /action/info之类
@@ -55,8 +56,9 @@ public class TbDemoController
 	public ChokResultDTO<Object> add(@RequestBody @Validated TbDemoAddParamDTO paramDTO, BindingResult validResult)
 	{
 		ChokResultDTO<Object> resultDTO = new ChokResultDTO<Object>();
-		return new Handler<Object, ChokResultDTO<Object>>().execute(paramDTO, resultDTO, validResult,
-				new Handler.Callback<Object, ChokResultDTO<Object>>()
+		return new CHandler<Object, ChokResultDTO<Object>>().execute(
+				paramDTO, validResult, resultDTO, 
+				new CHandler.Callback<Object, ChokResultDTO<Object>>()
 				{
 
 					@Override
@@ -74,8 +76,9 @@ public class TbDemoController
 	public ChokResultDTO<Object> del(@RequestBody @Validated TbDemoDelParamDTO paramDTO, BindingResult validResult)
 	{
 		ChokResultDTO<Object> resultDTO = new ChokResultDTO<Object>();
-		return new Handler<Object, ChokResultDTO<Object>>().execute(paramDTO, resultDTO, validResult,
-				new Handler.Callback<Object, ChokResultDTO<Object>>()
+		return new CHandler<Object, ChokResultDTO<Object>>().execute(
+				paramDTO, validResult, resultDTO, 
+				new CHandler.Callback<Object, ChokResultDTO<Object>>()
 				{
 
 					@Override
@@ -93,8 +96,9 @@ public class TbDemoController
 	public ChokResultDTO<Object> upd(@RequestBody @Validated TbDemoUpdParamDTO paramDTO, BindingResult validResult)
 	{
 		ChokResultDTO<Object> resultDTO = new ChokResultDTO<Object>();
-		return new Handler<Object, ChokResultDTO<Object>>().execute(paramDTO, resultDTO, validResult,
-				new Handler.Callback<Object, ChokResultDTO<Object>>()
+		return new CHandler<Object, ChokResultDTO<Object>>().execute(
+				paramDTO, validResult, resultDTO, 
+				new CHandler.Callback<Object, ChokResultDTO<Object>>()
 				{
 
 					@Override
@@ -109,17 +113,16 @@ public class TbDemoController
 
 	@Operation(summary = "明细")
 	@RequestMapping(value = "/getOne", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	public ChokResultDTO<TbDemoGetOneResultPO> getOne(@RequestBody @Validated TbDemoGetOneParamDTO paramDTO,
-			BindingResult validResult)
+	public ChokResultDTO<TbDemoGetOneResultPO> getOne(@RequestBody @Validated TbDemoGetOneParamDTO paramDTO, BindingResult validResult)
 	{
 		ChokResultDTO<TbDemoGetOneResultPO> resultDTO = new ChokResultDTO<TbDemoGetOneResultPO>();
-		return new Handler<TbDemoGetOneResultPO, ChokResultDTO<TbDemoGetOneResultPO>>().execute(paramDTO, resultDTO,
-				validResult, new Handler.Callback<TbDemoGetOneResultPO, ChokResultDTO<TbDemoGetOneResultPO>>()
+		return new CHandler<TbDemoGetOneResultPO, ChokResultDTO<TbDemoGetOneResultPO>>().execute(
+				paramDTO, validResult, resultDTO, 
+				new CHandler.Callback<TbDemoGetOneResultPO, ChokResultDTO<TbDemoGetOneResultPO>>()
 				{
 
 					@Override
-					protected ChokResultDTO<TbDemoGetOneResultPO> process(ChokResultDTO<TbDemoGetOneResultPO> resultDTO,
-							Authentication authentication, Long tcTime) throws Exception
+					protected ChokResultDTO<TbDemoGetOneResultPO> process(ChokResultDTO<TbDemoGetOneResultPO> resultDTO, Authentication authentication, Long tcTime) throws Exception
 					{
 						return service.getOne(paramDTO);
 					}
@@ -129,19 +132,17 @@ public class TbDemoController
 
 	@Operation(summary = "列表")
 	@RequestMapping(value = "/getList", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	public ChokResultDTO<List<TbDemoGetListResultPO>> getList(@RequestBody @Validated TbDemoGetListParamDTO paramDTO,
-			BindingResult validResult)
+	public ChokResultDTO<List<TbDemoGetListResultPO>> getList(@RequestBody @Validated TbDemoGetListParamDTO paramDTO, BindingResult validResult)
 	{
 		ChokResultDTO<List<TbDemoGetListResultPO>> resultDTO = new ChokResultDTO<List<TbDemoGetListResultPO>>();
-		return new Handler<List<TbDemoGetListResultPO>, ChokResultDTO<List<TbDemoGetListResultPO>>>().execute(paramDTO,
-				resultDTO, validResult,
-				new Handler.Callback<List<TbDemoGetListResultPO>, ChokResultDTO<List<TbDemoGetListResultPO>>>()
+		return new CHandler<List<TbDemoGetListResultPO>, ChokResultDTO<List<TbDemoGetListResultPO>>>().execute(
+				paramDTO, validResult, resultDTO, 
+				new CHandler.Callback<List<TbDemoGetListResultPO>, ChokResultDTO<List<TbDemoGetListResultPO>>>()
 				{
 
 					@Override
 					protected ChokResultDTO<List<TbDemoGetListResultPO>> process(
-							ChokResultDTO<List<TbDemoGetListResultPO>> resultDTO, Authentication authentication,
-							Long tcTime) throws Exception
+							ChokResultDTO<List<TbDemoGetListResultPO>> resultDTO, Authentication authentication, Long tcTime) throws Exception
 					{
 						return service.getList(paramDTO);
 					}
@@ -151,23 +152,21 @@ public class TbDemoController
 
 	@Operation(summary = "列表")
 	@RequestMapping(value = "/getEpoList", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	public EpoResultDTO<List<TbDemoGetListResultPO>> getEpoList(@RequestBody @Validated TbDemoGetListParamDTO paramDTO,
-			BindingResult validResult)
+	public EpoResultDTO<List<TbDemoGetListResultPO>> getEpoList(@RequestBody @Validated TbDemoGetListParamDTO paramDTO, BindingResult validResult)
 	{
 		EpoResultDTO<List<TbDemoGetListResultPO>> resultDTO = new EpoResultDTO<List<TbDemoGetListResultPO>>();
-		return new Handler<List<TbDemoGetListResultPO>, EpoResultDTO<List<TbDemoGetListResultPO>>>().execute(paramDTO,
-				resultDTO, validResult,
-				new Handler.Callback<List<TbDemoGetListResultPO>, EpoResultDTO<List<TbDemoGetListResultPO>>>()
+		return new CHandler<List<TbDemoGetListResultPO>, EpoResultDTO<List<TbDemoGetListResultPO>>>().execute(
+				paramDTO, validResult, resultDTO, 
+				new CHandler.Callback<List<TbDemoGetListResultPO>, EpoResultDTO<List<TbDemoGetListResultPO>>>()
 				{
-
+					
 					@Override
 					protected EpoResultDTO<List<TbDemoGetListResultPO>> process(
-							EpoResultDTO<List<TbDemoGetListResultPO>> resultDTO, Authentication authentication,
-							Long tcTime) throws Exception
+							EpoResultDTO<List<TbDemoGetListResultPO>> resultDTO, Authentication authentication, Long tcTime) throws Exception
 					{
 						return service.getEpoList(paramDTO);
 					}
-
+					
 				});
 	}
 
