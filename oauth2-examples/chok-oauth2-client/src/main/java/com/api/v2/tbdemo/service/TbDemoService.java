@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import com.api.v2.dao.TbDemoDao;
 import com.api.v2.entity.TbDemo;
 
-import chok.devwork.springboot.BaseDao;
-import chok.devwork.springboot.BaseService;
+import chok.devwork.BaseDao;
+import chok.devwork.BaseService;
 import chok.lock.redisson.RedissonLock;
 import chok.lock.redisson.RedissonLockType;
 
