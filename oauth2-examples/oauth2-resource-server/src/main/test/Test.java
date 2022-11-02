@@ -10,10 +10,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.Application;
 import com.api.v2.entity.TbDemo;
 import com.api.v2.tbdemo.service.TbDemoService;
-import com.api.v3.dao.tbdemo.po.param.TbDemoGetListParamPO;
-import com.api.v3.dao.tbdemo.po.param.TbDemoGetOneParamPO;
-import com.api.v3.dao.tbdemo.po.result.TbDemoGetListResultPO;
-import com.api.v3.dao.tbdemo.po.result.TbDemoGetOneResultPO;
+import com.api.v3.repository.tbdemo.dao.param.TbDemoGetListParam;
+import com.api.v3.repository.tbdemo.dao.param.TbDemoGetOneParam;
+import com.api.v3.repository.tbdemo.dao.po.TbDemoGetListPO;
+import com.api.v3.repository.tbdemo.dao.po.TbDemoGetOnePO;
 
 
 @RunWith(SpringRunner.class)
@@ -25,9 +25,9 @@ public class Test
 	@Autowired
 	TbDemoService service;
 	@Autowired
-	com.api.v3.dao.tbdemo.TbDemoDao v3Dao;
+	com.api.v3.repository.tbdemo.dao.TbDemoDao v3Dao;
 	@Autowired
-	com.api.v3.tbdemo.service.TbDemoService v3Service;
+	com.api.v3.module.tbdemo.service.TbDemoService v3Service;
 	
 //	@org.junit.Test
 	public void testTransaction()
@@ -48,9 +48,9 @@ public class Test
 //	@org.junit.Test
 	public void testDaoGetOne()
 	{
-		TbDemoGetOneParamPO paramPO = new TbDemoGetOneParamPO();
+		TbDemoGetOneParam paramPO = new TbDemoGetOneParam();
 		paramPO.setTcRowid(91402l);
-		TbDemoGetOneResultPO resultPO = v3Dao.getOne(paramPO);
+		TbDemoGetOnePO resultPO = v3Dao.getOne(paramPO);
 		logger.info("[resultPO <= {}]", resultPO.toString());
 	}
 	
