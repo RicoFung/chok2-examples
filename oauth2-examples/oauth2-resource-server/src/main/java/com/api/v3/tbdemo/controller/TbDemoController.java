@@ -20,7 +20,6 @@ import com.api.v3.tbdemo.dto.param.TbDemoDelParamDTO;
 import com.api.v3.tbdemo.dto.param.TbDemoGetListParamDTO;
 import com.api.v3.tbdemo.dto.param.TbDemoGetOneParamDTO;
 import com.api.v3.tbdemo.dto.param.TbDemoUpdParamDTO;
-import com.api.v3.tbdemo.dto.result.EpoResultDTO;
 import com.api.v3.tbdemo.service.TbDemoService;
 
 import chok.devwork.handler.CHandler;
@@ -147,26 +146,6 @@ public class TbDemoController
 						return service.getList(paramDTO);
 					}
 
-				});
-	}
-
-	@Operation(summary = "列表")
-	@RequestMapping(value = "/getEpoList", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	public EpoResultDTO<List<TbDemoGetListResultPO>> getEpoList(@RequestBody @Validated TbDemoGetListParamDTO paramDTO, BindingResult validResult)
-	{
-		EpoResultDTO<List<TbDemoGetListResultPO>> resultDTO = new EpoResultDTO<List<TbDemoGetListResultPO>>();
-		return new CHandler<List<TbDemoGetListResultPO>, EpoResultDTO<List<TbDemoGetListResultPO>>>().execute(
-				paramDTO, validResult, resultDTO, 
-				new CHandler.Callback<List<TbDemoGetListResultPO>, EpoResultDTO<List<TbDemoGetListResultPO>>>()
-				{
-					
-					@Override
-					protected EpoResultDTO<List<TbDemoGetListResultPO>> process(
-							EpoResultDTO<List<TbDemoGetListResultPO>> resultDTO, Authentication authentication, Long tcTime) throws Exception
-					{
-						return service.getEpoList(paramDTO);
-					}
-					
 				});
 	}
 

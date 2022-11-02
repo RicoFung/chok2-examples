@@ -17,7 +17,7 @@ import com.api.v3.tbdemo.dto.param.TbDemoDelParamDTO;
 import com.api.v3.tbdemo.dto.param.TbDemoGetListParamDTO;
 import com.api.v3.tbdemo.dto.param.TbDemoGetOneParamDTO;
 import com.api.v3.tbdemo.dto.param.TbDemoUpdParamDTO;
-import com.api.v3.tbdemo.dto.result.EpoResultDTO;
+import com.api.v3.tbdemo.dto.result.CustomResultDTO;
 
 import chok.devwork.pojo.ChokResultDTO;
 
@@ -68,11 +68,11 @@ public class TbDemoService
 		return resultDTO;
 	}
 	
-	public EpoResultDTO<List<TbDemoGetListResultPO>> getEpoList(TbDemoGetListParamDTO paramDTO) 
+	public CustomResultDTO<List<TbDemoGetListResultPO>> getEpoList(TbDemoGetListParamDTO paramDTO) 
 	{
 		TbDemoGetListParamPO paramPO = ParamMapper.INSTANCE.dtoToPo(paramDTO);
 		List<TbDemoGetListResultPO> result = dao.getList(paramPO);
-		EpoResultDTO<List<TbDemoGetListResultPO>> resultDTO = new EpoResultDTO<List<TbDemoGetListResultPO>>();
+		CustomResultDTO<List<TbDemoGetListResultPO>> resultDTO = new CustomResultDTO<List<TbDemoGetListResultPO>>();
 		resultDTO.setData(result);
 		return resultDTO;
 	}
