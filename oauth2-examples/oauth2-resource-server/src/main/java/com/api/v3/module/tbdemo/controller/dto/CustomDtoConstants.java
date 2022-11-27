@@ -1,6 +1,6 @@
 package com.api.v3.module.tbdemo.controller.dto;
 
-public class CustomResultConstants
+public class CustomDtoConstants
 {
 	public final static String SUCCESS_CODE = "10000";
 	public final static String ERROR_CODE = "10020";

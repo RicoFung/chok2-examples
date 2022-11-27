@@ -7,14 +7,14 @@ import org.springframework.util.ObjectUtils;
 import chok.util.TimeUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public class CustomResultDTOEsbInfo implements Serializable
+public class CustomDtoEsbInfo implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
 	@Schema(title ="返回状态", required = true)
-	private String	returnStatus	= CustomResultConstants.SUCCESS_STATUS;
+	private String	returnStatus	= CustomDtoConstants.SUCCESS_STATUS;
 	@Schema(title ="返回code", required = true)
-	private String	returnCode		= CustomResultConstants.SUCCESS_CODE;
+	private String	returnCode		= CustomDtoConstants.SUCCESS_CODE;
 	@Schema(title ="响应Message")
 	private String	returnMsg		= "";
 	@Schema(title ="请求时间")
@@ -172,8 +172,8 @@ public class CustomResultDTOEsbInfo implements Serializable
 	{
 		this.setInstld(instld);
 		this.setReturnMsg("");
-		this.setReturnCode(CustomResultConstants.SUCCESS_CODE);
-		this.setReturnStatus(CustomResultConstants.SUCCESS_STATUS);
+		this.setReturnCode(CustomDtoConstants.SUCCESS_CODE);
+		this.setReturnStatus(CustomDtoConstants.SUCCESS_STATUS);
 		this.setRequestTime(requestTime);
 		this.setResponseTime("");
 	}
@@ -182,8 +182,8 @@ public class CustomResultDTOEsbInfo implements Serializable
 	{
 		this.setInstld(instld);
 		this.setReturnMsg(msg);
-		this.setReturnCode(CustomResultConstants.SUCCESS_CODE);
-		this.setReturnStatus(CustomResultConstants.SUCCESS_STATUS);
+		this.setReturnCode(CustomDtoConstants.SUCCESS_CODE);
+		this.setReturnStatus(CustomDtoConstants.SUCCESS_STATUS);
 		this.setResponseTime(TimeUtil.getCurrentMillTime());
 	}
 	
@@ -191,8 +191,8 @@ public class CustomResultDTOEsbInfo implements Serializable
 	{
 		this.setInstld(instld);
 		this.setReturnMsg(msg);
-		this.setReturnCode(CustomResultConstants.ERROR_CODE);
-		this.setReturnStatus(CustomResultConstants.ERROR_STATUS);
+		this.setReturnCode(CustomDtoConstants.ERROR_CODE);
+		this.setReturnStatus(CustomDtoConstants.ERROR_STATUS);
 		this.setResponseTime(TimeUtil.getCurrentMillTime());
 	}
 	

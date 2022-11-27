@@ -121,7 +121,7 @@
 	</sql>	
 	
 	<!-- getOne -->
-	<resultMap type="com.api.v3.repository.tbdemo.dao.po.TbDemoGetOnePO" id="getOneResult" >
+	<resultMap type="com.api.v3.repository.tbdemo.dao.po.TbDemoGetOnePo" id="getOneResult" >
         <result property="tcRowid" column="TC_ROWID"/>
         <result property="tcCode" column="TC_CODE"/>
         <result property="tcName" column="TC_NAME"/>
@@ -133,7 +133,7 @@
 	</select>
 	
 	<!-- getList -->
-	<resultMap type="com.api.v3.repository.tbdemo.dao.po.TbDemoGetListPO" id="getListResult" extends="getOneResult">
+	<resultMap type="com.api.v3.repository.tbdemo.dao.po.TbDemoGetListPo" id="getListResult" extends="getOneResult">
 	</resultMap>
 	<select id="getList" parameterType="com.api.v3.repository.tbdemo.dao.param.TbDemoGetListParam" resultType="list" resultMap="getListResult">
 		<choose>

@@ -7,7 +7,7 @@ import java.util.Map;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "TbDemoGetListParamDTO 列表入参")
-public class TbDemoGetListRO implements Serializable
+public class TbDemoGetListRo implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 

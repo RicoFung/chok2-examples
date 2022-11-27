@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "TbDemoAddParamDTO 新增入参")
-public class TbDemoAddRO implements Serializable
+public class TbDemoAddRo implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 

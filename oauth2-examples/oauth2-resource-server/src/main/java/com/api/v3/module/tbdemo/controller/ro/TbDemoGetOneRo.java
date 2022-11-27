@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "TbDemoGetOneParamDTO 详情入参")
-public class TbDemoGetOneRO implements Serializable
+public class TbDemoGetOneRo implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	

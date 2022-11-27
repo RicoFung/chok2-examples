@@ -15,12 +15,12 @@ public interface RoMapper
 	RoMapper INSTANCE = Mappers.getMapper( RoMapper.class );
 	
 	@Mapping(target = "tcRowid", ignore = true)
-	TbDemo roToEntity(TbDemoAddRO ro);
+	TbDemo roToEntity(TbDemoAddRo ro);
 	
-	TbDemo roToEntity(TbDemoUpdRO ro);
+	TbDemo roToEntity(TbDemoUpdRo ro);
 	
-	TbDemoGetOneParam roToParam(TbDemoGetOneRO ro);
+	TbDemoGetOneParam roToParam(TbDemoGetOneRo ro);
 	
 	@Mapping(target = "dynamicWhere.tcRowid", ignore = true)
-	TbDemoGetListParam roToParam(TbDemoGetListRO ro);
+	TbDemoGetListParam roToParam(TbDemoGetListRo ro);
 }

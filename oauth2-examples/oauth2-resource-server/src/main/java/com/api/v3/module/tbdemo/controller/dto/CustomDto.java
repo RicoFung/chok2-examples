@@ -3,23 +3,23 @@ package com.api.v3.module.tbdemo.controller.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import chok.common.RestConstants;
-import chok.devwork.pojo.ChokResultBase;
+import chok.devwork.pojo.ChokDtoBase;
 
 // 按具体业务隐藏字段
 @JsonIgnoreProperties(value = {"success", "code", "msg", "path", "timestamp", "data"})
-public class CustomResultDTO<T> extends ChokResultBase<T>
+public class CustomDto<T> extends ChokDtoBase<T>
 {
 	private static final long serialVersionUID = 1L;
 
-	private CustomResultDTOEsbInfo	esbInfo	= new CustomResultDTOEsbInfo();
+	private CustomDtoEsbInfo	esbInfo	= new CustomDtoEsbInfo();
 	private T					resultInfo;
 
-	public CustomResultDTOEsbInfo getEsbInfo()
+	public CustomDtoEsbInfo getEsbInfo()
 	{
 		return esbInfo;
 	}
 
-	public void setEsbInfo(CustomResultDTOEsbInfo esbInfo)
+	public void setEsbInfo(CustomDtoEsbInfo esbInfo)
 	{
 		this.esbInfo = esbInfo;
 	}
@@ -40,11 +40,11 @@ public class CustomResultDTO<T> extends ChokResultBase<T>
 		super.setSuccess(success);
 		if (success == true)
 		{
-			this.esbInfo.setReturnStatus(CustomResultConstants.SUCCESS_STATUS);
+			this.esbInfo.setReturnStatus(CustomDtoConstants.SUCCESS_STATUS);
 		}
 		else
 		{
-			this.esbInfo.setReturnStatus(CustomResultConstants.ERROR_STATUS);
+			this.esbInfo.setReturnStatus(CustomDtoConstants.ERROR_STATUS);
 		}
 	}
 
@@ -54,11 +54,11 @@ public class CustomResultDTO<T> extends ChokResultBase<T>
 		super.setCode(code);
 		if (code.equals(RestConstants.SUCCESS_CODE))
 		{
-			this.esbInfo.setReturnCode(CustomResultConstants.SUCCESS_CODE);
+			this.esbInfo.setReturnCode(CustomDtoConstants.SUCCESS_CODE);
 		}
 		else
 		{
-			this.esbInfo.setReturnCode(CustomResultConstants.ERROR_CODE);
+			this.esbInfo.setReturnCode(CustomDtoConstants.ERROR_CODE);
 		}
 	}
 

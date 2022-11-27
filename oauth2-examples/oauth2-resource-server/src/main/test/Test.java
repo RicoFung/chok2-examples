@@ -12,8 +12,8 @@ import com.api.v2.entity.TbDemo;
 import com.api.v2.tbdemo.service.TbDemoService;
 import com.api.v3.repository.tbdemo.dao.param.TbDemoGetListParam;
 import com.api.v3.repository.tbdemo.dao.param.TbDemoGetOneParam;
-import com.api.v3.repository.tbdemo.dao.po.TbDemoGetListPO;
-import com.api.v3.repository.tbdemo.dao.po.TbDemoGetOnePO;
+import com.api.v3.repository.tbdemo.dao.po.TbDemoGetListPo;
+import com.api.v3.repository.tbdemo.dao.po.TbDemoGetOnePo;
 
 
 @RunWith(SpringRunner.class)
@@ -50,7 +50,7 @@ public class Test
 	{
 		TbDemoGetOneParam paramPO = new TbDemoGetOneParam();
 		paramPO.setTcRowid(91402l);
-		TbDemoGetOnePO resultPO = v3Dao.getOne(paramPO);
+		TbDemoGetOnePo resultPO = v3Dao.getOne(paramPO);
 		logger.info("[resultPO <= {}]", resultPO.toString());
 	}
 	

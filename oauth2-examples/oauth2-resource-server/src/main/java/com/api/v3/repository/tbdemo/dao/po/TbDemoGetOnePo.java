@@ -2,7 +2,7 @@ package com.api.v3.repository.tbdemo.dao.po;
 
 import com.api.v3.repository.tbdemo.entity.TbDemo;
 
-public class TbDemoGetOnePO extends TbDemo
+public class TbDemoGetOnePo extends TbDemo
 {
 
 	/**

@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.api.v3.module.tbdemo.controller.dto.CustomResultDTO;
-import com.api.v3.module.tbdemo.controller.ro.TbDemoGetListRO;
+import com.api.v3.module.tbdemo.controller.dto.CustomDto;
+import com.api.v3.module.tbdemo.controller.ro.TbDemoGetListRo;
 import com.api.v3.module.tbdemo.service.CustomTbDemoService;
-import com.api.v3.repository.tbdemo.dao.po.TbDemoGetListPO;
+import com.api.v3.repository.tbdemo.dao.po.TbDemoGetListPo;
 
 import chok.devwork.handler.CHandler;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,18 +47,18 @@ public class CustomTbDemoController
 
 	@Operation(summary = "列表")
 	@RequestMapping(value = "/getList", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	public CustomResultDTO<List<TbDemoGetListPO>> getEpoList(@RequestBody @Validated TbDemoGetListRO ro, BindingResult br)
+	public CustomDto<List<TbDemoGetListPo>> getEpoList(@RequestBody @Validated TbDemoGetListRo ro, BindingResult br)
 	{
-		CustomResultDTO<List<TbDemoGetListPO>> dto = new CustomResultDTO<List<TbDemoGetListPO>>();
-		CHandler.Callback<List<TbDemoGetListPO>, CustomResultDTO<List<TbDemoGetListPO>>> callback = new CHandler.Callback<List<TbDemoGetListPO>, CustomResultDTO<List<TbDemoGetListPO>>>()
+		CustomDto<List<TbDemoGetListPo>> dto = new CustomDto<List<TbDemoGetListPo>>();
+		CHandler.Callback<List<TbDemoGetListPo>, CustomDto<List<TbDemoGetListPo>>> callback = new CHandler.Callback<List<TbDemoGetListPo>, CustomDto<List<TbDemoGetListPo>>>()
 		{
 			@Override
-			protected CustomResultDTO<List<TbDemoGetListPO>> process(CustomResultDTO<List<TbDemoGetListPO>> dto, Authentication auth, Long time) throws Exception
+			protected CustomDto<List<TbDemoGetListPo>> process(CustomDto<List<TbDemoGetListPo>> dto, Authentication auth, Long time) throws Exception
 			{
 				return service.getList(ro);
 			}
 		};
-		return new CHandler<List<TbDemoGetListPO>, CustomResultDTO<List<TbDemoGetListPO>>>().execute(ro, br, dto, callback);
+		return new CHandler<List<TbDemoGetListPo>, CustomDto<List<TbDemoGetListPo>>>().execute(ro, br, dto, callback);
 	}
 
 }
