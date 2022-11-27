@@ -52,101 +52,81 @@ public class TbDemoController
 
 	@Operation(summary = "新增")
 	@RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	public ChokResultDTO<Object> add(@RequestBody @Validated TbDemoAddRO ro, BindingResult validResult)
+	public ChokResultDTO<Object> add(@RequestBody @Validated TbDemoAddRO ro, BindingResult br)
 	{
-		ChokResultDTO<Object> resultDTO = new ChokResultDTO<Object>();
-		return new CHandler<Object, ChokResultDTO<Object>>().execute(
-				ro, validResult, resultDTO, 
-				new CHandler.Callback<Object, ChokResultDTO<Object>>()
-				{
-
-					@Override
-					protected ChokResultDTO<Object> process(ChokResultDTO<Object> resultDTO,
-							Authentication authentication, Long tcTime) throws Exception
-					{
-						return service.add(ro);
-					}
-
-				});
+		ChokResultDTO<Object> dto = new ChokResultDTO<Object>();
+		CHandler.Callback<Object, ChokResultDTO<Object>> callback = new CHandler.Callback<Object, ChokResultDTO<Object>>()
+		{
+			@Override
+			protected ChokResultDTO<Object> process(ChokResultDTO<Object> dto, Authentication auth, Long time) throws Exception
+			{
+				return service.add(ro);
+			}
+		};
+		return new CHandler<Object, ChokResultDTO<Object>>().execute(ro, br, dto, callback);
 	}
 
 	@Operation(summary = "删除")
 	@RequestMapping(value = "/del", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	public ChokResultDTO<Object> del(@RequestBody @Validated TbDemoDelRO ro, BindingResult validResult)
+	public ChokResultDTO<Object> del(@RequestBody @Validated TbDemoDelRO ro, BindingResult br)
 	{
-		ChokResultDTO<Object> resultDTO = new ChokResultDTO<Object>();
-		return new CHandler<Object, ChokResultDTO<Object>>().execute(
-				ro, validResult, resultDTO, 
-				new CHandler.Callback<Object, ChokResultDTO<Object>>()
-				{
-
-					@Override
-					protected ChokResultDTO<Object> process(ChokResultDTO<Object> resultDTO,
-							Authentication authentication, Long tcTime) throws Exception
-					{
-						return service.del(ro);
-					}
-
-				});
+		ChokResultDTO<Object> dto = new ChokResultDTO<Object>();
+		CHandler.Callback<Object, ChokResultDTO<Object>> callback = new CHandler.Callback<Object, ChokResultDTO<Object>>()
+		{
+			@Override
+			protected ChokResultDTO<Object> process(ChokResultDTO<Object> dto, Authentication auth, Long time) throws Exception
+			{
+				return service.del(ro);
+			}
+		};
+		return new CHandler<Object, ChokResultDTO<Object>>().execute(ro, br, dto, callback);
 	}
 
 	@Operation(summary = "修改")
 	@RequestMapping(value = "/upd", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	public ChokResultDTO<Object> upd(@RequestBody @Validated TbDemoUpdRO ro, BindingResult validResult)
+	public ChokResultDTO<Object> upd(@RequestBody @Validated TbDemoUpdRO ro, BindingResult br)
 	{
-		ChokResultDTO<Object> resultDTO = new ChokResultDTO<Object>();
-		return new CHandler<Object, ChokResultDTO<Object>>().execute(
-				ro, validResult, resultDTO, 
-				new CHandler.Callback<Object, ChokResultDTO<Object>>()
-				{
-
-					@Override
-					protected ChokResultDTO<Object> process(ChokResultDTO<Object> resultDTO,
-							Authentication authentication, Long tcTime) throws Exception
-					{
-						return service.upd(ro);
-					}
-
-				});
+		ChokResultDTO<Object> dto = new ChokResultDTO<Object>();
+		CHandler.Callback<Object, ChokResultDTO<Object>> callback = new CHandler.Callback<Object, ChokResultDTO<Object>>()
+		{
+			@Override
+			protected ChokResultDTO<Object> process(ChokResultDTO<Object> dto, Authentication auth, Long time) throws Exception
+			{
+				return service.upd(ro);
+			}
+		};
+		return new CHandler<Object, ChokResultDTO<Object>>().execute(ro, br, dto, callback);
 	}
 
 	@Operation(summary = "明细")
 	@RequestMapping(value = "/getOne", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	public ChokResultDTO<TbDemoGetOnePO> getOne(@RequestBody @Validated TbDemoGetOneRO ro, BindingResult validResult)
+	public ChokResultDTO<TbDemoGetOnePO> getOne(@RequestBody @Validated TbDemoGetOneRO ro, BindingResult br)
 	{
-		ChokResultDTO<TbDemoGetOnePO> resultDTO = new ChokResultDTO<TbDemoGetOnePO>();
-		return new CHandler<TbDemoGetOnePO, ChokResultDTO<TbDemoGetOnePO>>().execute(
-				ro, validResult, resultDTO, 
-				new CHandler.Callback<TbDemoGetOnePO, ChokResultDTO<TbDemoGetOnePO>>()
-				{
-
-					@Override
-					protected ChokResultDTO<TbDemoGetOnePO> process(ChokResultDTO<TbDemoGetOnePO> resultDTO, Authentication authentication, Long tcTime) throws Exception
-					{
-						return service.getOne(ro);
-					}
-
-				});
+		ChokResultDTO<TbDemoGetOnePO> dto = new ChokResultDTO<TbDemoGetOnePO>();
+		CHandler.Callback<TbDemoGetOnePO, ChokResultDTO<TbDemoGetOnePO>> callback = new CHandler.Callback<TbDemoGetOnePO, ChokResultDTO<TbDemoGetOnePO>>()
+		{
+			@Override
+			protected ChokResultDTO<TbDemoGetOnePO> process(ChokResultDTO<TbDemoGetOnePO> dto, Authentication auth, Long time) throws Exception
+			{
+				return service.getOne(ro);
+			}
+		};
+		return new CHandler<TbDemoGetOnePO, ChokResultDTO<TbDemoGetOnePO>>().execute(ro, br, dto, callback);
 	}
 
 	@Operation(summary = "列表")
 	@RequestMapping(value = "/getList", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	public ChokResultDTO<List<TbDemoGetListPO>> getList(@RequestBody @Validated TbDemoGetListRO ro, BindingResult validResult)
+	public ChokResultDTO<List<TbDemoGetListPO>> getList(@RequestBody @Validated TbDemoGetListRO ro, BindingResult br)
 	{
-		ChokResultDTO<List<TbDemoGetListPO>> resultDTO = new ChokResultDTO<List<TbDemoGetListPO>>();
-		return new CHandler<List<TbDemoGetListPO>, ChokResultDTO<List<TbDemoGetListPO>>>().execute(
-				ro, validResult, resultDTO, 
-				new CHandler.Callback<List<TbDemoGetListPO>, ChokResultDTO<List<TbDemoGetListPO>>>()
-				{
-
-					@Override
-					protected ChokResultDTO<List<TbDemoGetListPO>> process(
-							ChokResultDTO<List<TbDemoGetListPO>> resultDTO, Authentication authentication, Long tcTime) throws Exception
-					{
-						return service.getList(ro);
-					}
-
-				});
+		ChokResultDTO<List<TbDemoGetListPO>> dto = new ChokResultDTO<List<TbDemoGetListPO>>();
+		CHandler.Callback<List<TbDemoGetListPO>, ChokResultDTO<List<TbDemoGetListPO>>> callback = new CHandler.Callback<List<TbDemoGetListPO>, ChokResultDTO<List<TbDemoGetListPO>>>()
+		{
+			@Override
+			protected ChokResultDTO<List<TbDemoGetListPO>> process(ChokResultDTO<List<TbDemoGetListPO>> dto, Authentication auth, Long time) throws Exception
+			{
+				return service.getList(ro);
+			}
+		};
+		return new CHandler<List<TbDemoGetListPO>, ChokResultDTO<List<TbDemoGetListPO>>>().execute(ro, br, dto, callback);
 	}
-
 }

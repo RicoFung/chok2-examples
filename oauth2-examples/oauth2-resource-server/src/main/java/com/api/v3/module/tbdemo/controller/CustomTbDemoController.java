@@ -47,22 +47,18 @@ public class CustomTbDemoController
 
 	@Operation(summary = "列表")
 	@RequestMapping(value = "/getList", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	public CustomResultDTO<List<TbDemoGetListPO>> getEpoList(@RequestBody @Validated TbDemoGetListRO ro, BindingResult validResult)
+	public CustomResultDTO<List<TbDemoGetListPO>> getEpoList(@RequestBody @Validated TbDemoGetListRO ro, BindingResult br)
 	{
-		CustomResultDTO<List<TbDemoGetListPO>> resultDTO = new CustomResultDTO<List<TbDemoGetListPO>>();
-		return new CHandler<List<TbDemoGetListPO>, CustomResultDTO<List<TbDemoGetListPO>>>().execute(
-				ro, validResult, resultDTO, 
-				new CHandler.Callback<List<TbDemoGetListPO>, CustomResultDTO<List<TbDemoGetListPO>>>()
-				{
-					
-					@Override
-					protected CustomResultDTO<List<TbDemoGetListPO>> process(
-							CustomResultDTO<List<TbDemoGetListPO>> resultDTO, Authentication authentication, Long tcTime) throws Exception
-					{
-						return service.getList(ro);
-					}
-					
-				});
+		CustomResultDTO<List<TbDemoGetListPO>> dto = new CustomResultDTO<List<TbDemoGetListPO>>();
+		CHandler.Callback<List<TbDemoGetListPO>, CustomResultDTO<List<TbDemoGetListPO>>> callback = new CHandler.Callback<List<TbDemoGetListPO>, CustomResultDTO<List<TbDemoGetListPO>>>()
+		{
+			@Override
+			protected CustomResultDTO<List<TbDemoGetListPO>> process(CustomResultDTO<List<TbDemoGetListPO>> dto, Authentication auth, Long time) throws Exception
+			{
+				return service.getList(ro);
+			}
+		};
+		return new CHandler<List<TbDemoGetListPO>, CustomResultDTO<List<TbDemoGetListPO>>>().execute(ro, br, dto, callback);
 	}
 
 }
