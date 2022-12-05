@@ -3,6 +3,10 @@ package com.api.v3.tbdemo.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import com.api.v3.tbdemo.dao.TbDemoReadDao;
@@ -19,6 +23,7 @@ import com.api.v3.tbdemo.pojo.result.TbDemoGetOneResult;
 
 import chok.devwork.pojo.ChokDto;
 
+@CacheConfig(cacheNames = {"Cache_TbDemo"})
 @Service
 public class TbDemoService
 {
@@ -26,7 +31,8 @@ public class TbDemoService
 	TbDemoWriteDao wDao;
 	@Autowired
 	TbDemoReadDao rDao;
-	
+
+	@Caching(evict = { @CacheEvict(allEntries = true) })
 	public ChokDto<Object> add(TbDemoAddParam param)
 	{
 		TbDemo entity = ParamMapper.INSTANCE.paramToEntity(param);
@@ -34,14 +40,16 @@ public class TbDemoService
 		ChokDto<Object> dto = new ChokDto<Object>();
 		return dto;
 	}
-	
+
+	@Caching(evict = { @CacheEvict(allEntries = true) })
 	public ChokDto<Object> del(TbDemoDelParam param)
 	{
 		wDao.del(param.getTcRowidArray());
 		ChokDto<Object> dto = new ChokDto<Object>();
 		return dto;
 	}
-	
+
+	@Caching(evict = { @CacheEvict(value = {"Cache_TbDemo", "Cache_CustomTbDemo"}, allEntries = true) })
 	public ChokDto<Object> upd(TbDemoUpdParam param)
 	{
 		TbDemo entity = ParamMapper.INSTANCE.paramToEntity(param);
@@ -49,7 +57,8 @@ public class TbDemoService
 		ChokDto<Object> dto = new ChokDto<Object>();
 		return dto;
 	}	
-	
+
+	@Cacheable(key = "#param")
 	public ChokDto<TbDemoGetOneResult> getOne(TbDemoGetOneParam param) 
 	{
 		TbDemoGetOneResult result = rDao.getOne(param);
@@ -57,7 +66,8 @@ public class TbDemoService
 		dto.setData(result);
 		return dto;
 	}
-	
+
+	@Cacheable(key = "#param")
 	public ChokDto<List<TbDemoGetListResult>> getList(TbDemoGetListParam param) 
 	{
 		List<TbDemoGetListResult> result = rDao.getList(param);

@@ -1,6 +1,7 @@
 package com.api.v3.customtbdemo.pojo.param;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -75,6 +76,13 @@ public class CustomTbDemoGetListParam implements Serializable
 		{
 			this.tcRowidArray = tcRowidArray;
 		}
+
+		@Override
+		public String toString()
+		{
+			return "DynamicWhere [tcCode=" + tcCode + ", tcName=" + tcName + ", tcRowidArray="
+					+ Arrays.toString(tcRowidArray) + "]";
+		}
 	}
 
 	public java.lang.String[] getDynamicColumns()
@@ -125,6 +133,13 @@ public class CustomTbDemoGetListParam implements Serializable
 	public void setPagesize(int pagesize)
 	{
 		this.pagesize = pagesize;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "CustomTbDemoGetListParam [dynamicColumns=" + Arrays.toString(dynamicColumns) + ", dynamicOrder="
+				+ dynamicOrder + ", dynamicWhere=" + dynamicWhere.toString() + ", page=" + page + ", pagesize=" + pagesize + "]";
 	}
 }
 

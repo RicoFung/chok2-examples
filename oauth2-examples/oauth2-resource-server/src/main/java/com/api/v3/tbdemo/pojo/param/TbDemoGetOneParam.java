@@ -1,6 +1,7 @@
 package com.api.v3.tbdemo.pojo.param;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import javax.validation.constraints.NotNull;
 
@@ -37,4 +38,11 @@ public class TbDemoGetOneParam implements Serializable
 	{
 		return this.tcRowid;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "TbDemoGetOneParam [dynamicColumns=" + Arrays.toString(dynamicColumns) + ", tcRowid=" + tcRowid + "]";
+	}
+	
 }

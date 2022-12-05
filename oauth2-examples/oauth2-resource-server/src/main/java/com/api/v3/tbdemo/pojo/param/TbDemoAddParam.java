@@ -41,5 +41,11 @@ public class TbDemoAddParam implements Serializable
 	{
 		return this.tcName;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "TbDemoAddParam [tcCode=" + tcCode + ", tcName=" + tcName + "]";
+	}
 }
 
