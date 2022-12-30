@@ -20,9 +20,9 @@
 	<profiles>
 		<!-- Maven控制Spring Profile -->
 		<profile>
-			<id>local</id>
+			<id>loc</id>
 			<properties>
-				<profileActive>local</profileActive>
+				<profileActive>loc</profileActive>
 			</properties>
 			<activation>
 				<activeByDefault>true</activeByDefault>
@@ -92,11 +92,17 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-properties-migrator</artifactId>
 		</dependency>
-		<!-- spring-boot druid -->
+		<!-- spring-boot druid 
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid-spring-boot-starter</artifactId>
 		</dependency>
+		-->
+		<!-- spring-boot HikariCP -->
+		<dependency>
+		    <groupId>com.zaxxer</groupId>
+		    <artifactId>HikariCP</artifactId>
+		</dependency>		
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-cache -->
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>

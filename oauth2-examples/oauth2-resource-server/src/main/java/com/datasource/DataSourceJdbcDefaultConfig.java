@@ -1,8 +1,6 @@
 package com.datasource;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 import javax.sql.DataSource;
@@ -19,10 +17,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
 
-import com.alibaba.druid.filter.Filter;
-import com.alibaba.druid.pool.DruidDataSource;
-import com.alibaba.druid.wall.WallConfig;
-import com.alibaba.druid.wall.WallFilter;
+import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @EnableTransactionManagement
@@ -52,23 +47,14 @@ public class DataSourceJdbcDefaultConfig
     @Bean(name = "dataSourceJdbc")
     public DataSource dataSourceJdbc() throws SQLException 
     {
-        DruidDataSource dataSource = new DruidDataSource();
+    	HikariDataSource dataSource = new HikariDataSource();
         dataSource.setDriverClassName(driverClass);
-        dataSource.setUrl(url);
+        dataSource.setJdbcUrl(url);
         dataSource.setUsername(user);
         dataSource.setPassword(password);
-        dataSource.setInitialSize(initialSize);
-        dataSource.setMaxActive(maxActive);
-        dataSource.setMaxActive(maxActive);
-        dataSource.setMinIdle(minIdle);
-        dataSource.setMaxWait(maxWait);
-        
-        // 配置防御SQL注入攻击,使用缺省配置的WallFilter
-        dataSource.setFilters(filters);
-        // 自定义 filters
-        List<Filter> filters = new ArrayList<Filter>();
-        filters.add(wallFilterJdbc());
-        dataSource.setProxyFilters(filters);
+        dataSource.setMinimumIdle(minIdle);
+        dataSource.setMaximumPoolSize(maxActive);
+        dataSource.setMaxLifetime(maxWait);
         return dataSource;
     }
  
@@ -111,24 +97,5 @@ public class DataSourceJdbcDefaultConfig
 		bpc.setBeanNames("*Service");
 		bpc.setInterceptorNames("transactionInterceptorJdbc");
 		return bpc;
-	}
-	
-	@Bean(name = "wallConfigJdbc")
-	public WallConfig wallConfigJdbc()
-	{
-		WallConfig wc = new WallConfig();
-		wc.setMultiStatementAllow(true); // 允许同时执行多条sql
-		return wc;
-	}
-	
-	@Bean(name = "wallFilterJdbc")
-	public WallFilter wallFilterJdbc()
-	{
-		WallFilter wf = new WallFilter();
-//		wf.setDbType("mysql"); // 指定dbType
-		wf.setConfig(wallConfigJdbc()); // 读取自定义wall-config
-		wf.setLogViolation(true); // 允许 对被认为是攻击的SQL进行LOG.error输出
-		wf.setThrowException(false); // 禁止 对被认为是攻击的SQL抛出SQLExcepton
-		return wf;
 	}
 }

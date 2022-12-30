@@ -2,6 +2,8 @@ package com.api.v3.tbdemo.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -27,42 +29,50 @@ import chok.devwork.pojo.ChokDto;
 @Service
 public class TbDemoService
 {
+	@SuppressWarnings("unused")
+	private final Logger log = LoggerFactory.getLogger(getClass());	
+	
 	@Autowired
 	TbDemoWriteDao wDao;
 	@Autowired
 	TbDemoReadDao rDao;
 
 	@Caching(evict = { @CacheEvict(allEntries = true) })
+//	public void add(TbDemoAddParam param)
+//	{
+//		TbDemo entity = ParamMapper.INSTANCE.paramToEntity(param);
+//		wDao.add(entity);
+//	}
 	public ChokDto<Object> add(TbDemoAddParam param)
 	{
+		ChokDto<Object> dto = new ChokDto<Object>();
 		TbDemo entity = ParamMapper.INSTANCE.paramToEntity(param);
 		wDao.add(entity);
-		ChokDto<Object> dto = new ChokDto<Object>();
 		return dto;
 	}
 
 	@Caching(evict = { @CacheEvict(allEntries = true) })
 	public ChokDto<Object> del(TbDemoDelParam param)
 	{
-		wDao.del(param.getTcRowidArray());
 		ChokDto<Object> dto = new ChokDto<Object>();
+		wDao.del(param.getTcRowidArray());
 		return dto;
 	}
 
 	@Caching(evict = { @CacheEvict(value = {"Cache_TbDemo", "Cache_CustomTbDemo"}, allEntries = true) })
 	public ChokDto<Object> upd(TbDemoUpdParam param)
 	{
+		ChokDto<Object> dto = new ChokDto<Object>();
 		TbDemo entity = ParamMapper.INSTANCE.paramToEntity(param);
 		wDao.upd(entity);
-		ChokDto<Object> dto = new ChokDto<Object>();
 		return dto;
 	}	
 
 	@Cacheable(key = "#param")
 	public ChokDto<TbDemoGetOneResult> getOne(TbDemoGetOneParam param) 
 	{
-		TbDemoGetOneResult result = rDao.getOne(param);
 		ChokDto<TbDemoGetOneResult> dto = new ChokDto<TbDemoGetOneResult>();
+		TbDemoGetOneResult result = rDao.getOne(param);
 		dto.setData(result);
 		return dto;
 	}
@@ -70,8 +80,8 @@ public class TbDemoService
 	@Cacheable(key = "#param")
 	public ChokDto<List<TbDemoGetListResult>> getList(TbDemoGetListParam param) 
 	{
-		List<TbDemoGetListResult> result = rDao.getList(param);
 		ChokDto<List<TbDemoGetListResult>> dto = new ChokDto<List<TbDemoGetListResult>>();
+		List<TbDemoGetListResult> result = rDao.getList(param);
 		dto.setData(result);
 		return dto;
 	}

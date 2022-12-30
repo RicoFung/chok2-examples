@@ -14,7 +14,7 @@ public class TbDemoWriteDao
 	@Resource//(name = "firstSqlSessionTemplate")
 	private SqlSession sqlSession;
 	
-	public void add(TbDemo tbDemo)
+	public void add(TbDemo tbDemo) 
 	{
 		this.sqlSession.insert(getClass().getName()+"."+"add", tbDemo);
 	}

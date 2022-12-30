@@ -13,7 +13,7 @@ public class TbDemoUpdParam implements Serializable
 
 	// tcRowid       db_column: TC_ROWID 
 	@Schema(title = "tcRowid", example = "")//, position = 0)
-	@NotNull(message = "tcRowid(tcRowid) 不能为空！")
+	@NotNull(message = "tcRowid 不能为空！")
 	private java.lang.Long tcRowid;
 	
     // tcCode       db_column: TC_CODE 
