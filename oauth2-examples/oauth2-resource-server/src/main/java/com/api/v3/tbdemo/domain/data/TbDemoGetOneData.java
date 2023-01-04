@@ -1,8 +1,8 @@
-package com.api.v3.tbdemo.pojo.result;
+package com.api.v3.tbdemo.domain.data;
 
-import com.api.v3.tbdemo.pojo.TbDemo;
+import com.api.v3.tbdemo.domain.entity.TbDemoEntity;
 
-public class TbDemoGetOneResult extends TbDemo
+public class TbDemoGetOneData extends TbDemoEntity
 {
 
 	/**

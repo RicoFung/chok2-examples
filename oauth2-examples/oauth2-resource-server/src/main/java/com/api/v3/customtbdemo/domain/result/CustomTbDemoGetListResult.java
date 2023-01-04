@@ -1,8 +1,8 @@
-package com.api.v3.customtbdemo.pojo.result;
+package com.api.v3.customtbdemo.domain.result;
 
-import com.api.v3.customtbdemo.pojo.TbDemo;
+import com.api.v3.customtbdemo.domain.entity.CustomTbDemoEntity;
 
-public class CustomTbDemoGetListResult extends TbDemo
+public class CustomTbDemoGetListResult extends CustomTbDemoEntity
 {
 
 	/**

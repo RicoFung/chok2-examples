@@ -1,4 +1,4 @@
-package com.api.v3.tbdemo.pojo.param;
+package com.api.v3.tbdemo.domain.param;
 
 import java.io.Serializable;
 

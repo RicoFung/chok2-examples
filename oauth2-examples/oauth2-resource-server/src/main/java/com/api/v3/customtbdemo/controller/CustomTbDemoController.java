@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.api.v3.customtbdemo.domain.param.CustomTbDemoGetListParam;
+import com.api.v3.customtbdemo.domain.result.CustomTbDemoGetListResult;
 import com.api.v3.customtbdemo.dto.CustomDto;
-import com.api.v3.customtbdemo.pojo.param.CustomTbDemoGetListParam;
-import com.api.v3.customtbdemo.pojo.result.CustomTbDemoGetListResult;
 import com.api.v3.customtbdemo.service.CustomTbDemoService;
 
 import chok.devwork.handler.CHandler;

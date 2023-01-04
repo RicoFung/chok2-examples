@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>  
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">   
 
-<mapper namespace="com.api.v3.tbdemo.dao.TbDemoReadDao">
+<mapper namespace="com.api.v3.tbdemo.dao.TbDemoDao">
 	<!-- 开启基于redis的二级缓存 -->
 	<!-- 
     <cache type="chok.redis.mybatis.RedisCache">
@@ -11,6 +11,76 @@
         <property name="readOnly" value="false" />
     </cache>
      -->
+
+	<!-- 
+	****************************************************************************************************
+	* WRITE
+	****************************************************************************************************
+	-->
+	
+    <!-- 自动生成id策略 -->
+    <insert id="add" parameterType="com.api.v3.tbdemo.domain.entity.TbDemoEntity">  
+       	<selectKey keyProperty="tcRowid" resultType="long" order="BEFORE">
+	         SELECT SEQ_TB_DEMO.NEXTVAL FROM DUAL
+	     </selectKey>
+       	INSERT INTO TB_DEMO 
+       	( TC_ROWID, TC_CODE, TC_NAME) 
+       	VALUES
+       	( #{tcRowid}, #{tcCode}, #{tcName})
+    </insert>  
+    
+    <insert id="addBatch">
+    	INSERT INTO TB_DEMO
+    	(
+        TC_ROWID,
+        TC_CODE,
+        TC_NAME
+        )
+	    SELECT SEQ_TB_DEMO.NEXTVAL, T.*
+        FROM 
+        (
+	    <foreach collection ="list" item="item" index="index" separator="UNION ALL">
+	    SELECT
+		#{item.tcCode} AS TC_CODE,
+		#{item.tcName} AS TC_NAME
+	    FROM DUAL
+	    </foreach>
+        ) T
+    </insert>
+	
+	<delete id="del">
+		DELETE FROM TB_DEMO T
+		 WHERE T.TC_ROWID IN
+		<foreach collection="array" item="tcRowid" index="index" open="(" close=")" separator=",">
+		  #{tcRowid}
+		</foreach>
+	</delete>
+	
+	<update id="upd" parameterType="com.api.v3.tbdemo.domain.entity.TbDemoEntity">
+		UPDATE TB_DEMO T
+		<set>
+        <if test="@chok.devwork.Ognl@isNotNull(tcCode)"> T.TC_CODE = #{tcCode},</if>
+        <if test="@chok.devwork.Ognl@isNotNull(tcName)"> T.TC_NAME = #{tcName}</if>
+        </set>
+         WHERE T.TC_ROWID = #{tcRowid}  
+	</update>
+  	
+  	<update id="updBatch">
+  		<foreach collection="list" index="index" item="item" open="begin" close=";end;" separator=";">
+	        UPDATE TB_DEMO T
+	        <set>
+		       <if test="@chok.devwork.Ognl@isNotEmpty(item.tcCode)"> T.TC_CODE = #{item.tcCode},</if>
+		       <if test="@chok.devwork.Ognl@isNotEmpty(item.tcName)"> T.TC_NAME = #{item.tcName},</if>
+	        </set>
+			WHERE T.TC_ROWID = #{item.tcRowid}  
+    	</foreach>
+  	</update>
+
+	<!-- 
+	****************************************************************************************************
+	* READ
+	****************************************************************************************************
+	-->
 
 	<sql id="dynamicColumns">
 		<choose>
@@ -52,9 +122,6 @@
 	
 	<sql id="dynamicWhere">
 		<where>
-		<!-- 
-    		<if test="@chok.devwork.Ognl@isNotEmpty(dynamicWhere.tcRowid)"> AND T.TC_ROWID = #{dynamicWhere.tcRowid} </if>
-    		 -->
 	       	<if test="@chok.devwork.Ognl@isNotEmpty(dynamicWhere.tcCode)"> AND T.TC_CODE LIKE '%'||#{dynamicWhere.tcCode}||'%'</if>
 	       	<if test="@chok.devwork.Ognl@isNotEmpty(dynamicWhere.tcName)"> AND T.TC_NAME LIKE '%'||#{dynamicWhere.tcName}||'%'</if>
 			<if test="@chok.devwork.Ognl@isNotEmpty(dynamicWhere.tcRowidArray)"> 
@@ -65,21 +132,21 @@
 	</sql>	
 	
 	<!-- getOne -->
-	<resultMap type="com.api.v3.tbdemo.pojo.result.TbDemoGetOneResult" id="getOneResult" >
+	<resultMap type="com.api.v3.tbdemo.domain.data.TbDemoGetOneData" id="getOneData" >
         <result property="tcRowid" column="TC_ROWID"/>
         <result property="tcCode" column="TC_CODE"/>
         <result property="tcName" column="TC_NAME"/>
 	</resultMap>
-	<select id="getOne" resultMap="getOneResult">
+	<select id="getOne" resultMap="getOneData">
 		SELECT <include refid="dynamicColumns"/> 
 		  FROM TB_DEMO T 
 		 WHERE T.TC_ROWID = #{tcRowid}  	  
 	</select>
 	
 	<!-- getList -->
-	<resultMap type="com.api.v3.tbdemo.pojo.result.TbDemoGetListResult" id="getListResult" extends="getOneResult">
+	<resultMap type="com.api.v3.tbdemo.domain.data.TbDemoGetListData" id="getListData" extends="getOneData">
 	</resultMap>
-	<select id="getList" parameterType="com.api.v3.tbdemo.pojo.param.TbDemoGetListParam" resultType="list" resultMap="getListResult">
+	<select id="getList" parameterType="com.api.v3.tbdemo.domain.query.TbDemoGetListQuery" resultType="list" resultMap="getListData">
 		<choose>
 			<!-- 翻页 -->
 			<when test="@chok.devwork.Ognl@isNotEmpty(page) and @chok.devwork.Ognl@isNotEmpty(pagesize)">
@@ -103,5 +170,5 @@
 				<include refid="dynamicOrder" />
 			</otherwise>
 		</choose>
-	</select>
+	</select>     
 </mapper>  

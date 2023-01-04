@@ -1,4 +1,4 @@
-package com.api.v3.customtbdemo.pojo;
+package com.api.v3.tbdemo.domain.entity;
 
 import java.io.Serializable;
 /**
@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @version 1.0
  * @since 1.0
  * */
-public class TbDemo implements Serializable
+public class TbDemoEntity implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -18,10 +18,10 @@ public class TbDemo implements Serializable
     // tcName       db_column: TC_NAME 
 	private java.lang.String tcName;
 
-	public TbDemo(){
+	public TbDemoEntity(){
 	}
 
-	public TbDemo(
+	public TbDemoEntity(
 		java.lang.Long tcRowid,
 		java.lang.String tcCode,
 		java.lang.String tcName
