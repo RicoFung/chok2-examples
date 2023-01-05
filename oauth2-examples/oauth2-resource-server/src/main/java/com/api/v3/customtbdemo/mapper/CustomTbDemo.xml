@@ -62,12 +62,12 @@
 	</sql>	
 	
 	<!-- getList -->
-	<resultMap type="com.api.v3.tbdemo.domain.data.TbDemoGetListData" id="getListData">
+	<resultMap type="com.api.v3.customtbdemo.domain.data.CustomTbDemoGetListData" id="getListData">
         <result property="tcRowid" column="TC_ROWID"/>
         <result property="tcCode" column="TC_CODE"/>
         <result property="tcName" column="TC_NAME"/>
 	</resultMap>
-	<select id="getList" parameterType="com.api.v3.tbdemo.domain.query.TbDemoGetListQuery" resultType="list" resultMap="getListData">
+	<select id="getList" parameterType="com.api.v3.customtbdemo.domain.query.CustomTbDemoGetListQuery" resultType="list" resultMap="getListData">
 		<choose>
 			<!-- 翻页 -->
 			<when test="@chok.devwork.Ognl@isNotEmpty(page) and @chok.devwork.Ognl@isNotEmpty(pagesize)">

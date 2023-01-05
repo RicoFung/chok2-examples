@@ -23,7 +23,7 @@ import chok.devwork.pojo.ChokDtoConstants;
  *
  */
 @RestControllerAdvice(basePackages = {"com.api.v3.tbdemo.controller"})
-public class ControllerExceptionAdvice
+public class DefControllerExceptionAdvice
 {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	

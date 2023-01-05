@@ -5,7 +5,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,12 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.api.v3.customtbdemo.domain.data.CustomTbDemoGetListData;
 import com.api.v3.customtbdemo.domain.param.CustomTbDemoGetListParam;
-import com.api.v3.customtbdemo.domain.result.CustomTbDemoGetListResult;
+import com.api.v3.customtbdemo.domain.param.ParamMapper;
+import com.api.v3.customtbdemo.domain.query.CustomTbDemoGetListQuery;
 import com.api.v3.customtbdemo.dto.CustomDto;
 import com.api.v3.customtbdemo.service.CustomTbDemoService;
 
-import chok.devwork.handler.CHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -47,18 +47,10 @@ public class CustomTbDemoController
 
 	@Operation(summary = "列表")
 	@RequestMapping(value = "/getList", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	public CustomDto<List<CustomTbDemoGetListResult>> getEpoList(@RequestBody @Validated CustomTbDemoGetListParam param, BindingResult br)
+	public CustomDto<List<CustomTbDemoGetListData>> getEpoList(@RequestBody @Validated CustomTbDemoGetListParam param, BindingResult br)
 	{
-		CustomDto<List<CustomTbDemoGetListResult>> dto = new CustomDto<List<CustomTbDemoGetListResult>>();
-		CHandler.Callback<List<CustomTbDemoGetListResult>, CustomDto<List<CustomTbDemoGetListResult>>> callback = new CHandler.Callback<List<CustomTbDemoGetListResult>, CustomDto<List<CustomTbDemoGetListResult>>>()
-		{
-			@Override
-			protected CustomDto<List<CustomTbDemoGetListResult>> process(CustomDto<List<CustomTbDemoGetListResult>> dto, Authentication auth, Long time) throws Exception
-			{
-				return service.getList(param);
-			}
-		};
-		return new CHandler<List<CustomTbDemoGetListResult>, CustomDto<List<CustomTbDemoGetListResult>>>().execute(param, br, dto, callback);
+		CustomTbDemoGetListQuery query = ParamMapper.INSTANCE.paramToQuery(param);
+		return service.getList(query);
 	}
 
 }

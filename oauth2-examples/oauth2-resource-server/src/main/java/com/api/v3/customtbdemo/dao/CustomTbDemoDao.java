@@ -7,17 +7,17 @@ import javax.annotation.Resource;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.api.v3.customtbdemo.domain.param.CustomTbDemoGetListParam;
-import com.api.v3.customtbdemo.domain.result.CustomTbDemoGetListResult;
+import com.api.v3.customtbdemo.domain.data.CustomTbDemoGetListData;
+import com.api.v3.customtbdemo.domain.query.CustomTbDemoGetListQuery;
 
-@Repository(value = "v3CustomTbDemoReadDao")
+@Repository(value = "v3CustomTbDemoDao")
 public class CustomTbDemoDao
 {
 	@Resource//(name = "firstSqlSessionTemplate")
 	private SqlSession sqlSession;
 	
-	public List<CustomTbDemoGetListResult> getList(CustomTbDemoGetListParam param) 
+	public List<CustomTbDemoGetListData> getList(CustomTbDemoGetListQuery query) 
 	{
-		return this.sqlSession.selectList(getClass().getName()+"."+"getList", param);
+		return this.sqlSession.selectList(getClass().getName()+"."+"getList", query);
 	}
 }

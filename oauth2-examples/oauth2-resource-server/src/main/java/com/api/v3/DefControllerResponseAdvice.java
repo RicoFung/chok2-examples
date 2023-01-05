@@ -21,7 +21,7 @@ import chok.devwork.pojo.ChokDto;
  *
  */
 @RestControllerAdvice(basePackages = { "com.api.v3.tbdemo.controller" })
-public class ControllerResponseAdvice implements ResponseBodyAdvice<Object>
+public class DefControllerResponseAdvice implements ResponseBodyAdvice<Object>
 {
 	@Override
 	public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> aClass)

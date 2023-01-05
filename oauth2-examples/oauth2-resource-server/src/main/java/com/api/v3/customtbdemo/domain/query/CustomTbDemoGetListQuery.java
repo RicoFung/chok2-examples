@@ -127,9 +127,8 @@ public class CustomTbDemoGetListQuery implements Serializable
 	@Override
 	public String toString()
 	{
-		return "TbDemoGetListQo [dynamicColumns=" + Arrays.toString(dynamicColumns) + ", dynamicOrder="
-				+ dynamicOrder + ", dynamicWhere=" + dynamicWhere.toString() + ", page=" + page + ", pagesize=" + pagesize + "]";
+		return "CustomTbDemoGetListQuery [dynamicColumns=" + Arrays.toString(dynamicColumns) + ", dynamicOrder="
+				+ dynamicOrder + ", dynamicWhere=" + dynamicWhere + ", page=" + page + ", pagesize=" + pagesize + "]";
 	}
-	
 }
 

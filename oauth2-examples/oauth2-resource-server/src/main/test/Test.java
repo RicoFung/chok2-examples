@@ -6,7 +6,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.Application;
 import com.api.v2.entity.TbDemo;
 import com.api.v2.tbdemo.service.TbDemoService;
-import com.api.v3.customtbdemo.dao.CustomTbDemoReadDao;
+import com.api.v3.customtbdemo.dao.CustomTbDemoDao;
 
 
 @RunWith(SpringRunner.class)
@@ -17,7 +17,7 @@ public class Test
 	@Autowired
 	TbDemoService service;
 	@Autowired
-	CustomTbDemoReadDao v3Dao;
+	CustomTbDemoDao v3Dao;
 	@Autowired
 	TbDemoService v3Service;
 	

@@ -8,8 +8,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.api.v3.customtbdemo.dao.CustomTbDemoDao;
-import com.api.v3.customtbdemo.domain.param.CustomTbDemoGetListParam;
-import com.api.v3.customtbdemo.domain.result.CustomTbDemoGetListResult;
+import com.api.v3.customtbdemo.domain.data.CustomTbDemoGetListData;
+import com.api.v3.customtbdemo.domain.query.CustomTbDemoGetListQuery;
 import com.api.v3.customtbdemo.dto.CustomDto;
 
 @CacheConfig(cacheNames = {"Cache_CustomTbDemo"})
@@ -19,11 +19,11 @@ public class CustomTbDemoService
 	@Autowired
 	CustomTbDemoDao dao;
 
-	@Cacheable(key = "#param")
-	public CustomDto<List<CustomTbDemoGetListResult>> getList(CustomTbDemoGetListParam param) 
+	@Cacheable(key = "#query")
+	public CustomDto<List<CustomTbDemoGetListData>> getList(CustomTbDemoGetListQuery query) 
 	{
-		List<CustomTbDemoGetListResult> result = dao.getList(param);
-		CustomDto<List<CustomTbDemoGetListResult>> resultDTO = new CustomDto<List<CustomTbDemoGetListResult>>();
+		List<CustomTbDemoGetListData> result = dao.getList(query);
+		CustomDto<List<CustomTbDemoGetListData>> resultDTO = new CustomDto<List<CustomTbDemoGetListData>>();
 		resultDTO.setData(result);
 		return resultDTO;
 	}

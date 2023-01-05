@@ -16,8 +16,9 @@
     <!-- 日志文件编码-->
     <property name="LOG_CHARSET" value="UTF-8" />
     <!--对日志进行格式化-->
-    <property name="LOG_MSG" value="[%X{traceId:-}] | [%X{spanId}] | [${PID:-}] | [%d{yyyy-MM-dd HH:mm:ss.SSS}] | [%level] | [%thread] | [%logger{36}|%M|%line] | - %msg%n "/>
+	<property name="LOG_MSG" value="[%X{traceId}] [%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%logger{36}|%M|%L] - %msg%n"/>
     <!-- 
+    <property name="LOG_MSG" value="[%X{traceId:-}] | [%X{spanId}] | [${PID:-}] | [%d{yyyy-MM-dd HH:mm:ss.SSS}] | [%level] | [%thread] | [%logger{36}|%M|%line] | - %msg%n "/>
     <property name="LOG_MSG" value="- | [%d{yyyyMMdd HH:mm:ss.SSS}] | [%level] | [${HOSTNAME}] | [%thread] | [%logger{36}] | %msg|%n "/>
     <property name="LOG_MSG" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n "/>
      -->
