@@ -35,16 +35,12 @@ public class DataSourceMybatisDefaultConfig
     private String password;
     @Value("${datasource.mybatis.default.driver-class-name}")
     private String driverClass;
-    @Value("${datasource.mybatis.default.filters}")
-    private String filters;
-    @Value("${datasource.mybatis.default.initialSize}")
-    private int initialSize;
-    @Value("${datasource.mybatis.default.maxActive}")
-    private int maxActive;
-    @Value("${datasource.mybatis.default.minIdle}")
-    private int minIdle;
-    @Value("${datasource.mybatis.default.maxWait}")
-    private int maxWait;
+    @Value("${datasource.mybatis.default.minimumIdle}")
+    private int minimumIdle;
+    @Value("${datasource.mybatis.default.maximumPoolSize}")
+    private int maximumPoolSize;
+    @Value("${datasource.mybatis.default.maxLifetime}")
+    private int maxLifetime;
     @Value("${datasource.mybatis.default.mapper-location}")
     private String mapperLocation;
     @Value("${mybatis.config-location}")
@@ -58,9 +54,9 @@ public class DataSourceMybatisDefaultConfig
         dataSource.setJdbcUrl(url);
         dataSource.setUsername(user);
         dataSource.setPassword(password);
-        dataSource.setMinimumIdle(minIdle);
-        dataSource.setMaximumPoolSize(maxActive);
-        dataSource.setMaxLifetime(maxWait);
+        dataSource.setMinimumIdle(minimumIdle);
+        dataSource.setMaximumPoolSize(maximumPoolSize);
+        dataSource.setMaxLifetime(maxLifetime);
         return dataSource;
     }
  
