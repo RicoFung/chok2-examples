@@ -41,7 +41,7 @@ import com.domain.erp.service.TbUserInfo0aService;
 import com.handler.RedirectLoginAuthenticationSuccessHandler;
 import com.handler.SimpleAuthenticationEntryPoint;
 
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity//(debug = true)
 public class DefaultSecurityConfig
 {
 //	private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
@@ -117,7 +117,10 @@ public class DefaultSecurityConfig
 		{
 			// 重定向至：/oauth2/authorize?
 			String authorizeHost = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/oauth2/authorize?";
-			String queryString = request.getHeader("referer").split("\\?")[1];
+
+			String queryString = request.getQueryString();
+//			String queryString = request.getHeader("referer").split("\\?")[1];
+			
 			String url = authorizeHost + queryString;
 			response.sendRedirect(url);
         }))

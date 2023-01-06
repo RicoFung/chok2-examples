@@ -16,7 +16,8 @@
     <!-- 日志文件编码-->
     <property name="LOG_CHARSET" value="UTF-8" />
     <!--对日志进行格式化-->
-    <property name="LOG_MSG" value="[%X{traceId:-}] | [%X{spanId}] | [${PID:-}] | [%d{yyyy-MM-dd HH:mm:ss.SSS}] | [%level] | [%thread] | [%logger|%M|%line] |%n - %msg%n "/>
+    
+    <property name="LOG_MSG" value="[%X{traceId:-}] | [%X{spanId}] | [${PID:-}] | [%d{yyyy-MM-dd HH:mm:ss.SSS}] | [%level] | [%thread] | [%logger{36}|%M|%line] | - %msg%n "/>
     <!-- 
     <property name="LOG_MSG" value="- | [%d{yyyyMMdd HH:mm:ss.SSS}] | [%level] | [${HOSTNAME}] | [%thread] | [%logger{36}] | %msg|%n "/>
     <property name="LOG_MSG" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n "/>
@@ -118,6 +119,12 @@
 	<!-- LOGGER -->
 	<!-- ================================================================ -->
     <logger name="org.springframework" level="ERROR" additivity="false">
+        <appender-ref ref="GELF"/>
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE_ALL"/>
+        <appender-ref ref="FILE_ERROR"/>
+    </logger>
+    <logger name="org.springframework.security" level="DEBUG" additivity="false">
         <appender-ref ref="GELF"/>
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE_ALL"/>
