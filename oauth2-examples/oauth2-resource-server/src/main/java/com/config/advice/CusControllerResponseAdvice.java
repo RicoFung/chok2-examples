@@ -1,4 +1,4 @@
-package com.api.v3.advice;
+package com.config.advice;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;

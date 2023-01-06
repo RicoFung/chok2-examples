@@ -6,8 +6,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
 
-import chok.oauth2.MyAccessDeniedHandler;
-import chok.oauth2.MyOAuth2ExceptionEntryPoint;
+import com.config.oauth2.DefAccessDeniedHandler;
+import com.config.oauth2.DefOAuth2ExceptionEntryPoint;
 
 @EnableWebSecurity(debug = false)
 public class ResourceServerConfig
@@ -18,9 +18,9 @@ public class ResourceServerConfig
 		http
 		.authorizeRequests((requests) -> requests.anyRequest().authenticated()).oauth2ResourceServer()
 		// 401 Invalid access token
-		.authenticationEntryPoint(new MyOAuth2ExceptionEntryPoint())
+		.authenticationEntryPoint(new DefOAuth2ExceptionEntryPoint())
 		// 403 insufficient_scope
-		.accessDeniedHandler(new MyAccessDeniedHandler()).jwt();
+		.accessDeniedHandler(new DefAccessDeniedHandler()).jwt();
 		return http.build();
 	}
 

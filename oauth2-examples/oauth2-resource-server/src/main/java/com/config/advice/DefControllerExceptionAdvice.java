@@ -1,4 +1,4 @@
-package com.api.v3.advice;
+package com.config.advice;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.api.v3.customtbdemo.dto.CustomDto;
-
+import chok.devwork.pojo.ChokDto;
 import chok.devwork.pojo.ChokDtoConstants;
 
 /*******************************************
@@ -23,16 +22,16 @@ import chok.devwork.pojo.ChokDtoConstants;
  * @author rico.fung
  *
  */
-@RestControllerAdvice(basePackages = {"com.api.v3.customtbdemo.controller"})
-public class CusControllerExceptionAdvice
+@RestControllerAdvice(basePackages = {"com.api.v3.tbdemo.controller"})
+public class DefControllerExceptionAdvice
 {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	
 	@ExceptionHandler(value = Exception.class)
 	@ResponseBody
-	public CustomDto<Object> defaultErrorHandler(HttpServletRequest req, Exception e)
+	public ChokDto<Object> defaultErrorHandler(HttpServletRequest req, Exception e)
 	{
-		CustomDto<Object> dto = new CustomDto<Object>();
+		ChokDto<Object> dto = new ChokDto<Object>();
 		dto.setSuccess(false);
 		dto.setCode(ChokDtoConstants.ERROR_CODE1);
 		dto.setMsg(e.toString());
@@ -42,7 +41,7 @@ public class CusControllerExceptionAdvice
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseBody
-	public CustomDto<Object> validationExceptions(MethodArgumentNotValidException e)
+	public ChokDto<Object> validationExceptions(MethodArgumentNotValidException e)
 	{
 		Map<String, String> errors = new HashMap<>();
 		e.getBindingResult().getAllErrors().forEach((error) ->
@@ -51,7 +50,7 @@ public class CusControllerExceptionAdvice
 			String errorMessage = error.getDefaultMessage();
 			errors.put(fieldName, errorMessage);
 		});
-		CustomDto<Object> dto = new CustomDto<Object>();
+		ChokDto<Object> dto = new ChokDto<Object>();
 		dto.setSuccess(false);
 		dto.setCode(ChokDtoConstants.ERROR_CODE1);
 		dto.setMsg(errors.values().toString());

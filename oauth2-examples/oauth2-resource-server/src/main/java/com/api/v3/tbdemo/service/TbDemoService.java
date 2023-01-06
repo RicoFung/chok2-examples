@@ -38,9 +38,9 @@ public class TbDemoService
 	}
 
 	@Caching(evict = { @CacheEvict(allEntries = true) })
-	public ChokDto<Object> del(String[] idArray)
+	public ChokDto<Object> del(String[] ids)
 	{
-		dao.del(idArray);
+		dao.del(ids);
 		return new ChokDto<Object>();
 	}
 

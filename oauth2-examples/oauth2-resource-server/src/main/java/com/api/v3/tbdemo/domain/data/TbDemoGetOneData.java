@@ -4,17 +4,5 @@ import com.api.v3.tbdemo.domain.entity.TbDemoEntity;
 
 public class TbDemoGetOneData extends TbDemoEntity
 {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
-	@Override
-	public String toString()
-	{
-		return "TbDemoGetOneResultPO [getTcRowid()=" + getTcRowid() + ", getTcCode()=" + getTcCode() + ", getTcName()="
-				+ getTcName() + "]";
-	}
-
 }
