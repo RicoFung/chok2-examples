@@ -28,18 +28,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationEntryPointFailureHandler;
 import org.springframework.security.web.util.matcher.AndRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.authentication.LoginFilterSecurityConfigurer;
-import com.authentication.cus.service.CusUserInfo0aService;
 import com.domain.erp.service.TbUserInfo0aService;
-import com.handler.RedirectLoginAuthenticationSuccessHandler;
-import com.handler.SimpleAuthenticationEntryPoint;
 
 @EnableWebSecurity//(debug = true)
 public class DefaultSecurityConfig
@@ -50,8 +45,8 @@ public class DefaultSecurityConfig
 	
 	@Autowired
 	TbUserInfo0aService		tbUserInfo0aService;
-	@Autowired
-	CusUserInfo0aService	cusUserInfo0aService;
+//	@Autowired
+//	CusUserInfo0aService	cusUserInfo0aService;
 	
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource()
@@ -71,9 +66,9 @@ public class DefaultSecurityConfig
 	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http, @Qualifier("authorizationServerSecurityFilterChain") SecurityFilterChain securityFilterChain) throws Exception
 	{
 		DefaultSecurityFilterChain authorizationServerFilterChain = (DefaultSecurityFilterChain) securityFilterChain;
-		SimpleAuthenticationEntryPoint authenticationEntryPoint = new SimpleAuthenticationEntryPoint();
-        AuthenticationEntryPointFailureHandler authenticationFailureHandler = new AuthenticationEntryPointFailureHandler(authenticationEntryPoint);
-        RedirectLoginAuthenticationSuccessHandler loginAuthenticationSuccessHandler = new RedirectLoginAuthenticationSuccessHandler();
+//		SimpleAuthenticationEntryPoint authenticationEntryPoint = new SimpleAuthenticationEntryPoint();
+//        AuthenticationEntryPointFailureHandler authenticationFailureHandler = new AuthenticationEntryPointFailureHandler(authenticationEntryPoint);
+//        RedirectLoginAuthenticationSuccessHandler loginAuthenticationSuccessHandler = new RedirectLoginAuthenticationSuccessHandler();
 
 		// ---------- //
 		// 自定义登录配置
@@ -97,12 +92,12 @@ public class DefaultSecurityConfig
 		.userDetailsService(tbUserInfo0aService)
 		// 整合多种登录方式
 //		.and()
-		.apply(new LoginFilterSecurityConfigurer<>())
-		.cusLogin(cusLoginConfigurer -> cusLoginConfigurer
-				.cusUserDetailsService(cusUserInfo0aService)
-//				.successHandler(loginAuthenticationSuccessHandler)
-				.failureHandler(authenticationFailureHandler)
-		)
+//		.apply(new LoginFilterSecurityConfigurer<>())
+//		.cusLogin(cusLoginConfigurer -> cusLoginConfigurer
+//				.cusUserDetailsService(cusUserInfo0aService)
+////				.successHandler(loginAuthenticationSuccessHandler)
+//				.failureHandler(authenticationFailureHandler)
+//		)
 		;
 
 		// ---------- //
