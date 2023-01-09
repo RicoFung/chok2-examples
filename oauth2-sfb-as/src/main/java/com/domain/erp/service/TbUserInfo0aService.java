@@ -8,27 +8,22 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.domain.erp.dao.TbUserInfo0aDao;
-import com.domain.erp.entity.TbUserInfo0a;
-
-import chok.devwork.BaseDao;
-import chok.devwork.BaseService;
+import com.domain.erp.model.entity.TbUserInfo0aEntity;
+import com.domain.erp.model.query.TbUserInfo0aGetOneByUsernameQuery;
 
 @Service("tbUserInfo0aService")
-public class TbUserInfo0aService extends BaseService<TbUserInfo0a,Long> implements UserDetailsService
+public class TbUserInfo0aService implements UserDetailsService
 {
 	@Autowired
 	private TbUserInfo0aDao dao;
 
 	@Override
-	public BaseDao<TbUserInfo0a,Long> getEntityDao() 
-	{
-		return dao;
-	}
-
-	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
 	{
-		TbUserInfo0a tbUser = dao.getByUsername(username);
+		TbUserInfo0aGetOneByUsernameQuery query = new TbUserInfo0aGetOneByUsernameQuery();
+		query.setDynamicColumns(new String[] {"tcCode", "tcName", "tcPassword"});
+		query.setUsername(username);
+		TbUserInfo0aEntity tbUser = dao.getOneByUsername(query);
 		if (tbUser == null)
 		{
 			throw new UsernameNotFoundException(String.format("User %s does not exist!", username));

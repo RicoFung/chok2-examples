@@ -5,12 +5,13 @@ import javax.annotation.Resource;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.domain.erp.entity.TbUserInfo0a;
+import com.domain.erp.model.entity.TbUserInfo0aEntity;
+import com.domain.erp.model.query.TbUserInfo0aGetOneByUsernameQuery;
 
-import chok.devwork.BaseDao;
+import chok.devwork.BaseDaoV2;
 
 @Repository
-public class TbUserInfo0aDao extends BaseDao<TbUserInfo0a,Long>
+public class TbUserInfo0aDao extends BaseDaoV2
 {
 	@Resource(name = "sqlSessionTemplateMybatis")
 	private SqlSession sqlSession;
@@ -20,15 +21,15 @@ public class TbUserInfo0aDao extends BaseDao<TbUserInfo0a,Long>
 	{
 		return sqlSession;
 	}
-	
+
 	@Override
-	public Class<TbUserInfo0a> getEntityClass()
+	protected String getSqlNamespace()
 	{
-		return TbUserInfo0a.class;
+		return getClass().getName();
 	}
 	
-	public TbUserInfo0a getByUsername(String username)
+	public TbUserInfo0aEntity getOneByUsername(TbUserInfo0aGetOneByUsernameQuery query)
 	{
-		return (TbUserInfo0a) get("getByUsername", username);
+		return getOne("getOneByUsername", query);
 	}
 }
