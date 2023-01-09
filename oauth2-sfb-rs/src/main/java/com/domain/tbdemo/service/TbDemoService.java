@@ -20,15 +20,15 @@ import com.domain.tbdemo.model.query.TbDemoGetOneQuery;
 
 import chok.devwork.pojo.ChokDto;
 
-@CacheConfig(cacheNames = {"Cache_TbDemo"})
-@Service
+@CacheConfig(cacheNames = {"CACHE_TbDemo"})
+@Service(value = "v3TbDemoService")
 public class TbDemoService
 {
 	@SuppressWarnings("unused")
-	private final Logger log = LoggerFactory.getLogger(getClass());	
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	
 	@Autowired
-	TbDemoDao dao;
+	private TbDemoDao dao;
 
 	@Caching(evict = { @CacheEvict(allEntries = true) })
 	public ChokDto<Object> add(TbDemoEntity entity)
@@ -44,7 +44,7 @@ public class TbDemoService
 		return new ChokDto<Object>();
 	}
 
-	@Caching(evict = { @CacheEvict(value = {"Cache_TbDemo", "Cache_CustomTbDemo"}, allEntries = true) })
+	@Caching(evict = { @CacheEvict(value = {"CACHE_TbDemo"}, allEntries = true) })
 	public ChokDto<Object> upd(TbDemoEntity entity)
 	{
 		dao.upd(entity);

@@ -9,32 +9,29 @@ public class TbDemoGetOneQuery implements Serializable
 	
 	private java.lang.String[] dynamicColumns;
 
-	private java.lang.Long tcRowid;
+	private String tcRowid;
 
 	public String[] getDynamicColumns()
 	{
 		return dynamicColumns;
 	}
-	
 	public void setDynamicColumns(String[] dynamicColumns)
 	{
 		this.dynamicColumns = dynamicColumns;
 	}
-	
-	public void setTcRowid(java.lang.Long value)
-	{
-		this.tcRowid = value;
-	}
 
-	public java.lang.Long getTcRowid()
+	public String getTcRowid() 
 	{
 		return this.tcRowid;
 	}
-
+	public void setTcRowid(String value) 
+	{
+		this.tcRowid = value;
+	}
+	
 	@Override
 	public String toString()
 	{
 		return "TbDemoGetOneQuery [dynamicColumns=" + Arrays.toString(dynamicColumns) + ", tcRowid=" + tcRowid + "]";
 	}
-	
 }

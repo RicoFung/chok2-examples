@@ -18,7 +18,7 @@ public class TbDemoGetListQuery implements Serializable
 	private List<Map<String, Object>> dynamicOrder;
 	
 	private DynamicWhere dynamicWhere;
-	
+
 	private int page;
 
 	private int pagesize;
@@ -31,69 +31,71 @@ public class TbDemoGetListQuery implements Serializable
 	{
 		private static final long serialVersionUID = 1L;
 		
+	    // tcCode       db_column: TC_CODE 
 		private java.lang.String tcCode;
+	    // tcName       db_column: TC_NAME 
 		private java.lang.String tcName;
 		
+		// tcRowid       db_column: TC_ROWID 
 		private String[] tcRowidArray;
-		
-		public void setTcCode(java.lang.String value) 
-		{
-			this.tcCode = value;
-		}
 		
 		public java.lang.String getTcCode() 
 		{
 			return this.tcCode;
 		}
-		public void setTcName(java.lang.String value) 
+		public void setTcCode(java.lang.String value) 
 		{
-			this.tcName = value;
+			this.tcCode = value;
 		}
-		
 		public java.lang.String getTcName() 
 		{
 			return this.tcName;
 		}
-		
-		public String[] getTcRowidArray()
+		public void setTcName(java.lang.String value) 
 		{
-			return tcRowidArray;
+			this.tcName = value;
 		}
 	
-		public void setTcRowidArray(String[] tcRowidArray)
+		public String[] getTcRowidArray() 
 		{
-			this.tcRowidArray = tcRowidArray;
+			return this.tcRowidArray;
+		}
+		public void setTcRowidArray(String[] value) 
+		{
+			this.tcRowidArray = value;
 		}
 
 		@Override
 		public String toString()
 		{
-			return "DynamicWhere [tcCode=" + tcCode + ", tcName=" + tcName + ", tcRowidArray="
-					+ Arrays.toString(tcRowidArray) + "]";
+			return "DynamicWhere [" + 
+					"tcCode=" + tcCode
+					+ ", tcName=" + tcName
+					+ ", tcRowidArray=" + Arrays.toString(tcRowidArray)
+					+ "]";
 		}
-		
 	}
-
-	public java.lang.String[] getDynamicColumns()
+	
+	public String[] getDynamicColumns()
 	{
 		return dynamicColumns;
 	}
-
-	public void setDynamicColumns(java.lang.String[] dynamicColumns)
+	
+	public void setDynamicColumns(String[] dynamicColumns)
 	{
 		this.dynamicColumns = dynamicColumns;
 	}
-
+	
 	public List<Map<String, Object>> getDynamicOrder()
 	{
 		return dynamicOrder;
 	}
-
+	
 	public void setDynamicOrder(List<Map<String, Object>> dynamicOrder)
 	{
 		this.dynamicOrder = dynamicOrder;
 	}
-
+	
 	public DynamicWhere getDynamicWhere()
 	{
 		return dynamicWhere;
@@ -103,7 +105,7 @@ public class TbDemoGetListQuery implements Serializable
 	{
 		this.dynamicWhere = dynamicWhere;
 	}
-
+	
 	public int getPage()
 	{
 		return page;
@@ -130,6 +132,4 @@ public class TbDemoGetListQuery implements Serializable
 		return "TbDemoGetListQuery [dynamicColumns=" + Arrays.toString(dynamicColumns) + ", dynamicOrder="
 				+ dynamicOrder + ", dynamicWhere=" + dynamicWhere.toString() + ", page=" + page + ", pagesize=" + pagesize + "]";
 	}
-	
 }
-

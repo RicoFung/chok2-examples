@@ -146,7 +146,7 @@
         <appender-ref ref="FILE_ALL"/>
         <appender-ref ref="FILE_ERROR"/>
     </logger>
-    <logger name="com.api" level="DEBUG" additivity="false">
+    <logger name="com.domain" level="DEBUG" additivity="false">
         <appender-ref ref="GELF"/>
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE_ALL"/>

@@ -10,54 +10,38 @@ import java.io.Serializable;
 public class TbDemoEntity implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	
-    // tcRowid       db_column: TC_ROWID 
-	private java.lang.Long tcRowid;
+
+	// tcRowid       db_column: TC_ROWID 
+	private String tcRowid;
+
     // tcCode       db_column: TC_CODE 
 	private java.lang.String tcCode;
     // tcName       db_column: TC_NAME 
 	private java.lang.String tcName;
 
-	public TbDemoEntity(){
-	}
-
-	public TbDemoEntity(
-		java.lang.Long tcRowid,
-		java.lang.String tcCode,
-		java.lang.String tcName
-	)
+	public String getTcRowid() 
 	{
-		this.tcRowid = tcRowid;
-		this.tcCode = tcCode;
-		this.tcName = tcName;
+		return this.tcRowid;
 	}
-
-	public void setTcRowid(java.lang.Long value) 
+	public void setTcRowid(String value) 
 	{
 		this.tcRowid = value;
 	}
-	
-	public java.lang.Long getTcRowid() 
+	public java.lang.String getTcCode() 
 	{
-		return this.tcRowid;
+		return this.tcCode;
 	}
 	public void setTcCode(java.lang.String value) 
 	{
 		this.tcCode = value;
 	}
-	
-	public java.lang.String getTcCode() 
+	public java.lang.String getTcName() 
 	{
-		return this.tcCode;
+		return this.tcName;
 	}
 	public void setTcName(java.lang.String value) 
 	{
 		this.tcName = value;
-	}
-	
-	public java.lang.String getTcName() 
-	{
-		return this.tcName;
 	}
 }
 

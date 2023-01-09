@@ -7,7 +7,7 @@ import java.util.Map;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(description = "TbDemoGetListParamDTO 列表入参")
+@Schema(description = "TbDemoGetListParam 列表入参")
 public class TbDemoGetListParam implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -16,19 +16,19 @@ public class TbDemoGetListParam implements Serializable
 	// 1.默认参数
 	// ********************************************************************************************
 
-	@Schema(title = "动态列", example = "[\"tcRowid\",\"tcCode\",\"tcName\"]")//, position = 0)
+	@Schema(title = "动态列", example = "[\"tcRowid\",\"tcCode\",\"tcName\"]")
 	private java.lang.String[] dynamicColumns;
 	
-	@Schema(title = "动态排序", example = "[{\"sortName\":\"tcRowid\",\"sortOrder\":\"DESC\"}]")//, position = 1)
+	@Schema(title = "动态排序", example = "[{\"sortName\":\"tcRowid\",\"sortOrder\":\"DESC\"}]")
 	private List<Map<String, Object>> dynamicOrder;
 	
-	@Schema(title = "动态过滤")//, position = 2)
+	@Schema(title = "动态过滤")
 	private DynamicWhere dynamicWhere;
-	
-	@Schema(title = "页码", example = "1")//, position = 2)
+
+	@Schema(title = "页码", example = "1")
 	private int page;
 
-	@Schema(title = "页大小", example = "10")//, position = 3)
+	@Schema(title = "页大小", example = "10")
 	private int pagesize;
 
 	// ********************************************************************************************
@@ -39,73 +39,73 @@ public class TbDemoGetListParam implements Serializable
 	{
 		private static final long serialVersionUID = 1L;
 		
-		// tcCode       db_column: TC_CODE 
-		@Schema(title = "tcCode", example = "")//, position = 5)
+	    // tcCode       db_column: TC_CODE 
+		@Schema(title = "tcCode", example = "")
 		private java.lang.String tcCode;
-		// tcName       db_column: TC_NAME 
-		@Schema(title = "tcName", example = "")//, position = 6)
+	    // tcName       db_column: TC_NAME 
+		@Schema(title = "tcName", example = "")
 		private java.lang.String tcName;
 		
+		// tcRowid       db_column: TC_ROWID 
 		private String[] tcRowidArray;
-		
-		public void setTcCode(java.lang.String value) 
-		{
-			this.tcCode = value;
-		}
 		
 		public java.lang.String getTcCode() 
 		{
 			return this.tcCode;
 		}
-		public void setTcName(java.lang.String value) 
+		public void setTcCode(java.lang.String value) 
 		{
-			this.tcName = value;
+			this.tcCode = value;
 		}
-		
 		public java.lang.String getTcName() 
 		{
 			return this.tcName;
 		}
-		
-		public String[] getTcRowidArray()
+		public void setTcName(java.lang.String value) 
 		{
-			return tcRowidArray;
+			this.tcName = value;
 		}
 	
-		public void setTcRowidArray(String[] tcRowidArray)
+		public String[] getTcRowidArray() 
 		{
-			this.tcRowidArray = tcRowidArray;
+			return this.tcRowidArray;
+		}
+		public void setTcRowidArray(String[] value) 
+		{
+			this.tcRowidArray = value;
 		}
 
 		@Override
 		public String toString()
 		{
-			return "DynamicWhere [tcCode=" + tcCode + ", tcName=" + tcName + ", tcRowidArray="
-					+ Arrays.toString(tcRowidArray) + "]";
+			return "DynamicWhere [" + 
+					"tcCode=" + tcCode
+					+ ", tcName=" + tcName
+					+ ", tcRowidArray=" + Arrays.toString(tcRowidArray)
+					+ "]";
 		}
-		
 	}
-
-	public java.lang.String[] getDynamicColumns()
+	
+	public String[] getDynamicColumns()
 	{
 		return dynamicColumns;
 	}
-
-	public void setDynamicColumns(java.lang.String[] dynamicColumns)
+	
+	public void setDynamicColumns(String[] dynamicColumns)
 	{
 		this.dynamicColumns = dynamicColumns;
 	}
-
+	
 	public List<Map<String, Object>> getDynamicOrder()
 	{
 		return dynamicOrder;
 	}
-
+	
 	public void setDynamicOrder(List<Map<String, Object>> dynamicOrder)
 	{
 		this.dynamicOrder = dynamicOrder;
 	}
-
+	
 	public DynamicWhere getDynamicWhere()
 	{
 		return dynamicWhere;
@@ -115,7 +115,7 @@ public class TbDemoGetListParam implements Serializable
 	{
 		this.dynamicWhere = dynamicWhere;
 	}
-
+	
 	public int getPage()
 	{
 		return page;
@@ -142,6 +142,4 @@ public class TbDemoGetListParam implements Serializable
 		return "TbDemoGetListParam [dynamicColumns=" + Arrays.toString(dynamicColumns) + ", dynamicOrder="
 				+ dynamicOrder + ", dynamicWhere=" + dynamicWhere.toString() + ", page=" + page + ", pagesize=" + pagesize + "]";
 	}
-	
 }
-

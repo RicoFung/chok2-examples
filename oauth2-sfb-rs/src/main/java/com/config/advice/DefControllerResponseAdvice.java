@@ -20,7 +20,7 @@ import chok.devwork.pojo.ChokDto;
  * @author rico.fung
  *
  */
-@RestControllerAdvice(basePackages = { "com.api.v3.tbdemo.controller" })
+@RestControllerAdvice(basePackages = { "com.domain.tbdemo.controller" })
 public class DefControllerResponseAdvice implements ResponseBodyAdvice<Object>
 {
 	@Override

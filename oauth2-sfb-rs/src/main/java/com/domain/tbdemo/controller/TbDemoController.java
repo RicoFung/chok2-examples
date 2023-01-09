@@ -33,18 +33,17 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/api/v3/tbdemo")
 public class TbDemoController
 {
-
-	// ---------------------------------------------------------------------------------------
+	// --------------------------------------------------------------------------------------- //
 	// value: 指定请求的实际地址， 比如 /action/info之类
 	// method： 指定请求的method类型， GET、POST、PUT、DELETE等
 	// consumes： 指定处理请求的提交内容类型（Content-Type），例如application/json, text/html;
-	// produces: 指定返回的内容类型，仅当ro请求头中的(Accept)类型中包含该指定类型才返回
-	// ros： 指定ro中必须包含某些参数值是，才让该方法处理
-	// headers： 指定ro中必须包含某些指定的header值，才能让该方法处理请求
-	// ---------------------------------------------------------------------------------------
+	// produces: 指定返回的内容类型，仅当request请求头中的(Accept)类型中包含该指定类型才返回
+	// params： 指定request中必须包含某些参数值是，才让该方法处理
+	// headers： 指定request中必须包含某些指定的header值，才能让该方法处理请求
+	// --------------------------------------------------------------------------------------- //
 
 	@SuppressWarnings("unused")
-	private final Logger log = LoggerFactory.getLogger(getClass());	
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private TbDemoService service;

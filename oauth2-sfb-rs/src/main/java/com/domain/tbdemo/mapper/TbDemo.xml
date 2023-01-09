@@ -19,10 +19,10 @@
 	-->
 	
     <!-- 自动生成id策略 -->
-    <insert id="add" parameterType="com.domain.tbdemo.model.entity.TbDemoEntity">  
-       	<selectKey keyProperty="tcRowid" resultType="long" order="BEFORE">
+    <insert id="add" parameterType="com.domain.tbdemo.model.entity.TbDemoEntity"> 
+       	<selectKey keyProperty="tcRowid" resultType="string" order="BEFORE">
 	         SELECT SEQ_TB_DEMO.NEXTVAL FROM DUAL
-	     </selectKey>
+		</selectKey>
        	INSERT INTO TB_DEMO 
        	( TC_ROWID, TC_CODE, TC_NAME) 
        	VALUES
@@ -36,7 +36,7 @@
         TC_CODE,
         TC_NAME
         )
-	    SELECT SEQ_TB_DEMO.NEXTVAL, T.*
+	    SELECT SEQ_DEMO.NEXTVAL, T.*
         FROM 
         (
 	    <foreach collection ="list" item="item" index="index" separator="UNION ALL">
@@ -49,11 +49,10 @@
     </insert>
 	
 	<delete id="del">
-		DELETE FROM TB_DEMO T
-		 WHERE T.TC_ROWID IN
-		<foreach collection="array" item="tcRowid" index="index" open="(" close=")" separator=",">
-		  #{tcRowid}
-		</foreach>
+		DELETE FROM TB_DEMO 
+		 WHERE 
+		TC_ROWID IN
+		<foreach collection="array" item="tcRowid" index="index" open="(" close=")" separator=",">#{tcRowid}</foreach>
 	</delete>
 	
 	<update id="upd" parameterType="com.domain.tbdemo.model.entity.TbDemoEntity">
@@ -81,7 +80,7 @@
 	* READ
 	****************************************************************************************************
 	-->
-
+  	
 	<sql id="dynamicColumns">
 		<choose>
 			<when test="@chok.devwork.Ognl@isNotEmpty(dynamicColumns) and @chok.devwork.Ognl@isNotNull(dynamicColumns)">
@@ -102,19 +101,13 @@
 	<sql id="dynamicOrder">
 		<choose>
 			<when test="@chok.devwork.Ognl@isNotEmpty(dynamicOrder)">
-				ORDER BY <foreach collection="dynamicOrder" index="index" item="item" separator=",">TT.<include refid="orderParse2" /> ${item.sortOrder}</foreach>  
+				ORDER BY <foreach collection="dynamicOrder" index="index" item="item" separator=",">TT.<include refid="orderParse" /> ${item.sortOrder}</foreach>  
 			</when>
 			<otherwise>
-				ORDER BY TT.TC_ROWID DESC
 			</otherwise>
 		</choose>
 	</sql>
-	<sql id="orderParse1">
-		<if test="sort == 'tcRowid'">TC_ROWID</if>
-		<if test="sort == 'tcCode'">TC_CODE</if>
-		<if test="sort == 'tcName'">TC_NAME</if>
-	</sql>
-	<sql id="orderParse2">
+	<sql id="orderParse">
 		<if test="item.sortName == 'tcRowid'">TC_ROWID</if>
 		<if test="item.sortName == 'tcCode'">TC_CODE</if>
 		<if test="item.sortName == 'tcName'">TC_NAME</if>
@@ -122,17 +115,17 @@
 	
 	<sql id="dynamicWhere">
 		<where>
-	       	<if test="@chok.devwork.Ognl@isNotEmpty(dynamicWhere.tcCode)"> AND T.TC_CODE LIKE '%'||#{dynamicWhere.tcCode}||'%'</if>
-	       	<if test="@chok.devwork.Ognl@isNotEmpty(dynamicWhere.tcName)"> AND T.TC_NAME LIKE '%'||#{dynamicWhere.tcName}||'%'</if>
 			<if test="@chok.devwork.Ognl@isNotEmpty(dynamicWhere.tcRowidArray)"> 
 				AND T.TC_ROWID IN
 				<foreach collection="dynamicWhere.tcRowidArray" item="tcRowid" index="index" open="(" close=")" separator=",">#{tcRowid}</foreach>
 			</if>
+	       	<if test="@chok.devwork.Ognl@isNotEmpty(dynamicWhere.tcCode)"> AND T.TC_CODE LIKE '%'||#{dynamicWhere.tcCode}||'%'</if>
+	       	<if test="@chok.devwork.Ognl@isNotEmpty(dynamicWhere.tcName)"> AND T.TC_NAME LIKE '%'||#{dynamicWhere.tcName}||'%'</if>
 		</where>
 	</sql>	
 	
 	<!-- getOne -->
-	<resultMap type="com.domain.tbdemo.model.data.TbDemoGetOneData" id="getOneData" >
+	<resultMap type="com.domain.tbdemo.model.data.TbDemoGetOneData" id="getOneData">
         <result property="tcRowid" column="TC_ROWID"/>
         <result property="tcCode" column="TC_CODE"/>
         <result property="tcName" column="TC_NAME"/>
@@ -140,7 +133,7 @@
 	<select id="getOne" resultMap="getOneData">
 		SELECT <include refid="dynamicColumns"/> 
 		  FROM TB_DEMO T 
-		 WHERE T.TC_ROWID = #{tcRowid}  	  
+         WHERE T.TC_ROWID = #{tcRowid}  
 	</select>
 	
 	<!-- getList -->
@@ -170,5 +163,10 @@
 				<include refid="dynamicOrder" />
 			</otherwise>
 		</choose>
-	</select>     
+	</select>
+	
+	<select id="getCount" resultType="int">
+		SELECT COUNT(1) FROM TB_DEMO T
+		<include refid="dynamicWhere" />
+	</select>
 </mapper>  

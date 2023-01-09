@@ -1,15 +1,12 @@
 package com.domain.tbdemo.dao;
 
 import javax.annotation.Resource;
-
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
-
-import chok.devwork.BaseDaoV2;
-
+import chok.devwork.BaseDaoPlus;
 
 @Repository(value = "v3TbDemoDao")
-public class TbDemoDao extends BaseDaoV2
+public class TbDemoDao extends BaseDaoPlus
 {
 	@Resource//(name = "firstSqlSessionTemplate")
 	private SqlSession sqlSession;
@@ -25,5 +22,4 @@ public class TbDemoDao extends BaseDaoV2
 	{
 		return getClass().getName();
 	}
-	
 }
