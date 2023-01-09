@@ -4,28 +4,34 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<!--本Project識別 -->
-	<artifactId>oauth2-authorization-server</artifactId>
+	<artifactId>oauth2-sfb-as</artifactId>
 	<!--表示打包Project的型態,可能為Jar、war、ear或pom，若是使用了android 則為apk -->
 	<packaging>war</packaging>
 	<!--以下是給工具看的,主要是本Project的資訊 -->
-	<name>oauth2-authorization-server</name>
+	<name>oauth2-sfb-as</name>
 
 	<parent>
 		<groupId>com.chok2</groupId>
 		<artifactId>chok2-examples</artifactId>
 		<version>1.0.0</version>
-		<relativePath>../../pom.xml</relativePath>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<profiles>
+		<profile>
+			<id>loc</id>
+			<properties>
+				<profileActive>loc</profileActive>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
 		<profile>
 			<id>dev</id>
 			<properties>
 				<profileActive>dev</profileActive>
 			</properties>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
 		</profile>
 		<profile>
 			<id>uat</id>
@@ -139,6 +145,6 @@
 				</includes>
 			</resource>
 		</resources>
-		<finalName>oauth2-authorization-server</finalName>
+		<finalName>oauth2-sfb-as</finalName>
 	</build>
 </project>

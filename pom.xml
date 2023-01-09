@@ -15,8 +15,8 @@
 	</properties>
 
 	<modules>
-		<module>oauth2-examples/oauth2-resource-server</module>
-		<module>oauth2-examples/oauth2-authorization-server</module>
+		<module>oauth2-sfb-as</module>
+		<module>oauth2-sfb-rs</module>
 	</modules>
 
 	<parent>

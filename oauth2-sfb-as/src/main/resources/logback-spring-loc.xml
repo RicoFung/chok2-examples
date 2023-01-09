@@ -110,7 +110,7 @@
 				<pattern>${LOG_MSG}</pattern>
 			</fullPatternLayout>
 			<staticField>application:${APP_NAME}</staticField>
-			<staticField>environment:LOCAL</staticField>
+			<staticField>environment:LOC</staticField>
 		</layout>
 	</appender>
 
