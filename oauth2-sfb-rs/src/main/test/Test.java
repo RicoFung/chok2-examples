@@ -4,9 +4,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.Application;
-import com.api.v2.entity.TbDemo;
-import com.api.v2.tbdemo.service.TbDemoService;
-import com.api.v3.customtbdemo.dao.CustomTbDemoDao;
+import com.domain.customtbdemo.dao.CustomTbDemoDao;
+import com.domain.tbdemo.model.entity.TbDemoEntity;
+import com.domain.tbdemo.service.TbDemoService;
 
 
 @RunWith(SpringRunner.class)
@@ -15,8 +15,6 @@ public class Test
 {
 	
 	@Autowired
-	TbDemoService service;
-	@Autowired
 	CustomTbDemoDao v3Dao;
 	@Autowired
 	TbDemoService v3Service;
@@ -24,12 +22,12 @@ public class Test
 //	@org.junit.Test
 	public void testTransaction()
 	{
-		TbDemo demo = new TbDemo();
+		TbDemoEntity demo = new TbDemoEntity();
 		demo.setTcCode("c3");
 		demo.setTcName("n3");
 		try
 		{
-			service.add(demo);
+			v3Service.add(demo);
 		}
 		catch (Exception e)
 		{

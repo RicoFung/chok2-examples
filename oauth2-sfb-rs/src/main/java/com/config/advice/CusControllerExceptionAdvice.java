@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.api.v3.customtbdemo.dto.CustomDto;
+import com.domain.customtbdemo.dto.CustomDto;
 
 import chok.devwork.pojo.ChokDtoConstants;
 
