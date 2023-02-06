@@ -46,7 +46,7 @@ public class TbDemoExportParam extends TbDemoGetListParam
 	@Override
 	public String toString()
 	{
-		return "TbDemoExpRptParam [dynamicColumns=" + Arrays.toString(dynamicColumns) + ", dynamicOrder="
+		return "TbDemoExportParam [dynamicColumns=" + Arrays.toString(dynamicColumns) + ", dynamicOrder="
 				+ dynamicOrder + ", dynamicWhere=" + dynamicWhere.toString() + ", page=" + page + ", pagesize=" + pagesize + "]";
 	}
 	
