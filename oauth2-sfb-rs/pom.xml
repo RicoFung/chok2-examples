@@ -151,10 +151,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.chok2</groupId>
-			<artifactId>chok2-oauth2</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.chok2</groupId>
 			<artifactId>chok2-component</artifactId>
 		</dependency>
 		<!--  -->

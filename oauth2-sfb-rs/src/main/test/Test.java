@@ -27,7 +27,7 @@ public class Test
 		demo.setTcName("n3");
 		try
 		{
-			v3Service.add(demo);
+			v3Service.create(demo);
 		}
 		catch (Exception e)
 		{

@@ -1,6 +1,9 @@
 package com.domain.tbdemo.controller;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,14 +19,16 @@ import com.domain.tbdemo.model.data.TbDemoGetOneData;
 import com.domain.tbdemo.model.entity.TbDemoEntity;
 import com.domain.tbdemo.model.param.ParamMapper;
 import com.domain.tbdemo.model.param.TbDemoCreateParam;
-import com.domain.tbdemo.model.param.TbDemoRemoveParam;
+import com.domain.tbdemo.model.param.TbDemoExpListParam;
 import com.domain.tbdemo.model.param.TbDemoGetListParam;
 import com.domain.tbdemo.model.param.TbDemoGetOneParam;
 import com.domain.tbdemo.model.param.TbDemoModifyParam;
+import com.domain.tbdemo.model.param.TbDemoRemoveParam;
 import com.domain.tbdemo.model.query.TbDemoGetListQuery;
 import com.domain.tbdemo.model.query.TbDemoGetOneQuery;
 import com.domain.tbdemo.service.TbDemoService;
 
+import chok.devwork.BaseRestControllerPlus;
 import chok.devwork.pojo.ChokDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,7 +36,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "v3-TbDemo")
 @RestController(value = "v3TbDemoController")
 @RequestMapping("/api/v3/tbdemo")
-public class TbDemoController
+public class TbDemoController extends BaseRestControllerPlus
 {
 	// --------------------------------------------------------------------------------------- //
 	// value: 指定请求的实际地址， 比如 /action/info之类
@@ -85,5 +90,43 @@ public class TbDemoController
 	{
 		TbDemoGetListQuery query = ParamMapper.INSTANCE.paramToQuery(param);
 		return service.getList(query);
+	}
+	
+	@Operation(summary = "导出1（pdf/xlsx/html）")
+	@RequestMapping(value = "/expList1", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	public void expList1(@RequestBody @Validated TbDemoExpListParam param) throws Exception
+	{
+		TbDemoGetListQuery query = ParamMapper.INSTANCE.paramToQuery(param);
+		List<TbDemoGetListData> bizDatasetValue = service.getList(query).getData();
+		exportRptOneTable("rpt_demo_bean_single", param.getRptName(), param.getRptFormat(), "bizDatasetKey", bizDatasetValue, Object.class);
+	}
+	
+	@Operation(summary = "导出2（pdf/xlsx/html）")
+	@RequestMapping(value = "/expList2", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	public void expList2(@RequestBody @Validated TbDemoExpListParam param) throws Exception
+	{
+		TbDemoGetListQuery query = ParamMapper.INSTANCE.paramToQuery(param);
+		List<TbDemoGetListData> bizDatasetValue1 = service.getList(query).getData();
+		List<TbDemoGetListData> bizDatasetValue2 = service.getList(query).getData();
+		// rpt 基础控件参数
+		Map<String, ?> bizDatasetKV = new HashMap<String, Object>() 
+		{
+			private static final long serialVersionUID = 1L;
+			{
+				put("mainField1", "hi world!");
+				put("mainField2", "hello world!");
+			}
+		};
+		// rpt Table控件参数
+		LinkedHashMap<String, List<?>> bizDatasetTableKV = new LinkedHashMap<String, List<?>>()
+		{
+			private static final long serialVersionUID = 1L;
+			{
+				put("bizDatasetKey1", bizDatasetValue1);
+				put("bizDatasetKey2", bizDatasetValue2);
+			}
+		};
+		// 导出
+		exportRptMultiTable("rpt_demo_bean_multi", param.getRptName(), param.getRptFormat(), bizDatasetKV, bizDatasetTableKV, Object.class, Object.class);
 	}
 }

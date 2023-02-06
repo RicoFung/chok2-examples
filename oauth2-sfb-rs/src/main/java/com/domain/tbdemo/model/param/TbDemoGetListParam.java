@@ -17,19 +17,19 @@ public class TbDemoGetListParam implements Serializable
 	// ********************************************************************************************
 
 	@Schema(title = "动态列", example = "[\"tcRowid\",\"tcCode\",\"tcName\"]")
-	private java.lang.String[] dynamicColumns;
+	protected java.lang.String[] dynamicColumns;
 	
 	@Schema(title = "动态排序", example = "[{\"sortName\":\"tcRowid\",\"sortOrder\":\"DESC\"}]")
-	private List<Map<String, Object>> dynamicOrder;
+	protected List<Map<String, Object>> dynamicOrder;
 	
 	@Schema(title = "动态过滤")
-	private DynamicWhere dynamicWhere;
+	protected DynamicWhere dynamicWhere;
 
 	@Schema(title = "页码", example = "1")
-	private int page;
+	protected int page;
 
 	@Schema(title = "页大小", example = "10")
-	private int pagesize;
+	protected int pagesize;
 
 	// ********************************************************************************************
 	// 2.表单参数
