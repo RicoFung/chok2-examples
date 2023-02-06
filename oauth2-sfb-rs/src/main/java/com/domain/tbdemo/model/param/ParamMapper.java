@@ -14,9 +14,9 @@ public interface ParamMapper
 	ParamMapper INSTANCE = Mappers.getMapper( ParamMapper.class );
 	
 	@Mapping(target = "tcRowid", ignore = true)
-	TbDemoEntity paramToEntity(TbDemoAddParam param);
+	TbDemoEntity paramToEntity(TbDemoCreateParam param);
 	
-	TbDemoEntity paramToEntity(TbDemoUpdParam param);
+	TbDemoEntity paramToEntity(TbDemoModifyParam param);
 	
 	TbDemoGetOneQuery paramToQuery(TbDemoGetOneParam param);
 	

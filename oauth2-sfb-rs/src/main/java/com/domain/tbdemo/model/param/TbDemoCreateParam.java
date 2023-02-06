@@ -5,8 +5,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(description = "TbDemoAddParam 新增入参")
-public class TbDemoAddParam implements Serializable
+@Schema(description = "TbDemoCreateParam 新增入参")
+public class TbDemoCreateParam implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 

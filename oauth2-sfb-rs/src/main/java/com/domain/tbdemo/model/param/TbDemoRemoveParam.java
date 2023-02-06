@@ -5,8 +5,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(description = "TbDemoDelParam 删除入参")
-public class TbDemoDelParam implements Serializable
+@Schema(description = "TbDemoRemoveParam 删除入参")
+public class TbDemoRemoveParam implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 

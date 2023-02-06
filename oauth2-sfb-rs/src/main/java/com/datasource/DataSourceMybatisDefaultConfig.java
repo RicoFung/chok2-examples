@@ -90,19 +90,31 @@ public class DataSourceMybatisDefaultConfig
 	public TransactionInterceptor transactionInterceptor() throws Throwable
 	{
 		Properties prop = new Properties();
+		
 		prop.setProperty("add*", "PROPAGATION_REQUIRED,-Exception");
 		prop.setProperty("del*", "PROPAGATION_REQUIRED,-Exception");
 		prop.setProperty("upd*", "PROPAGATION_REQUIRED,-Exception");
-		prop.setProperty("save*", "PROPAGATION_REQUIRED,-Exception");
-		prop.setProperty("submit*", "PROPAGATION_REQUIRED,-Exception");
-		prop.setProperty("audit*", "PROPAGATION_REQUIRED,-Exception");
-		prop.setProperty("reject*", "PROPAGATION_REQUIRED,-Exception");
-		prop.setProperty("release*", "PROPAGATION_REQUIRED,-Exception");
-		prop.setProperty("copy", "PROPAGATION_REQUIRED,-Exception");
-		prop.setProperty("push", "PROPAGATION_REQUIRED,-Exception");
-		prop.setProperty("upload*", "PROPAGATION_REQUIRED,-Exception");
+		
+		prop.setProperty("create*", "PROPAGATION_REQUIRED,-Exception");
+		prop.setProperty("modify*", "PROPAGATION_REQUIRED,-Exception");
+		prop.setProperty("remove*", "PROPAGATION_REQUIRED,-Exception");
+		
+		prop.setProperty("insert*", "PROPAGATION_REQUIRED,-Exception");
+		prop.setProperty("update*", "PROPAGATION_REQUIRED,-Exception");
+		prop.setProperty("delete*", "PROPAGATION_REQUIRED,-Exception");
+		
 		prop.setProperty("get*", "PROPAGATION_NEVER,readOnly");
 		prop.setProperty("query*", "PROPAGATION_NEVER,readOnly");
+		
+		prop.setProperty("imp*", "PROPAGATION_REQUIRED,-Exception");
+		prop.setProperty("exp*", "PROPAGATION_NEVER,readOnly");
+		
+		prop.setProperty("import*", "PROPAGATION_REQUIRED,-Exception");
+		prop.setProperty("export*", "PROPAGATION_NEVER,readOnly");
+		
+		prop.setProperty("upload*", "PROPAGATION_REQUIRED,-Exception");
+		prop.setProperty("download*", "PROPAGATION_NEVER,readOnly");
+		
 		TransactionInterceptor ti = new TransactionInterceptor();
 		ti.setTransactionManager(transactionManager());
 		ti.setTransactionAttributes(prop);

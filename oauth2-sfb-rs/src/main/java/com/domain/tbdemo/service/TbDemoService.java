@@ -31,23 +31,23 @@ public class TbDemoService
 	private TbDemoDao dao;
 
 	@Caching(evict = { @CacheEvict(allEntries = true) })
-	public ChokDto<Object> add(TbDemoEntity entity)
+	public ChokDto<Object> create(TbDemoEntity entity)
 	{
-		dao.add(entity);
+		dao.create(entity);
 		return new ChokDto<Object>();
 	}
 
 	@Caching(evict = { @CacheEvict(allEntries = true) })
-	public ChokDto<Object> del(String[] ids)
+	public ChokDto<Object> remove(String[] ids)
 	{
-		dao.del(ids);
+		dao.remove(ids);
 		return new ChokDto<Object>();
 	}
 
 	@Caching(evict = { @CacheEvict(value = {"CACHE_TbDemo"}, allEntries = true) })
-	public ChokDto<Object> upd(TbDemoEntity entity)
+	public ChokDto<Object> modify(TbDemoEntity entity)
 	{
-		dao.upd(entity);
+		dao.modify(entity);
 		return new ChokDto<Object>();
 	}	
 

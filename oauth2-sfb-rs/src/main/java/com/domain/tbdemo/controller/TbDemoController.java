@@ -15,11 +15,11 @@ import com.domain.tbdemo.model.data.TbDemoGetListData;
 import com.domain.tbdemo.model.data.TbDemoGetOneData;
 import com.domain.tbdemo.model.entity.TbDemoEntity;
 import com.domain.tbdemo.model.param.ParamMapper;
-import com.domain.tbdemo.model.param.TbDemoAddParam;
-import com.domain.tbdemo.model.param.TbDemoDelParam;
+import com.domain.tbdemo.model.param.TbDemoCreateParam;
+import com.domain.tbdemo.model.param.TbDemoRemoveParam;
 import com.domain.tbdemo.model.param.TbDemoGetListParam;
 import com.domain.tbdemo.model.param.TbDemoGetOneParam;
-import com.domain.tbdemo.model.param.TbDemoUpdParam;
+import com.domain.tbdemo.model.param.TbDemoModifyParam;
 import com.domain.tbdemo.model.query.TbDemoGetListQuery;
 import com.domain.tbdemo.model.query.TbDemoGetOneQuery;
 import com.domain.tbdemo.service.TbDemoService;
@@ -49,26 +49,26 @@ public class TbDemoController
 	private TbDemoService service;
 
 	@Operation(summary = "新增")
-	@RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	public ChokDto<Object> add(@RequestBody @Validated TbDemoAddParam param)
+	@RequestMapping(value = "/create", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	public ChokDto<Object> create(@RequestBody @Validated TbDemoCreateParam param)
 	{
 		TbDemoEntity entity = ParamMapper.INSTANCE.paramToEntity(param);
-		return service.add(entity);
+		return service.create(entity);
 	}
 
 	@Operation(summary = "删除")
-	@RequestMapping(value = "/del", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	public ChokDto<Object> del(@RequestBody @Validated TbDemoDelParam param)
+	@RequestMapping(value = "/remove", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	public ChokDto<Object> remove(@RequestBody @Validated TbDemoRemoveParam param)
 	{
-		return service.del(param.getTcRowidArray());
+		return service.remove(param.getTcRowidArray());
 	}
 
 	@Operation(summary = "修改")
-	@RequestMapping(value = "/upd", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	public ChokDto<Object> upd(@RequestBody @Validated TbDemoUpdParam param)
+	@RequestMapping(value = "/modify", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	public ChokDto<Object> modify(@RequestBody @Validated TbDemoModifyParam param)
 	{
 		TbDemoEntity entity = ParamMapper.INSTANCE.paramToEntity(param);
-		return service.upd(entity);
+		return service.modify(entity);
 	}
 
 	@Operation(summary = "明细")

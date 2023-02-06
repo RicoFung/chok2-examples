@@ -19,7 +19,7 @@
 	-->
 	
     <!-- 自动生成id策略 -->
-    <insert id="add" parameterType="com.domain.tbdemo.model.entity.TbDemoEntity"> 
+    <insert id="create" parameterType="com.domain.tbdemo.model.entity.TbDemoEntity"> 
        	<selectKey keyProperty="tcRowid" resultType="string" order="BEFORE">
 	         SELECT SEQ_TB_DEMO.NEXTVAL FROM DUAL
 		</selectKey>
@@ -29,7 +29,7 @@
        	( #{tcRowid}, #{tcCode}, #{tcName})
     </insert>  
     
-    <insert id="addBatch">
+    <insert id="createBatch">
     	INSERT INTO TB_DEMO
     	(
         TC_ROWID,
@@ -48,14 +48,14 @@
         ) T
     </insert>
 	
-	<delete id="del">
+	<delete id="remove">
 		DELETE FROM TB_DEMO 
 		 WHERE 
 		TC_ROWID IN
 		<foreach collection="array" item="tcRowid" index="index" open="(" close=")" separator=",">#{tcRowid}</foreach>
 	</delete>
 	
-	<update id="upd" parameterType="com.domain.tbdemo.model.entity.TbDemoEntity">
+	<update id="modify" parameterType="com.domain.tbdemo.model.entity.TbDemoEntity">
 		UPDATE TB_DEMO T
 		<set>
         <if test="@chok.devwork.Ognl@isNotNull(tcCode)"> T.TC_CODE = #{tcCode},</if>
@@ -64,7 +64,7 @@
          WHERE T.TC_ROWID = #{tcRowid}  
 	</update>
   	
-  	<update id="updBatch">
+  	<update id="modifyBatch">
   		<foreach collection="list" index="index" item="item" open="begin" close=";end;" separator=";">
 	        UPDATE TB_DEMO T
 	        <set>
