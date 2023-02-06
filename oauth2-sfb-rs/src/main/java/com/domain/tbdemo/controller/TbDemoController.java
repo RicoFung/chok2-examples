@@ -19,7 +19,7 @@ import com.domain.tbdemo.model.data.TbDemoGetOneData;
 import com.domain.tbdemo.model.entity.TbDemoEntity;
 import com.domain.tbdemo.model.param.ParamMapper;
 import com.domain.tbdemo.model.param.TbDemoCreateParam;
-import com.domain.tbdemo.model.param.TbDemoExpListParam;
+import com.domain.tbdemo.model.param.TbDemoExportParam;
 import com.domain.tbdemo.model.param.TbDemoGetListParam;
 import com.domain.tbdemo.model.param.TbDemoGetOneParam;
 import com.domain.tbdemo.model.param.TbDemoModifyParam;
@@ -92,18 +92,18 @@ public class TbDemoController extends BaseRestControllerPlus
 		return service.getList(query);
 	}
 	
-	@Operation(summary = "导出1（pdf/xlsx/html）")
-	@RequestMapping(value = "/expList1", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	public void expList1(@RequestBody @Validated TbDemoExpListParam param) throws Exception
+	@Operation(summary = "导出（布局1）")
+	@RequestMapping(value = "/export1", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	public void export1(@RequestBody @Validated TbDemoExportParam param) throws Exception
 	{
 		TbDemoGetListQuery query = ParamMapper.INSTANCE.paramToQuery(param);
 		List<TbDemoGetListData> bizDatasetValue = service.getList(query).getData();
 		exportRptOneTable("rpt_demo_bean_single", param.getRptName(), param.getRptFormat(), "bizDatasetKey", bizDatasetValue, Object.class);
 	}
 	
-	@Operation(summary = "导出2（pdf/xlsx/html）")
-	@RequestMapping(value = "/expList2", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	public void expList2(@RequestBody @Validated TbDemoExpListParam param) throws Exception
+	@Operation(summary = "导出（布局2）")
+	@RequestMapping(value = "/export2", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	public void export2(@RequestBody @Validated TbDemoExportParam param) throws Exception
 	{
 		TbDemoGetListQuery query = ParamMapper.INSTANCE.paramToQuery(param);
 		List<TbDemoGetListData> bizDatasetValue1 = service.getList(query).getData();

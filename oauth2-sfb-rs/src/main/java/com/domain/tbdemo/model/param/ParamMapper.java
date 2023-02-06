@@ -22,6 +22,6 @@ public interface ParamMapper
 	
 	TbDemoGetListQuery paramToQuery(TbDemoGetListParam param);
 	
-	TbDemoGetListQuery paramToQuery(TbDemoExpListParam param);
+	TbDemoGetListQuery paramToQuery(TbDemoExportParam param);
 	
 }
