@@ -92,12 +92,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-properties-migrator</artifactId>
 		</dependency>
-		<!-- spring-boot druid 
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>druid-spring-boot-starter</artifactId>
-		</dependency>
-		-->
 		<!-- spring-boot HikariCP -->
 		<dependency>
 		    <groupId>com.zaxxer</groupId>
