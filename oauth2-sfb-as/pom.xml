@@ -77,6 +77,11 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<!-- spring-boot HikariCP -->
+		<dependency>
+		    <groupId>com.zaxxer</groupId>
+		    <artifactId>HikariCP</artifactId>
+		</dependency>	
 		<!-- inject span and trace IDs into log entries -->
 		<dependency>
 		   <groupId>org.springframework.cloud</groupId>
@@ -111,10 +116,6 @@
 		<dependency>
 			<groupId>com.chok2</groupId>
 			<artifactId>chok2-devwork</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.chok2</groupId>
-			<artifactId>chok2-oauth2</artifactId>
 		</dependency>
 	</dependencies>
 

@@ -1,8 +1,6 @@
 package com.datasource;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 import javax.sql.DataSource;
@@ -22,10 +20,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
 
-import com.alibaba.druid.filter.Filter;
-import com.alibaba.druid.pool.DruidDataSource;
-import com.alibaba.druid.wall.WallConfig;
-import com.alibaba.druid.wall.WallFilter;
+import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @EnableTransactionManagement
@@ -40,16 +35,12 @@ public class DataSourceMybatisDefaultConfig
     private String password;
     @Value("${datasource.mybatis.default.driver-class-name}")
     private String driverClass;
-    @Value("${datasource.mybatis.default.filters}")
-    private String filters;
-    @Value("${datasource.mybatis.default.initialSize}")
-    private int initialSize;
-    @Value("${datasource.mybatis.default.maxActive}")
-    private int maxActive;
-    @Value("${datasource.mybatis.default.minIdle}")
-    private int minIdle;
-    @Value("${datasource.mybatis.default.maxWait}")
-    private int maxWait;
+    @Value("${datasource.mybatis.default.minimumIdle}")
+    private int minimumIdle;
+    @Value("${datasource.mybatis.default.maximumPoolSize}")
+    private int maximumPoolSize;
+    @Value("${datasource.mybatis.default.maxLifetime}")
+    private int maxLifetime;
     @Value("${datasource.mybatis.default.mapper-location}")
     private String mapperLocation;
     @Value("${mybatis.config-location}")
@@ -58,23 +49,14 @@ public class DataSourceMybatisDefaultConfig
     @Bean(name = "dataSourceMybatis")
     public DataSource dataSource() throws SQLException 
     {
-        DruidDataSource dataSource = new DruidDataSource();
+    	HikariDataSource dataSource = new HikariDataSource();
         dataSource.setDriverClassName(driverClass);
-        dataSource.setUrl(url);
+        dataSource.setJdbcUrl(url);
         dataSource.setUsername(user);
         dataSource.setPassword(password);
-        dataSource.setInitialSize(initialSize);
-        dataSource.setMaxActive(maxActive);
-        dataSource.setMaxActive(maxActive);
-        dataSource.setMinIdle(minIdle);
-        dataSource.setMaxWait(maxWait);
-        
-        // 配置防御SQL注入攻击,使用缺省配置的WallFilter
-        dataSource.setFilters(filters);
-        // 自定义 filters
-        List<Filter> filters = new ArrayList<Filter>();
-        filters.add(wallFilter());
-        dataSource.setProxyFilters(filters);
+        dataSource.setMinimumIdle(minimumIdle);
+        dataSource.setMaximumPoolSize(maximumPoolSize);
+        dataSource.setMaxLifetime(maxLifetime);
         return dataSource;
     }
  
@@ -108,19 +90,31 @@ public class DataSourceMybatisDefaultConfig
 	public TransactionInterceptor transactionInterceptor() throws Throwable
 	{
 		Properties prop = new Properties();
+		
 		prop.setProperty("add*", "PROPAGATION_REQUIRED,-Exception");
 		prop.setProperty("del*", "PROPAGATION_REQUIRED,-Exception");
 		prop.setProperty("upd*", "PROPAGATION_REQUIRED,-Exception");
-		prop.setProperty("save*", "PROPAGATION_REQUIRED,-Exception");
-		prop.setProperty("submit*", "PROPAGATION_REQUIRED,-Exception");
-		prop.setProperty("audit*", "PROPAGATION_REQUIRED,-Exception");
-		prop.setProperty("reject*", "PROPAGATION_REQUIRED,-Exception");
-		prop.setProperty("release*", "PROPAGATION_REQUIRED,-Exception");
-		prop.setProperty("copy", "PROPAGATION_REQUIRED,-Exception");
-		prop.setProperty("push", "PROPAGATION_REQUIRED,-Exception");
-		prop.setProperty("upload*", "PROPAGATION_REQUIRED,-Exception");
+		
+		prop.setProperty("create*", "PROPAGATION_REQUIRED,-Exception");
+		prop.setProperty("modify*", "PROPAGATION_REQUIRED,-Exception");
+		prop.setProperty("remove*", "PROPAGATION_REQUIRED,-Exception");
+		
+		prop.setProperty("insert*", "PROPAGATION_REQUIRED,-Exception");
+		prop.setProperty("update*", "PROPAGATION_REQUIRED,-Exception");
+		prop.setProperty("delete*", "PROPAGATION_REQUIRED,-Exception");
+		
 		prop.setProperty("get*", "PROPAGATION_NEVER,readOnly");
 		prop.setProperty("query*", "PROPAGATION_NEVER,readOnly");
+		
+		prop.setProperty("imp*", "PROPAGATION_REQUIRED,-Exception");
+		prop.setProperty("exp*", "PROPAGATION_NEVER,readOnly");
+		
+		prop.setProperty("import*", "PROPAGATION_REQUIRED,-Exception");
+		prop.setProperty("export*", "PROPAGATION_NEVER,readOnly");
+		
+		prop.setProperty("upload*", "PROPAGATION_REQUIRED,-Exception");
+		prop.setProperty("download*", "PROPAGATION_NEVER,readOnly");
+		
 		TransactionInterceptor ti = new TransactionInterceptor();
 		ti.setTransactionManager(transactionManager());
 		ti.setTransactionAttributes(prop);
@@ -135,24 +129,5 @@ public class DataSourceMybatisDefaultConfig
 		bpc.setBeanNames("*Service");
 		bpc.setInterceptorNames("transactionInterceptorMybatis");
 		return bpc;
-	}
-	
-	@Bean(name = "wallConfigMybatis")
-	public WallConfig wallConfig()
-	{
-		WallConfig wc = new WallConfig();
-		wc.setMultiStatementAllow(true); // 允许同时执行多条sql
-		return wc;
-	}
-	
-	@Bean(name = "wallFilterMybatis")
-	public WallFilter wallFilter()
-	{
-		WallFilter wf = new WallFilter();
-//		wf.setDbType("mysql"); // 指定dbType
-		wf.setConfig(wallConfig()); // 读取自定义wall-config
-		wf.setLogViolation(true); // 允许 对被认为是攻击的SQL进行LOG.error输出
-		wf.setThrowException(false); // 禁止 对被认为是攻击的SQL抛出SQLExcepton
-		return wf;
 	}
 }
