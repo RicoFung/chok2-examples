@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<groupId>com.chok</groupId>
+	<artifactId>oauth2-sfb-rs1</artifactId>
+	<version>0.0.1</version>
+	<packaging>war</packaging>
+	<name>oauth2-sfb-rs1</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+    	<org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
+	</properties>
+
+	<profiles>
+		<!-- Maven控制Spring Profile -->
+		<profile>
+			<id>loc</id>
+			<properties>
+				<profileActive>loc</profileActive>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<profileActive>dev</profileActive>
+			</properties>
+		</profile>
+		<profile>
+			<id>uat</id>
+			<properties>
+				<profileActive>uat</profileActive>
+			</properties>
+		</profile>
+		<profile>
+			<id>prd</id>
+			<properties>
+				<profileActive>prd</profileActive>
+			</properties>
+		</profile>
+	</profiles>
+
+	<!--  
+		使用 bom 方式代替 parent 方式：
+		1.支持多继承；
+		2.从此项目version与依赖库version分离 ；
+	-->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.chok2</groupId>
+				<artifactId>chok2-parent</artifactId>
+				<version>1.0.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<!-- logback-glef 用于发送消息至graylog -->
+		<dependency>
+			<groupId>de.siegmar</groupId>
+			<artifactId>logback-gelf</artifactId>
+		</dependency>
+		<!-- 使用logback-glef需排除spring-boot-starter-logging -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- spring-boot-security oauth2 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+		</dependency>
+		<!-- spring-boot-properties 迁移工具 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-properties-migrator</artifactId>
+		</dependency>	
+		<!-- inject span and trace IDs into log entries -->
+		<dependency>
+		   <groupId>org.springframework.cloud</groupId>
+		   <artifactId>spring-cloud-starter-sleuth</artifactId>
+		</dependency>
+		<!-- springdoc -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+		</dependency>	
+		<!-- mapstruct eclipse必须在实例项目中引用才能生效 -->
+	    <dependency>
+	        <groupId>org.mapstruct</groupId>
+	        <artifactId>mapstruct</artifactId>
+		        <version>${org.mapstruct.version}</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.mapstruct</groupId>
+	        <artifactId>mapstruct-processor</artifactId>
+		        <version>${org.mapstruct.version}</version>
+	    </dependency>
+		<!-- chok -->
+		<dependency>
+			<groupId>com.chok2</groupId>
+			<artifactId>chok2-devwork</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.chok2</groupId>
+			<artifactId>chok2-component</artifactId>
+		</dependency>
+		<!--  -->
+		<dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+	</dependencies>
+
+	<!-- 针对EPO-NEXUS私库发布 -->
+<!-- 	
+	<distributionManagement>
+		<repository>
+			<id>maven-releases</id>
+			<name>Nexus Release Repository</name>
+			<url>http://nexus.moco.com:7000/repository/maven-releases/</url>
+			<layout>default</layout>
+		</repository>
+		<snapshotRepository>
+			<id>maven-snapshots</id>
+			<name>Nexus Snapshot Repository</name>
+			<url>http://nexus.moco.com:7000/repository/maven-snapshots/</url>
+			<layout>legacy</layout>
+		</snapshotRepository>
+	</distributionManagement>
+ -->
+
+	<!-- maven 打包插件 -->
+	<build>
+		<!-- profile对资源的操作 -->
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<!-- 是否替换@xx@表示的maven properties属性值 -->
+				<filtering>true</filtering>
+				<includes>
+					<include>**/*.xml</include>
+					<include>**/application.properties</include>
+					<include>**/application-${profileActive}.properties</include>
+					<include>**/logback-spring.xml</include>
+					<include>**/logback-spring-${profileActive}.xml</include>
+				</includes>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-war-plugin</artifactId>
+		        <version>3.3.2</version>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+		</plugins>
+		<finalName>oauth2-sfb-rs1</finalName>
+	</build>
+
+</project>
