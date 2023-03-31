@@ -18,6 +18,7 @@
 		<module>oauth2-sfb-as</module>
 		<module>oauth2-sfb-rs</module>
 		<module>oauth2-sfb-rs1</module>
+		<module>springboot-no-orm</module>
 	</modules>
 
 	<parent>
