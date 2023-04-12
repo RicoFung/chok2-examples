@@ -27,14 +27,18 @@ import com.zaxxer.hikari.HikariDataSource;
 @PropertySource(value = "classpath:datasource-mybatis-${spring.profiles.active}.properties", ignoreResourceNotFound = true)
 public class DataSourceMybatisDefaultConfig 
 {
+	@Value("${datasource.mybatis.default.driver-class-name}")
+	private String driverClass;
     @Value("${datasource.mybatis.default.url}")
     private String url;
     @Value("${datasource.mybatis.default.username}")
     private String user;
     @Value("${datasource.mybatis.default.password}")
     private String password;
-    @Value("${datasource.mybatis.default.driver-class-name}")
-    private String driverClass;
+    @Value("${datasource.mybatis.default.connectionTimeout}")
+    private int connectionTimeout;
+    @Value("${datasource.mybatis.default.idleTimeout}")
+    private int idleTimeout;
     @Value("${datasource.mybatis.default.minimumIdle}")
     private int minimumIdle;
     @Value("${datasource.mybatis.default.maximumPoolSize}")
@@ -54,6 +58,8 @@ public class DataSourceMybatisDefaultConfig
         dataSource.setJdbcUrl(url);
         dataSource.setUsername(user);
         dataSource.setPassword(password);
+        dataSource.setConnectionTimeout(connectionTimeout);
+        dataSource.setIdleTimeout(idleTimeout);
         dataSource.setMinimumIdle(minimumIdle);
         dataSource.setMaximumPoolSize(maximumPoolSize);
         dataSource.setMaxLifetime(maxLifetime);

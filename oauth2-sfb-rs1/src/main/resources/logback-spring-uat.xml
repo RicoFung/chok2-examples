@@ -19,13 +19,13 @@
 		<!--以下为可选配置 -->
 		<maxChunkSize>508</maxChunkSize>
 		<useCompression>true</useCompression>
-		<layout class="de.siegmar.logbackgelf.GelfLayout">
+		<encoder class="de.siegmar.logbackgelf.GelfEncoder">
 			<originHost>grayloguat.moco.com</originHost>
 			<includeRawMessage>false</includeRawMessage>
 			<includeMarker>true</includeMarker>
 			<includeMdcData>true</includeMdcData>
-			<includeCallerData>false</includeCallerData>
-			<includeRootCauseData>false</includeRootCauseData>
+			<includeCallerData>true</includeCallerData>
+			<includeRootCauseData>true</includeRootCauseData>
 			<includeLevelName>true</includeLevelName>
 			<shortPatternLayout class="ch.qos.logback.classic.PatternLayout">
 				<pattern>${LOG_MSG}</pattern>
@@ -35,7 +35,7 @@
 			</fullPatternLayout>
 			<staticField>application:${APP_NAME}</staticField>
 			<staticField>environment:UAT</staticField>
-		</layout>
+		</encoder>
 	</appender>
 
 	<!-- ================================================================ -->
