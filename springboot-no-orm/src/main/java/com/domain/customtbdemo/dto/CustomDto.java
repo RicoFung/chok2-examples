@@ -2,8 +2,8 @@ package com.domain.customtbdemo.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import chok.common.RestConstants;
-import chok.devwork.pojo.ChokDtoBase;
+import chok2.devwork.pojo.ChokDtoBase;
+import chok2.devwork.pojo.ChokDtoConstants;
 
 // 按具体业务隐藏字段
 @JsonIgnoreProperties(value = {"success", "code", "msg", "path", "timestamp", "data"})
@@ -52,7 +52,7 @@ public class CustomDto<T> extends ChokDtoBase<T>
 	public void setCode(String code)
 	{
 		super.setCode(code);
-		if (code.equals(RestConstants.SUCCESS_CODE))
+		if (code.equals(ChokDtoConstants.SUCCESS_CODE))
 		{
 			this.esbInfo.setReturnCode(CustomDtoConstants.SUCCESS_CODE);
 		}

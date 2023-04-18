@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.springframework.util.ObjectUtils;
 
-import chok.util.TimeUtil;
+import chok2.util.TimeUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public class CustomDtoEsbInfo implements Serializable

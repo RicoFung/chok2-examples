@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import chok.devwork.pojo.ChokDto;
-import chok.devwork.pojo.ChokDtoConstants;
+import chok2.devwork.pojo.ChokDto;
+import chok2.devwork.pojo.ChokDtoConstants;
 
 /*******************************************
  * 

@@ -10,7 +10,7 @@ import com.Application;
 import com.api.v2.entity.TbDemo;
 import com.api.v2.tbdemo.service.TbDemoService;
 
-import chok.common.RestResult;
+import chok2.common.RestResult;
 
 
 @RunWith(SpringRunner.class)

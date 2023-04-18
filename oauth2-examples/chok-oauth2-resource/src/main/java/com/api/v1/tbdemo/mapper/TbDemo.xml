@@ -49,8 +49,8 @@
 	<update id="upd" parameterType="com.api.v1.tbdemo.entity.TbDemo">
 		UPDATE TB_DEMO T
 		<set>
-        <if test="@chok.devwork.Ognl@isNotNull(tcCode)"> T.TC_CODE = #{tcCode},</if>
-        <if test="@chok.devwork.Ognl@isNotNull(tcName)"> T.TC_NAME = #{tcName}</if>
+        <if test="@chok2.devwork.dao.Ognl@isNotNull(tcCode)"> T.TC_CODE = #{tcCode},</if>
+        <if test="@chok2.devwork.dao.Ognl@isNotNull(tcName)"> T.TC_NAME = #{tcName}</if>
         </set>
          WHERE T.TC_ROWID = #{tcRowid}  
 	</update>
@@ -59,8 +59,8 @@
   		<foreach collection="list" index="index" item="item" open="begin" close=";end;" separator=";">
 	        UPDATE TB_DEMO T
 	        <set>
-		       <if test="@chok.devwork.Ognl@isNotEmpty(item.tcCode)"> T.TC_CODE = #{item.tcCode},</if>
-		       <if test="@chok.devwork.Ognl@isNotEmpty(item.tcName)"> T.TC_NAME = #{item.tcName},</if>
+		       <if test="@chok2.devwork.dao.Ognl@isNotEmpty(item.tcCode)"> T.TC_CODE = #{item.tcCode},</if>
+		       <if test="@chok2.devwork.dao.Ognl@isNotEmpty(item.tcName)"> T.TC_NAME = #{item.tcName},</if>
 	        </set>
 			WHERE T.TC_ROWID = #{item.tcRowid}  
     	</foreach>
@@ -80,7 +80,7 @@
 	
 	<sql id="dynamicColumns">
 		<choose>
-			<when test="@chok.devwork.Ognl@isNotEmpty(dynamicColumns) and @chok.devwork.Ognl@isNotNull(dynamicColumns)">
+			<when test="@chok2.devwork.dao.Ognl@isNotEmpty(dynamicColumns) and @chok2.devwork.dao.Ognl@isNotNull(dynamicColumns)">
 			    <foreach collection ="dynamicColumns" item="col" index="index" separator=",">
 					<if test="col == 'tcRowid'">T.TC_ROWID</if>
 					<if test="col == 'tcCode'">T.TC_CODE</if>
@@ -97,10 +97,10 @@
 	
 	<sql id="order">
 		<choose>
-			<when test="@chok.devwork.Ognl@isNotEmpty(sort)">
+			<when test="@chok2.devwork.dao.Ognl@isNotEmpty(sort)">
 				ORDER BY TT.<include refid="orderParse1"/> ${order}
 			</when>
-			<when test="@chok.devwork.Ognl@isNotEmpty(multiSort)">
+			<when test="@chok2.devwork.dao.Ognl@isNotEmpty(multiSort)">
 				ORDER BY <foreach collection="multiSort" index="index" item="item" separator=",">TT.<include refid="orderParse2" /> ${item.sortOrder}</foreach>  
 			</when>
 			<otherwise>
@@ -110,7 +110,7 @@
 	</sql>
 	<sql id="dynamicOrder">
 		<choose>
-			<when test="@chok.devwork.Ognl@isNotEmpty(dynamicOrder)">
+			<when test="@chok2.devwork.dao.Ognl@isNotEmpty(dynamicOrder)">
 				ORDER BY <foreach collection="dynamicOrder" index="index" item="item" separator=",">TT.<include refid="orderParse2" /> ${item.sortOrder}</foreach>  
 			</when>
 			<otherwise>
@@ -131,10 +131,10 @@
 	
 	<sql id="dynamicWhere">
 		<where>
-    		<if test="@chok.devwork.Ognl@isNotEmpty(tcRowid)"> AND T.TC_ROWID = #{tcRowid} </if>
-	       	<if test="@chok.devwork.Ognl@isNotEmpty(tcCode)"> AND T.TC_CODE LIKE '%'||#{tcCode}||'%'</if>
-	       	<if test="@chok.devwork.Ognl@isNotEmpty(tcName)"> AND T.TC_NAME LIKE '%'||#{tcName}||'%'</if>
-	       	<if test="@chok.devwork.Ognl@isNotEmpty(search)"> AND (T.TC_CODE LIKE '%'||#{search}||'%' OR T.TC_NAME LIKE '%'||#{search}||'%')</if>	
+    		<if test="@chok2.devwork.dao.Ognl@isNotEmpty(tcRowid)"> AND T.TC_ROWID = #{tcRowid} </if>
+	       	<if test="@chok2.devwork.dao.Ognl@isNotEmpty(tcCode)"> AND T.TC_CODE LIKE '%'||#{tcCode}||'%'</if>
+	       	<if test="@chok2.devwork.dao.Ognl@isNotEmpty(tcName)"> AND T.TC_NAME LIKE '%'||#{tcName}||'%'</if>
+	       	<if test="@chok2.devwork.dao.Ognl@isNotEmpty(search)"> AND (T.TC_CODE LIKE '%'||#{search}||'%' OR T.TC_NAME LIKE '%'||#{search}||'%')</if>	
 		</where>
 	</sql>	
 	
@@ -153,7 +153,7 @@
 	<select id="query" resultType="list" resultMap="result">
 		<choose>
 			<!-- 翻页 -->
-			<when test="@chok.devwork.Ognl@isNotEmpty(page) and @chok.devwork.Ognl@isNotEmpty(pagesize)">
+			<when test="@chok2.devwork.dao.Ognl@isNotEmpty(page) and @chok2.devwork.dao.Ognl@isNotEmpty(pagesize)">
 				SELECT * FROM (SELECT row_.*, ROWNUM rownum_ FROM(
 					SELECT TT.* FROM 
 					(
@@ -179,7 +179,7 @@
 	<select id="queryDynamic" resultType="list" resultMap="result">
 		<choose>
 			<!-- 翻页 -->
-			<when test="@chok.devwork.Ognl@isNotEmpty(page) and @chok.devwork.Ognl@isNotEmpty(pagesize)">
+			<when test="@chok2.devwork.dao.Ognl@isNotEmpty(page) and @chok2.devwork.dao.Ognl@isNotEmpty(pagesize)">
 				SELECT * FROM (SELECT row_.*, ROWNUM rownum_ FROM(
 					SELECT TT.* FROM 
 					(

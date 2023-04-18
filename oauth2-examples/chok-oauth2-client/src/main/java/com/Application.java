@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 
-import chok.lock.redisson.RedissonLockAspect;
+import chok2.lock.redisson.RedissonLockAspect;
 
 // 默认（只能扫描project内的bean）
 @SpringBootApplication

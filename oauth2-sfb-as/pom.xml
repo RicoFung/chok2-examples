@@ -77,19 +77,10 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- spring-boot HikariCP -->
-		<dependency>
-		    <groupId>com.zaxxer</groupId>
-		    <artifactId>HikariCP</artifactId>
-		</dependency>	
 		<!-- inject span and trace IDs into log entries -->
 		<dependency>
 		   <groupId>org.springframework.cloud</groupId>
 		   <artifactId>spring-cloud-starter-sleuth</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -104,6 +95,10 @@
 		    <artifactId>spring-session-data-redis</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>ojdbc8</artifactId>
 			<version>12.2.0.1.0</version>
@@ -111,7 +106,15 @@
 		</dependency>
 		<dependency>
 			<groupId>com.chok2</groupId>
-			<artifactId>chok2-devwork</artifactId>
+			<artifactId>chok2-util</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.chok2</groupId>
+			<artifactId>chok2-devwork-controller</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.chok2</groupId>
+			<artifactId>chok2-devwork-dao</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -130,7 +133,7 @@
 				<!-- 是否替换@xx@表示的maven properties属性值 -->
 				<filtering>true</filtering>
 				<includes>
-					<include>**/*.xml</include>
+					<include>**/mybatis.xml</include>
 					<include>**/application.properties</include>
 					<include>**/application-${profileActive}.properties</include>
 					<include>**/datasource-mybatis-${profileActive}.properties</include>

@@ -15,7 +15,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import com.domain.customtbdemo.dto.CustomDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import chok.common.RestConstants;
+import chok2.devwork.pojo.ChokDtoConstants;
 
 public class CusAccessDeniedHandler implements AccessDeniedHandler
 {
@@ -28,7 +28,7 @@ public class CusAccessDeniedHandler implements AccessDeniedHandler
 		// 组装数据
 		CustomDto<Object> dto = new CustomDto<Object>();
 		dto.setSuccess(false);
-		dto.setCode(RestConstants.ERROR_CODE3);
+		dto.setCode(ChokDtoConstants.ERROR_CODE3);
 		dto.setMsg(accessDeniedException.getMessage());
 //		dto.setData(accessDeniedException.getCause() == null ? accessDeniedException.getMessage() : accessDeniedException.getCause());
 		dto.setPath(request.getServletPath());

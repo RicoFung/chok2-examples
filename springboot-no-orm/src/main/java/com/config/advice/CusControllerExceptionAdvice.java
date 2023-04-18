@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.domain.customtbdemo.dto.CustomDto;
 
-import chok.devwork.pojo.ChokDtoConstants;
+import chok2.devwork.pojo.ChokDtoConstants;
 
 /*******************************************
  * 

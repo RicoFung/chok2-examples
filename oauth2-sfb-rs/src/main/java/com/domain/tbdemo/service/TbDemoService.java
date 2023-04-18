@@ -18,7 +18,7 @@ import com.domain.tbdemo.model.entity.TbDemoEntity;
 import com.domain.tbdemo.model.query.TbDemoGetListQuery;
 import com.domain.tbdemo.model.query.TbDemoGetOneQuery;
 
-import chok.devwork.pojo.ChokDto;
+import chok2.devwork.pojo.ChokDto;
 
 @CacheConfig(cacheNames = {"CACHE_TbDemo"})
 @Service(value = "v3TbDemoService")

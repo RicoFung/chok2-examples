@@ -8,8 +8,8 @@ import com.api.v2.entity.TbDemo;
 
 import chok.devwork.BaseDao;
 import chok.devwork.BaseService;
-import chok.lock.redisson.RedissonLock;
-import chok.lock.redisson.RedissonLockType;
+import chok2.lock.redisson.RedissonLock;
+import chok2.lock.redisson.RedissonLockType;
 
 
 @Service(value = "v2TbDemoService")

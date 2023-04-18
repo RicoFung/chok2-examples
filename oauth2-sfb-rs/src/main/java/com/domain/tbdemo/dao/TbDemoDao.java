@@ -1,12 +1,14 @@
 package com.domain.tbdemo.dao;
 
 import javax.annotation.Resource;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
-import chok.devwork.BaseDaoPlus;
+
+import chok2.devwork.dao.BaseDao;
 
 @Repository(value = "v3TbDemoDao")
-public class TbDemoDao extends BaseDaoPlus
+public class TbDemoDao extends BaseDao
 {
 	@Resource//(name = "firstSqlSessionTemplate")
 	private SqlSession sqlSession;

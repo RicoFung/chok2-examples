@@ -116,7 +116,15 @@
 		<!-- chok -->
 		<dependency>
 			<groupId>com.chok2</groupId>
-			<artifactId>chok2-devwork</artifactId>
+			<artifactId>chok2-devwork-pojo</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.chok2</groupId>
+			<artifactId>chok2-devwork-controller</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.chok2</groupId>
+			<artifactId>chok2-devwork-dao</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.chok2</groupId>

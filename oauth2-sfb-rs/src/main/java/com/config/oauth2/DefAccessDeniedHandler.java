@@ -14,8 +14,8 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import chok.common.RestConstants;
-import chok.devwork.pojo.ChokDto;
+import chok2.devwork.pojo.ChokDto;
+import chok2.devwork.pojo.ChokDtoConstants;
 
 public class DefAccessDeniedHandler implements AccessDeniedHandler
 {
@@ -28,7 +28,7 @@ public class DefAccessDeniedHandler implements AccessDeniedHandler
 		// 组装数据
 		ChokDto<Object> dto = new ChokDto<Object>();
 		dto.setSuccess(false);
-		dto.setCode(RestConstants.ERROR_CODE3);
+		dto.setCode(ChokDtoConstants.ERROR_CODE3);
 		dto.setMsg(accessDeniedException.getMessage());
 //		dto.setData(accessDeniedException.getCause() == null ? accessDeniedException.getMessage() : accessDeniedException.getCause());
 		dto.setPath(request.getServletPath());

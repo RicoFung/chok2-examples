@@ -8,10 +8,10 @@ import org.springframework.stereotype.Repository;
 import com.domain.erp.model.entity.TbUserInfo0aEntity;
 import com.domain.erp.model.query.TbUserInfo0aGetOneByUsernameQuery;
 
-import chok.devwork.BaseDaoPlus;
+import chok2.devwork.dao.BaseDao;
 
 @Repository
-public class TbUserInfo0aDao extends BaseDaoPlus
+public class TbUserInfo0aDao extends BaseDao
 {
 	@Resource(name = "sqlSessionTemplateMybatis")
 	private SqlSession sqlSession;

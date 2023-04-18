@@ -16,6 +16,7 @@ import java.util.UUID;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -45,11 +46,11 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
-import chok.common.BeanFactory;
-
 @Configuration(proxyBeanMethods = false)
 public class AuthServerConfig
 {
+	@Autowired
+    private ApplicationContext context;
 	@Autowired
 	RedisTemplate<String, ?>	redisTemplate;
 
@@ -241,7 +242,7 @@ public class AuthServerConfig
 	@Bean
 	public JdbcTemplate jdbcTemplate()
 	{
-		return new JdbcTemplate((DataSource) BeanFactory.getBean("dataSourceMybatis"));
+		return new JdbcTemplate((DataSource) context.getBean("dataSourceMybatis"));
 	}
 
 	@Bean

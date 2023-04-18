@@ -14,8 +14,8 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import chok.common.RestConstants;
-import chok.devwork.pojo.ChokDto;
+import chok2.devwork.pojo.ChokDto;
+import chok2.devwork.pojo.ChokDtoConstants;
 
 public class DefOAuth2ExceptionEntryPoint implements AuthenticationEntryPoint
 {
@@ -28,7 +28,7 @@ public class DefOAuth2ExceptionEntryPoint implements AuthenticationEntryPoint
 		// 组装数据
 		ChokDto<Object> dto = new ChokDto<Object>();
 		dto.setSuccess(false);
-		dto.setCode(RestConstants.ERROR_CODE2);
+		dto.setCode(ChokDtoConstants.ERROR_CODE2);
 		dto.setMsg(authException.getMessage());
 //		dto.setData(authException.getCause());
 		dto.setPath(request.getServletPath());

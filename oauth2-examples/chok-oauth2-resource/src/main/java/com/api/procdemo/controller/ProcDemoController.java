@@ -15,9 +15,9 @@ import com.api.procdemo.entity.ProcDemo;
 import com.api.procdemo.service.ProcDemoService;
 import com.fasterxml.jackson.core.type.TypeReference;
 
-import chok.common.RestConstants;
-import chok.common.RestResult;
 import chok.devwork.BaseRestController;
+import chok2.common.RestConstants;
+import chok2.common.RestResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 

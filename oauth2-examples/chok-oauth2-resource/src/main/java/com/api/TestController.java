@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import chok.common.RestConstants;
-import chok.common.RestResult;
 import chok.devwork.BaseRestController;
+import chok2.common.RestConstants;
+import chok2.common.RestResult;
 
 @RestController
 @RequestMapping("/test")

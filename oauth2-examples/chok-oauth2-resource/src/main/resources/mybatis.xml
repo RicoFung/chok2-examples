@@ -13,6 +13,6 @@
 	<!-- 类型转换 -->
 	<typeHandlers>
 		<!-- String to NUMERIC -->
-		<typeHandler javaType="String" jdbcType="NUMERIC" handler="chok.util.mybatis.StringToNumericTypeHandler" />
+		<typeHandler javaType="String" jdbcType="NUMERIC" handler="chok2.devwork.dao.mybatis.StringToNumericTypeHandler" />
 	</typeHandlers>
 </configuration>

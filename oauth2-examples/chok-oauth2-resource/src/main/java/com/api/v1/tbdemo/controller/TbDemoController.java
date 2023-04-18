@@ -22,8 +22,8 @@ import com.api.v1.tbdemo.entity.TbDemo;
 import com.api.v1.tbdemo.service.TbDemoService;
 import com.fasterxml.jackson.core.type.TypeReference;
 
-import chok.common.RestResult;
 import chok.devwork.BaseRestController;
+import chok2.common.RestResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 

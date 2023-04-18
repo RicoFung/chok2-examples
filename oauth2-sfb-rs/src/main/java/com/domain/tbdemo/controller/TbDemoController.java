@@ -28,15 +28,15 @@ import com.domain.tbdemo.model.query.TbDemoGetListQuery;
 import com.domain.tbdemo.model.query.TbDemoGetOneQuery;
 import com.domain.tbdemo.service.TbDemoService;
 
-import chok.devwork.BaseRestControllerPlus;
-import chok.devwork.pojo.ChokDto;
+import chok2.devwork.BaseRestController;
+import chok2.devwork.pojo.ChokDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "v3-TbDemo")
 @RestController(value = "v3TbDemoController")
 @RequestMapping("/api/v3/tbdemo")
-public class TbDemoController extends BaseRestControllerPlus
+public class TbDemoController extends BaseRestController
 {
 	// --------------------------------------------------------------------------------------- //
 	// value: 指定请求的实际地址， 比如 /action/info之类
