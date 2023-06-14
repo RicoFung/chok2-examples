@@ -1,38 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>  
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">   
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.domain.customtbdemo.dao.CustomTbDemoDao">
 	<!-- 开启基于redis的二级缓存 -->
-	<!-- 
-    <cache type="chok.redis.mybatis.RedisCache">
-    	<property name="eviction" value="LRU" />
-        <property name="flushInterval" value="6000000" />
-        <property name="size" value="1024" />
-        <property name="readOnly" value="false" />
-    </cache>
-     -->
+	<!-- <cache type="chok.redis.mybatis.RedisCache"> <property name="eviction" 
+		value="LRU" /> <property name="flushInterval" value="6000000" /> <property 
+		name="size" value="1024" /> <property name="readOnly" value="false" /> </cache> -->
 
 	<sql id="dynamicColumns">
 		<choose>
-			<when test="@chok2.devwork.dao.Ognl@isNotEmpty(dynamicColumns) and @chok2.devwork.dao.Ognl@isNotNull(dynamicColumns)">
-			    <foreach collection ="dynamicColumns" item="col" index="index" separator=",">
+			<when
+				test="@chok2.devwork.dao.Ognl@isNotEmpty(dynamicColumns) and @chok2.devwork.dao.Ognl@isNotNull(dynamicColumns)">
+				<foreach collection="dynamicColumns" item="col"
+					index="index" separator=",">
 					<if test="col == 'tcRowid'">T.TC_ROWID</if>
 					<if test="col == 'tcCode'">T.TC_CODE</if>
 					<if test="col == 'tcName'">T.TC_NAME</if>
-			    </foreach>
+				</foreach>
 			</when>
 			<otherwise>
-				T.TC_ROWID, 
-				T.TC_CODE, 
-				T.TC_NAME 
+				T.TC_ROWID,
+				T.TC_CODE,
+				T.TC_NAME
 			</otherwise>
 		</choose>
 	</sql>
-	
+
 	<sql id="dynamicOrder">
 		<choose>
 			<when test="@chok2.devwork.dao.Ognl@isNotEmpty(dynamicOrder)">
-				ORDER BY <foreach collection="dynamicOrder" index="index" item="item" separator=",">TT.<include refid="orderParse2" /> ${item.sortOrder}</foreach>  
+				ORDER BY
+				<foreach collection="dynamicOrder" index="index" item="item"
+					separator=",">
+					TT.
+					<include refid="orderParse2" />
+					${item.sortOrder}
+				</foreach>
 			</when>
 			<otherwise>
 				ORDER BY TT.TC_ROWID DESC
@@ -49,47 +52,59 @@
 		<if test="item.sortName == 'tcCode'">TC_CODE</if>
 		<if test="item.sortName == 'tcName'">TC_NAME</if>
 	</sql>
-	
+
 	<sql id="dynamicWhere">
 		<where>
-	       	<if test="@chok2.devwork.dao.Ognl@isNotEmpty(dynamicWhere.tcCode)"> AND T.TC_CODE LIKE '%'||#{dynamicWhere.tcCode}||'%'</if>
-	       	<if test="@chok2.devwork.dao.Ognl@isNotEmpty(dynamicWhere.tcName)"> AND T.TC_NAME LIKE '%'||#{dynamicWhere.tcName}||'%'</if>
-			<if test="@chok2.devwork.dao.Ognl@isNotEmpty(dynamicWhere.tcRowidArray)"> 
+			<if test="@chok2.devwork.dao.Ognl@isNotEmpty(dynamicWhere.tcCode)"> AND T.TC_CODE LIKE '%'||#{dynamicWhere.tcCode}||'%'</if>
+			<if test="@chok2.devwork.dao.Ognl@isNotEmpty(dynamicWhere.tcName)"> AND T.TC_NAME LIKE '%'||#{dynamicWhere.tcName}||'%'</if>
+			<if
+				test="@chok2.devwork.dao.Ognl@isNotEmpty(dynamicWhere.tcRowidArray)">
 				AND T.TC_ROWID IN
-				<foreach collection="dynamicWhere.tcRowidArray" item="tcRowid" index="index" open="(" close=")" separator=",">#{tcRowid}</foreach>
+				<foreach collection="dynamicWhere.tcRowidArray"
+					item="tcRowid" index="index" open="(" close=")" separator=",">#{tcRowid}
+				</foreach>
 			</if>
 		</where>
-	</sql>	
-	
+	</sql>
+
 	<!-- getList -->
-	<resultMap type="com.domain.customtbdemo.model.data.CustomTbDemoGetListData" id="getListData">
-        <result property="tcRowid" column="TC_ROWID"/>
-        <result property="tcCode" column="TC_CODE"/>
-        <result property="tcName" column="TC_NAME"/>
+	<resultMap
+		type="com.domain.customtbdemo.model.data.CustomTbDemoGetListData"
+		id="getListData">
+		<result property="tcRowid" column="TC_ROWID" />
+		<result property="tcCode" column="TC_CODE" />
+		<result property="tcName" column="TC_NAME" />
 	</resultMap>
-	<select id="getList" parameterType="com.domain.customtbdemo.model.query.CustomTbDemoGetListQuery" resultType="list" resultMap="getListData">
+	<select id="getList"
+		parameterType="com.domain.customtbdemo.model.query.CustomTbDemoGetListQuery"
+		resultType="list" resultMap="getListData">
 		<choose>
 			<!-- 翻页 -->
-			<when test="@chok2.devwork.dao.Ognl@isNotEmpty(page) and @chok2.devwork.dao.Ognl@isNotEmpty(pagesize)">
+			<when
+				test="@chok2.devwork.dao.Ognl@isNotEmpty(page) and @chok2.devwork.dao.Ognl@isNotEmpty(pagesize)">
 				SELECT * FROM (SELECT row_.*, ROWNUM rownum_ FROM(
-					SELECT TT.* FROM 
-					(
-						SELECT <include refid="dynamicColumns"/> FROM TB_DEMO T
-						<include refid="dynamicWhere" />
-					) TT
-					<include refid="dynamicOrder" />
-	            ) row_ WHERE rownum &lt;= #{page}*#{pagesize} ) 
-	            WHERE rownum_ &gt; (#{page}-1)*#{pagesize}
+				SELECT TT.* FROM
+				(
+				SELECT
+				<include refid="dynamicColumns" />
+				FROM TB_DEMO T
+				<include refid="dynamicWhere" />
+				) TT
+				<include refid="dynamicOrder" />
+				) row_ WHERE rownum &lt;= #{page}*#{pagesize} )
+				WHERE rownum_ &gt; (#{page}-1)*#{pagesize}
 			</when>
 			<!-- 非翻页 -->
 			<otherwise>
-				SELECT TT.* FROM 
+				SELECT TT.* FROM
 				(
-					SELECT <include refid="dynamicColumns"/> FROM TB_DEMO T
-					<include refid="dynamicWhere" />
+				SELECT
+				<include refid="dynamicColumns" />
+				FROM TB_DEMO T
+				<include refid="dynamicWhere" />
 				) TT
 				<include refid="dynamicOrder" />
 			</otherwise>
 		</choose>
-	</select>  
+	</select>
 </mapper>  
