@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-no-orm-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springboot-no-orm
+  template:
+    metadata:
+      labels:
+        app: springboot-no-orm
+    spec:
+      containers:
+      - name: springboot-no-orm
+        image: springboot-no-orm:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springboot-no-orm-service
+spec:
+  selector:
+    app: springboot-no-orm
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+#  type: NodePort
+  type: LoadBalancer
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: springboot-no-orm-ingress
+spec:
+  rules:
+  - host: "my-service.my-domain.com"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: springboot-no-orm-service
+            port:
+              number: 8080
