@@ -2,7 +2,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<artifactId>oauth2-sfb-as</artifactId>
 	<packaging>jar</packaging>
 	<name>oauth2-sfb-as</name>
@@ -43,20 +43,10 @@
 			</properties>
 		</profile>
 	</profiles>
-	<!-- 
-	<dependencyManagement>
-		<dependencies>
-			Sleuth automatically adds trace interceptors when in the classpath
-			<dependency>
-	            <groupId>org.springframework.cloud</groupId>
-	            <artifactId>spring-cloud-dependencies</artifactId>
-	            <version>2021.0.4</version>
-	            <type>pom</type>
-	            <scope>import</scope>
-	        </dependency>			
-		</dependencies>
-	</dependencyManagement>
-	 -->
+	<!-- <dependencyManagement> <dependencies> Sleuth automatically adds trace 
+		interceptors when in the classpath <dependency> <groupId>org.springframework.cloud</groupId> 
+		<artifactId>spring-cloud-dependencies</artifactId> <version>2021.0.4</version> 
+		<type>pom</type> <scope>import</scope> </dependency> </dependencies> </dependencyManagement> -->
 	<dependencies>
 		<!-- logback-glef 用于发送消息至graylog -->
 		<dependency>
@@ -76,8 +66,8 @@
 		</dependency>
 		<!-- inject span and trace IDs into log entries -->
 		<dependency>
-		   <groupId>org.springframework.cloud</groupId>
-		   <artifactId>spring-cloud-starter-sleuth</artifactId>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-sleuth</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -88,8 +78,8 @@
 			<artifactId>spring-security-cas</artifactId>
 		</dependency>
 		<dependency>
-		    <groupId>org.springframework.session</groupId>
-		    <artifactId>spring-session-data-redis</artifactId>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-data-redis</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -141,20 +131,21 @@
 					<include>**/i18n/*</include>
 					<include>**/img/*</include>
 					<include>**/templates/**</include>
+					<include>**/static/**</include>
 				</includes>
 			</resource>
 		</resources>
 		<plugins>
 			<plugin>
-			   <groupId>org.springframework.boot</groupId>
-			   <artifactId>spring-boot-maven-plugin</artifactId>
-			   <executions>
-			      <execution>
-			         <goals>
-			            <goal>repackage</goal>
-			         </goals>
-			      </execution>
-			   </executions>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 		<finalName>oauth2-sfb-as</finalName>

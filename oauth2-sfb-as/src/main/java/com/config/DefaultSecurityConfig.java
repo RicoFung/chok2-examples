@@ -86,7 +86,15 @@ public class DefaultSecurityConfig
 		.and()
 		// 放开自定义登录访问权限
 		.authorizeRequests(authorizeRequests -> authorizeRequests
-				.antMatchers("/login").permitAll()
+				.antMatchers(
+						"/login",
+						// 【注意】以下静态资源必须写两种过滤表达式，否则引入静态资源失败
+						"**/jquery-easyui/**",
+						"/jquery-easyui/**",
+						//
+						"**/customize/*.js",
+						"/customize/*.js"
+						).permitAll()
 				.anyRequest().authenticated())
 		// 自定义 userDetailsService
 		.userDetailsService(tbUserInfo0aService)
@@ -138,7 +146,7 @@ public class DefaultSecurityConfig
 //		;
 //		return http.build();
 //	}
-	
+
 	// 仅用于【注册方式：数据库】
 	@Bean
 	public PasswordEncoder passwordEncoder()
