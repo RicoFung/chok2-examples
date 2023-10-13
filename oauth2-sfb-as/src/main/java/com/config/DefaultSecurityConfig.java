@@ -25,28 +25,26 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AndRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.domain.erp.service.TbUserInfo0aService;
+import com.domain.customize.service.TbUserInfo0aService;
 
 @EnableWebSecurity//(debug = true)
 public class DefaultSecurityConfig
 {
-//	private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-//	private AuthenticationSuccessHandler authenticationSuccessHandler = this::sendAuthorizationResponse;
-//	private AuthenticationFailureHandler authenticationFailureHandler = this::sendErrorResponse;
-	
+	@Autowired
+	private CaptchaFilter	captchaFilter;
 	@Autowired
 	TbUserInfo0aService		tbUserInfo0aService;
-//	@Autowired
-//	CusUserInfo0aService	cusUserInfo0aService;
 	
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource()
@@ -56,19 +54,25 @@ public class DefaultSecurityConfig
 		configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
 		configuration.setAllowCredentials(true);
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		// 对所有url生效
-		source.registerCorsConfiguration("/**", configuration);
+		source.registerCorsConfiguration("/**", configuration); // 对所有url生效
 		return source;
+	}
+
+	@Bean("defaultAuthServerSecurityFilterChain")
+	@Order(Ordered.HIGHEST_PRECEDENCE)
+	public SecurityFilterChain defaultAuthServerSecurityFilterChain(HttpSecurity http) throws Exception
+	{
+		// 默认配置
+		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+		http.formLogin().loginPage("/customize/login");
+		return http.build();
 	}
 	
 	@Bean
 	@Order(Ordered.HIGHEST_PRECEDENCE + 1)
-	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http, @Qualifier("authorizationServerSecurityFilterChain") SecurityFilterChain securityFilterChain) throws Exception
+	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http, @Qualifier("defaultAuthServerSecurityFilterChain") SecurityFilterChain securityFilterChain) throws Exception
 	{
 		DefaultSecurityFilterChain authorizationServerFilterChain = (DefaultSecurityFilterChain) securityFilterChain;
-//		SimpleAuthenticationEntryPoint authenticationEntryPoint = new SimpleAuthenticationEntryPoint();
-//        AuthenticationEntryPointFailureHandler authenticationFailureHandler = new AuthenticationEntryPointFailureHandler(authenticationEntryPoint);
-//        RedirectLoginAuthenticationSuccessHandler loginAuthenticationSuccessHandler = new RedirectLoginAuthenticationSuccessHandler();
 
 		// ---------- //
 		// 自定义登录配置
@@ -76,18 +80,18 @@ public class DefaultSecurityConfig
 		http
 		.requestMatcher(new AndRequestMatcher(new NegatedRequestMatcher(authorizationServerFilterChain.getRequestMatcher())))
 		.csrf().disable()
+		.addFilterBefore(captchaFilter, UsernamePasswordAuthenticationFilter.class)
 		.formLogin()
 		// 自定义登录页
-		.loginPage("/login")
+		.loginPage("/customize/login")
 		// 自定义登录页拦截路径
-		.loginProcessingUrl("/login")
-//		.successHandler(new MyAuthenticationSuccessHandler())
-//		.failureHandler(new MyAuthenticationFailureHandler()).permitAll()
+		.loginProcessingUrl("/customize/loginProcess")
 		.and()
 		// 放开自定义登录访问权限
 		.authorizeRequests(authorizeRequests -> authorizeRequests
 				.antMatchers(
-						"/login",
+//						"/login",
+						"/customize/login",
 						// 【注意】以下静态资源必须写两种过滤表达式，否则引入静态资源失败
 						"**/jquery-easyui/**",
 						"/jquery-easyui/**",
@@ -98,14 +102,6 @@ public class DefaultSecurityConfig
 				.anyRequest().authenticated())
 		// 自定义 userDetailsService
 		.userDetailsService(tbUserInfo0aService)
-		// 整合多种登录方式
-//		.and()
-//		.apply(new LoginFilterSecurityConfigurer<>())
-//		.cusLogin(cusLoginConfigurer -> cusLoginConfigurer
-//				.cusUserDetailsService(cusUserInfo0aService)
-////				.successHandler(loginAuthenticationSuccessHandler)
-//				.failureHandler(authenticationFailureHandler)
-//		)
 		;
 
 		// ---------- //
@@ -120,10 +116,7 @@ public class DefaultSecurityConfig
 		{
 			// 重定向至：/oauth2/authorize?
 			String authorizeHost = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/oauth2/authorize?";
-
 			String queryString = request.getQueryString();
-//			String queryString = request.getHeader("referer").split("\\?")[1];
-			
 			String url = authorizeHost + queryString;
 			response.sendRedirect(url);
         }))
@@ -134,6 +127,13 @@ public class DefaultSecurityConfig
 		return http.build();
 	}
 
+	// 仅用于【注册方式：数据库】
+	@Bean
+	public PasswordEncoder passwordEncoder()
+	{
+		return MyPasswordEncoderFactories.createDelegatingPasswordEncoder();
+	}
+	
 //	@Bean
 //	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception
 //	{
@@ -146,13 +146,6 @@ public class DefaultSecurityConfig
 //		;
 //		return http.build();
 //	}
-
-	// 仅用于【注册方式：数据库】
-	@Bean
-	public PasswordEncoder passwordEncoder()
-	{
-		return MyPasswordEncoderFactories.createDelegatingPasswordEncoder();
-	}
 	
 //	@Bean
 //	UserDetailsService users()

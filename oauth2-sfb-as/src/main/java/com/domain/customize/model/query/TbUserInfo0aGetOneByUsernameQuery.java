@@ -1,4 +1,4 @@
-package com.domain.erp.model.query;
+package com.domain.customize.model.query;
 
 import java.io.Serializable;
 import java.util.Arrays;

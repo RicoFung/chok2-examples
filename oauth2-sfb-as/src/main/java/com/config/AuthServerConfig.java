@@ -19,13 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
@@ -39,7 +33,6 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
-import org.springframework.security.web.SecurityFilterChain;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -51,131 +44,6 @@ public class AuthServerConfig
 {
 	@Autowired
     private ApplicationContext context;
-	@Autowired
-	RedisTemplate<String, ?>	redisTemplate;
-
-	/**
-	 * 默认
-	 * 
-	 * @param http
-	 * @return
-	 * @throws Exception
-	 */
-	@Bean("authorizationServerSecurityFilterChain")
-	@Order(Ordered.HIGHEST_PRECEDENCE)
-	public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception
-	{
-		// 默认配置
-		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-		return http.formLogin(Customizer.withDefaults()).build();
-	}
-
-	/**
-	 * 自定义端点逻辑示例
-	 */
-//	public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception
-//	{
-//		// 仅用于【注册方式：数据库】
-//		http.userDetailsService(tbUserInfo0aService);
-//		// 参考源码： OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-//		OAuth2AuthorizationServerConfigurer<HttpSecurity> authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer<>();
-//		RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
-//		http.requestMatcher(endpointsMatcher)
-//				.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
-//				.csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher)).apply(authorizationServerConfigurer);
-//		// token 端点
-//		// authorizationServerConfigurer.tokenEndpoint(
-//		// tokenEndpoint -> tokenEndpoint.accessTokenResponseHandler(new
-//		// AuthenticationSuccessHandler()
-//		// {
-//		// @Override
-//		// public void onAuthenticationSuccess(HttpServletRequest request,
-//		// HttpServletResponse response,
-//		// Authentication authentication) throws IOException, ServletException
-//		// {
-//		// OAuth2AccessTokenAuthenticationToken clientAuthentication =
-//		// (OAuth2AccessTokenAuthenticationToken) authentication;
-//		// System.out.println("***********************************");
-//		// System.out.println("THE ACCESS TOKEN ...");
-//		// System.out.println("***********************************");
-//		// System.out.println(clientAuthentication.getAccessToken().getTokenValue());
-//		//
-//		// }
-//		// }));
-//		// revoke 端点
-////		authorizationServerConfigurer.tokenRevocationEndpoint(tokenRevocationEndpoint -> tokenRevocationEndpoint
-////				.revocationResponseHandler(new AuthenticationSuccessHandler()
-////				{
-////					@SuppressWarnings({ "unchecked", "rawtypes" })
-////					@Override
-////					public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-////							Authentication authentication) throws IOException, ServletException
-////					{
-////						ObjectMapper objectMapper = new ObjectMapper();
-////						RestResult result = new RestResult();
-////						try
-////						{
-////							// 将 revoke token 加入黑名单逻辑(Redis)
-////							OAuth2TokenRevocationAuthenticationToken authenticationToken = (OAuth2TokenRevocationAuthenticationToken) authentication;
-////							log.debug("[REVOKE_TOKEN] => {}", authenticationToken.getToken());
-////							SetOperations setOps = redisTemplate.opsForSet();
-////							setOps.add("TOKEN_BLACK_LIST", authenticationToken.getToken());
-////						}
-////						catch (Exception e)
-////						{
-////							result.setSuccess(false);
-////							result.setCode(RestConstants.ERROR_CODE3);
-////							result.setMsg(e.getMessage());
-////						}
-////						finally
-////						{
-////							result.setPath(request.getServletPath());
-////							result.setTimestamp(String.valueOf(new Date().getTime()));
-////							response.setContentType("application/json;charset=UTF-8");
-////							try
-////							{
-////								objectMapper.writeValue(response.getOutputStream(), result);
-////							}
-////							catch (Exception e)
-////							{
-////								log.error(objectMapper.writeValueAsString(e));
-////							}
-////							finally
-////							{
-////								log.error(objectMapper.writeValueAsString(result));
-////							}
-////						}
-////					}
-////				}).errorResponseHandler(new AuthenticationFailureHandler()
-////				{
-////					@Override
-////					public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-////							AuthenticationException exception) throws IOException, ServletException
-////					{
-////						ObjectMapper objectMapper = new ObjectMapper();
-////						RestResult result = new RestResult();
-////						result.setSuccess(false);
-////						result.setCode(RestConstants.ERROR_CODE3);
-////						result.setMsg(exception.getMessage());
-////						result.setPath(request.getServletPath());
-////						result.setTimestamp(String.valueOf(new Date().getTime()));
-////						response.setContentType("application/json;charset=UTF-8");
-////						try
-////						{
-////							objectMapper.writeValue(response.getOutputStream(), result);
-////						}
-////						catch (Exception e)
-////						{
-////							log.error(objectMapper.writeValueAsString(e));
-////						}
-////						finally
-////						{
-////							log.error(objectMapper.writeValueAsString(result));
-////						}
-////					}
-////				}));
-//		return http.formLogin(Customizer.withDefaults()).build();
-//	}
 
 	/**
 	 * 【注册方式：数据库】 认证方式：CLIENT_SECRET_BASIC 注意：OPENID 不可单独使用

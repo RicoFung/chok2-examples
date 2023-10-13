@@ -1,12 +1,12 @@
-package com.domain.erp.dao;
+package com.domain.customize.dao;
 
 import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.domain.erp.model.entity.TbUserInfo0aEntity;
-import com.domain.erp.model.query.TbUserInfo0aGetOneByUsernameQuery;
+import com.domain.customize.model.entity.TbUserInfo0aEntity;
+import com.domain.customize.model.query.TbUserInfo0aGetOneByUsernameQuery;
 
 import chok2.devwork.dao.BaseDao;
 

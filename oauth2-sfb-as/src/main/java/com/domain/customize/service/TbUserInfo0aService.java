@@ -1,4 +1,4 @@
-package com.domain.erp.service;
+package com.domain.customize.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -7,9 +7,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.domain.erp.dao.TbUserInfo0aDao;
-import com.domain.erp.model.entity.TbUserInfo0aEntity;
-import com.domain.erp.model.query.TbUserInfo0aGetOneByUsernameQuery;
+import com.domain.customize.dao.TbUserInfo0aDao;
+import com.domain.customize.model.entity.TbUserInfo0aEntity;
+import com.domain.customize.model.query.TbUserInfo0aGetOneByUsernameQuery;
 
 @Service("tbUserInfo0aService")
 public class TbUserInfo0aService implements UserDetailsService

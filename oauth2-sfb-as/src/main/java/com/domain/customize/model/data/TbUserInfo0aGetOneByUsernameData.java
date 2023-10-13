@@ -1,6 +1,6 @@
-package com.domain.erp.model.data;
+package com.domain.customize.model.data;
 
-import com.domain.erp.model.entity.TbUserInfo0aEntity;
+import com.domain.customize.model.entity.TbUserInfo0aEntity;
 
 public class TbUserInfo0aGetOneByUsernameData extends TbUserInfo0aEntity
 {
