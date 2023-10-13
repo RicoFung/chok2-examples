@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>登录页面</title>
+    <title>Client 登录页面</title>
     <link type="text/css" rel="stylesheet" th:href="@{/jquery-easyui/themes/material-blue/easyui.css}" />
     <link type="text/css" rel="stylesheet" th:href="@{/jquery-easyui/themes/mobile.css}" />
     <link type="text/css" rel="stylesheet" th:href="@{/jquery-easyui/themes/icon.css}" />
@@ -16,10 +16,10 @@
 <div class="easyui-navpanel">
     <header>
         <div class="m-toolbar">
-            <span class="m-title">Login to Customize System</span>
+            <span class="m-title">Login to Client System</span>
         </div>
     </header>
-	<form style="padding:0 20px" id="ff" action="/customize/loginProcess" method="post">
+	<form style="padding:0 20px" id="ff" action="/client/loginProcess" method="post">
         <div style="margin:20px auto;">
             <input class="easyui-textbox" name="captcha" style="width:100%" data-options="required:true,prompt:'Type captcha',iconCls:'icon-man'">
         </div>
@@ -38,6 +38,6 @@
 	    <p th:text="${captchaError}"></p>
 	</div>
 </div>
-<script type="text/javascript" th:src="@{/customize/login.js}"></script>
+<script type="text/javascript" th:src="@{/client/login.js}"></script>
 </body>
 </html>

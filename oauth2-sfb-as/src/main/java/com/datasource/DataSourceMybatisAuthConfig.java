@@ -24,29 +24,29 @@ import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @EnableTransactionManagement
-@PropertySource(value = "classpath:datasource-mybatis-${spring.profiles.active}.properties", ignoreResourceNotFound = true)
-public class DataSourceMybatisDefaultConfig 
+@PropertySource(value = "classpath:datasource-mybatis-auth-${spring.profiles.active}.properties", ignoreResourceNotFound = true)
+public class DataSourceMybatisAuthConfig 
 {
-    @Value("${datasource.mybatis.default.url}")
+    @Value("${datasource.mybatis.auth.url}")
     private String url;
-    @Value("${datasource.mybatis.default.username}")
+    @Value("${datasource.mybatis.auth.username}")
     private String user;
-    @Value("${datasource.mybatis.default.password}")
+    @Value("${datasource.mybatis.auth.password}")
     private String password;
-    @Value("${datasource.mybatis.default.driver-class-name}")
+    @Value("${datasource.mybatis.auth.driver-class-name}")
     private String driverClass;
-    @Value("${datasource.mybatis.default.minimumIdle}")
+    @Value("${datasource.mybatis.auth.minimumIdle}")
     private int minimumIdle;
-    @Value("${datasource.mybatis.default.maximumPoolSize}")
+    @Value("${datasource.mybatis.auth.maximumPoolSize}")
     private int maximumPoolSize;
-    @Value("${datasource.mybatis.default.maxLifetime}")
+    @Value("${datasource.mybatis.auth.maxLifetime}")
     private int maxLifetime;
-    @Value("${datasource.mybatis.default.mapper-location}")
+    @Value("${datasource.mybatis.auth.mapper-location}")
     private String mapperLocation;
     @Value("${mybatis.config-location}")
     private String mybatisConfigLocation;
  
-    @Bean(name = "dataSourceMybatis")
+    @Bean(name = "dataSourceMybatisAuth")
     public DataSource dataSource() throws SQLException 
     {
     	HikariDataSource dataSource = new HikariDataSource();
@@ -60,8 +60,8 @@ public class DataSourceMybatisDefaultConfig
         return dataSource;
     }
  
-    @Bean(name = "sqlSessionFactoryMybatis")
-    @DependsOn({ "dataSourceMybatis" })
+    @Bean(name = "sqlSessionFactoryMybatisAuth")
+    @DependsOn({ "dataSourceMybatisAuth" })
     public SqlSessionFactory sqlSessionFactory() throws Exception 
     {
         final SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
@@ -71,22 +71,22 @@ public class DataSourceMybatisDefaultConfig
         return sessionFactory.getObject();
     }
 
-	@Bean(name = "sqlSessionTemplateMybatis")
-	@DependsOn({ "sqlSessionFactoryMybatis" })
+	@Bean(name = "sqlSessionTemplateMybatisAuth")
+	@DependsOn({ "sqlSessionFactoryMybatisAuth" })
 	public SqlSessionTemplate sqlSessionTemplate() throws Exception 
 	{
 		return new SqlSessionTemplate(sqlSessionFactory());
 	}
 	
-	@Bean(name = "transactionManagerMybatis")
-	@DependsOn({ "dataSourceMybatis" })
+	@Bean(name = "transactionManagerMybatisAuth")
+	@DependsOn({ "dataSourceMybatisAuth" })
 	public DataSourceTransactionManager transactionManager() throws SQLException 
 	{
 		return new DataSourceTransactionManager(dataSource());
 	}
 	
-	@Bean(name = "transactionInterceptorMybatis")
-	@DependsOn({ "transactionManagerMybatis" })
+	@Bean(name = "transactionInterceptorMybatisAuth")
+	@DependsOn({ "transactionManagerMybatisAuth" })
 	public TransactionInterceptor transactionInterceptor() throws Throwable
 	{
 		Properties prop = new Properties();
@@ -121,13 +121,13 @@ public class DataSourceMybatisDefaultConfig
 		return ti;
 	}
 
-	@Bean(name = "beanNameAutoProxyCreatorMybatis")
+	@Bean(name = "beanNameAutoProxyCreatorMybatisAuth")
 	public BeanNameAutoProxyCreator beanNameAutoProxyCreator() throws Throwable
 	{
 		BeanNameAutoProxyCreator bpc = new BeanNameAutoProxyCreator();
 		bpc.setProxyTargetClass(true);
 		bpc.setBeanNames("*Service");
-		bpc.setInterceptorNames("transactionInterceptorMybatis");
+		bpc.setInterceptorNames("transactionInterceptorMybatisAuth");
 		return bpc;
 	}
 }

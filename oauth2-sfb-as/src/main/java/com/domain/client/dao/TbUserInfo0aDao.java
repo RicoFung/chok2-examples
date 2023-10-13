@@ -1,19 +1,19 @@
-package com.domain.customize.dao;
+package com.domain.client.dao;
 
 import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.domain.customize.model.entity.TbUserInfo0aEntity;
-import com.domain.customize.model.query.TbUserInfo0aGetOneByUsernameQuery;
+import com.domain.client.model.entity.TbUserInfo0aEntity;
+import com.domain.client.model.query.TbUserInfo0aGetOneByUsernameQuery;
 
 import chok2.devwork.dao.BaseDao;
 
 @Repository
 public class TbUserInfo0aDao extends BaseDao
 {
-	@Resource(name = "sqlSessionTemplateMybatis")
+	@Resource(name = "sqlSessionTemplateMybatisClient")
 	private SqlSession sqlSession;
 
 	@Override

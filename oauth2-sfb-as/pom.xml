@@ -127,8 +127,8 @@
 					<include>**/mybatis.xml</include>
 					<include>**/application.properties</include>
 					<include>**/application-${profileActive}.properties</include>
-					<include>**/datasource-mybatis-${profileActive}.properties</include>
-					<include>**/datasource-jdbc-${profileActive}.properties</include>
+					<include>**/datasource-mybatis-auth-${profileActive}.properties</include>
+					<include>**/datasource-mybatis-client-${profileActive}.properties</include>
 					<include>**/redisson-single-${profileActive}.yml</include>
 					<include>**/logback-spring.xml</include>
 					<include>**/logback-spring-${profileActive}.xml</include>

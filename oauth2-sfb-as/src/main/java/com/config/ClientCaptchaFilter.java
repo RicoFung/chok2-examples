@@ -11,13 +11,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
-public class CaptchaFilter extends OncePerRequestFilter
+public class ClientCaptchaFilter extends OncePerRequestFilter
 {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException
 	{
-		if ("/customize/loginProcess".equals(request.getRequestURI()))
+		if ("/client/loginProcess".equals(request.getRequestURI()))
 		{
 			// 从 Session 获取正确的验证码
 			String sessionCaptcha = "888888";
@@ -38,6 +38,6 @@ public class CaptchaFilter extends OncePerRequestFilter
 			throws IOException, ServletException
 	{
 		request.setAttribute("captchaError", "Captcha mismatched!");
-		request.getRequestDispatcher("/customize/login").forward(request, response);
+		request.getRequestDispatcher("/client/login").forward(request, response);
 	}
 }

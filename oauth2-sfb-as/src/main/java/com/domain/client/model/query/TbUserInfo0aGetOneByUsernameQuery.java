@@ -1,4 +1,4 @@
-package com.domain.customize.model.query;
+package com.domain.client.model.query;
 
 import java.io.Serializable;
 import java.util.Arrays;

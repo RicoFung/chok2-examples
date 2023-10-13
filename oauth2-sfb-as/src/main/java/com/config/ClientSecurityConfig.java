@@ -36,13 +36,13 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.domain.customize.service.TbUserInfo0aService;
+import com.domain.client.service.TbUserInfo0aService;
 
 @EnableWebSecurity//(debug = true)
-public class DefaultSecurityConfig
+public class ClientSecurityConfig
 {
 	@Autowired
-	private CaptchaFilter	captchaFilter;
+	private ClientCaptchaFilter	captchaFilter;
 	@Autowired
 	TbUserInfo0aService		tbUserInfo0aService;
 	
@@ -58,19 +58,19 @@ public class DefaultSecurityConfig
 		return source;
 	}
 
-	@Bean("defaultAuthServerSecurityFilterChain")
+	@Bean("clientAuthServerSecurityFilterChain")
 	@Order(Ordered.HIGHEST_PRECEDENCE)
-	public SecurityFilterChain defaultAuthServerSecurityFilterChain(HttpSecurity http) throws Exception
+	public SecurityFilterChain clientAuthServerSecurityFilterChain(HttpSecurity http) throws Exception
 	{
 		// 默认配置
 		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-		http.formLogin().loginPage("/customize/login");
+		http.formLogin().loginPage("/client/login");
 		return http.build();
 	}
 	
 	@Bean
 	@Order(Ordered.HIGHEST_PRECEDENCE + 1)
-	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http, @Qualifier("defaultAuthServerSecurityFilterChain") SecurityFilterChain securityFilterChain) throws Exception
+	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http, @Qualifier("clientAuthServerSecurityFilterChain") SecurityFilterChain securityFilterChain) throws Exception
 	{
 		DefaultSecurityFilterChain authorizationServerFilterChain = (DefaultSecurityFilterChain) securityFilterChain;
 
@@ -83,21 +83,20 @@ public class DefaultSecurityConfig
 		.addFilterBefore(captchaFilter, UsernamePasswordAuthenticationFilter.class)
 		.formLogin()
 		// 自定义登录页
-		.loginPage("/customize/login")
+		.loginPage("/client/login")
 		// 自定义登录页拦截路径
-		.loginProcessingUrl("/customize/loginProcess")
+		.loginProcessingUrl("/client/loginProcess")
 		.and()
 		// 放开自定义登录访问权限
 		.authorizeRequests(authorizeRequests -> authorizeRequests
 				.antMatchers(
-//						"/login",
-						"/customize/login",
+						"/client/login",
 						// 【注意】以下静态资源必须写两种过滤表达式，否则引入静态资源失败
 						"**/jquery-easyui/**",
 						"/jquery-easyui/**",
-						//
-						"**/customize/*.js",
-						"/customize/*.js"
+						// 【注意】以下静态资源必须写两种过滤表达式，否则引入静态资源失败
+						"**/client/*.js",
+						"/client/*.js"
 						).permitAll()
 				.anyRequest().authenticated())
 		// 自定义 userDetailsService

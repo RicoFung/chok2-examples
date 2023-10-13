@@ -115,7 +115,7 @@ public class AuthServerConfig
 	@Bean
 	public JdbcTemplate jdbcTemplate()
 	{
-		return new JdbcTemplate((DataSource) context.getBean("dataSourceMybatis"));
+		return new JdbcTemplate((DataSource) context.getBean("dataSourceMybatisAuth"));
 	}
 
 	@Bean

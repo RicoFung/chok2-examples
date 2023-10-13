@@ -1,4 +1,4 @@
-package com.domain.customize.controller;
+package com.domain.client.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-@RequestMapping("/customize")
-public class CustomizeController
+@RequestMapping("/client")
+public class ClientController
 {
 	@RequestMapping(value = "/login", method = {RequestMethod.GET, RequestMethod.POST})
 	public String login(Model model, HttpServletRequest request)
@@ -17,6 +17,6 @@ public class CustomizeController
 	    if (request.getAttribute("captchaError") != null) {
 	        model.addAttribute("captchaError", request.getAttribute("captchaError"));
 	    }
-		return "customize/login";
+		return "client/login";
 	}
 }

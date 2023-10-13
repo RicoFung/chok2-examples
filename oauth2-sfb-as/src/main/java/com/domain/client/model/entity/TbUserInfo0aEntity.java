@@ -1,4 +1,4 @@
-package com.domain.customize.model.entity;
+package com.domain.client.model.entity;
 
 import java.io.Serializable;
 /**
