@@ -8,8 +8,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.domain.client.dao.TbUserInfo0aDao;
-import com.domain.client.model.entity.TbUserInfo0aEntity;
-import com.domain.client.model.query.TbUserInfo0aGetOneByUsernameQuery;
+import com.domain.client.model.param.TbUserInfo0aGetOneByUsernameParam;
+import com.domain.client.model.result.TbUserInfo0aResult;
 
 @Service("tbUserInfo0aService")
 public class TbUserInfo0aService implements UserDetailsService
@@ -20,10 +20,10 @@ public class TbUserInfo0aService implements UserDetailsService
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
 	{
-		TbUserInfo0aGetOneByUsernameQuery query = new TbUserInfo0aGetOneByUsernameQuery();
-		query.setDynamicColumns(new String[] {"tcCode", "tcName", "tcPassword"});
-		query.setUsername(username);
-		TbUserInfo0aEntity tbUser = dao.getOneByUsername(query);
+		TbUserInfo0aGetOneByUsernameParam param = new TbUserInfo0aGetOneByUsernameParam();
+		param.setDynamicColumns(new String[] {"tcCode", "tcName", "tcPassword"});
+		param.setUsername(username);
+		TbUserInfo0aResult tbUser = dao.getOneByUsername(param);
 		if (tbUser == null)
 		{
 			throw new UsernameNotFoundException(String.format("User %s does not exist!", username));

@@ -5,8 +5,8 @@ import javax.annotation.Resource;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.domain.client.model.entity.TbUserInfo0aEntity;
-import com.domain.client.model.query.TbUserInfo0aGetOneByUsernameQuery;
+import com.domain.client.model.param.TbUserInfo0aGetOneByUsernameParam;
+import com.domain.client.model.result.TbUserInfo0aResult;
 
 import chok2.devwork.dao.BaseDao;
 
@@ -28,8 +28,8 @@ public class TbUserInfo0aDao extends BaseDao
 		return getClass().getName();
 	}
 	
-	public TbUserInfo0aEntity getOneByUsername(TbUserInfo0aGetOneByUsernameQuery query)
+	public TbUserInfo0aResult getOneByUsername(TbUserInfo0aGetOneByUsernameParam param)
 	{
-		return getOne("getOneByUsername", query);
+		return getOne("getOneByUsername", param);
 	}
 }

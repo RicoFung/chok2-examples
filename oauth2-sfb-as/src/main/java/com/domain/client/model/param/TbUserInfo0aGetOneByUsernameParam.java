@@ -1,9 +1,9 @@
-package com.domain.client.model.query;
+package com.domain.client.model.param;
 
 import java.io.Serializable;
 import java.util.Arrays;
 
-public class TbUserInfo0aGetOneByUsernameQuery implements Serializable
+public class TbUserInfo0aGetOneByUsernameParam implements Serializable
 {
 	private static final long serialVersionUID = 6980178311882981565L;
 
@@ -34,7 +34,7 @@ public class TbUserInfo0aGetOneByUsernameQuery implements Serializable
 	@Override
 	public String toString()
 	{
-		return "TbUserInfo0aGetOneByUsernameQuery [dynamicColumns=" + Arrays.toString(dynamicColumns) + ", username="
+		return "TbUserInfo0aGetOneByUsernameParam [dynamicColumns=" + Arrays.toString(dynamicColumns) + ", username="
 				+ username + "]";
 	}
 }

@@ -23,16 +23,16 @@
 	</sql>
 	
 	<!-- getOneByUsername -->
-	<resultMap type="com.domain.client.model.data.TbUserInfo0aGetOneByUsernameData" id="getOneByUsernameData">
+	<resultMap type="com.domain.client.model.result.TbUserInfo0aResult" id="getOneResult">
         <result property="tcRowid" column="TC_ROWID"/>
         <result property="tcCode" column="TC_CODE"/>
         <result property="tcName" column="TC_NAME"/>
         <result property="tcPassword" column="TC_PASSWORD"/>
 	</resultMap>
-	<select id="getOneByUsername" resultMap="getOneByUsernameData">
+	<select id="getOneByUsername" resultMap="getOneResult">
 		SELECT <include refid="dynamicColumns"/>
-		  FROM TB_USER_INFO_0A t 
-	     WHERE t.tc_code = #{username} or t.tc_name = #{username}
+		  FROM TB_USER_INFO_0A T 
+	     WHERE T.TC_CODE = #{username} OR T.TC_NAME = #{username}
 	</select>
 	
 </mapper>  
