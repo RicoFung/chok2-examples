@@ -38,7 +38,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.domain.client.service.TbUserInfo0aService;
 
-@EnableWebSecurity//(debug = true)
+@EnableWebSecurity(debug = true)
 public class ClientSecurityConfig
 {
 	@Autowired

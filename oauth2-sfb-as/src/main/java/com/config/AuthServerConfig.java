@@ -68,15 +68,10 @@ public class AuthServerConfig
 				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
 				// 回调地址名单，不在此列将被拒绝 而且只能使用IP或者域名 ，不能使用 localhost，此处使用 client-server 本地环境通过 hosts 配置
 				// client 为 springboot 的回调地址
-				.redirectUri("http://client-server:8080/login/oauth2/code/rico-client-oidc")
-				.redirectUri("http://client-server:8080/authorized")
-//				.redirectUri("http://127.0.0.1:8080/login/oauth2/code/rico-client-oidc")
-//				.redirectUri("http://127.0.0.1:8080/authorized")
-				// client 为 vue 的回调地址
-				.redirectUri("http://client-server:7090/spring-oauth2-code-v1") // 非弹窗
-				.redirectUri("http://client-server:7090/oauth2/callback") // 弹窗
-//				.redirectUri("http://127.0.0.1:7090/spring-oauth2-code-v1") // 非弹窗
-//				.redirectUri("http://127.0.0.1:7090/oauth2/callback") // 弹窗
+//				.redirectUri("http://client-server:8080/login/oauth2/code/rico-client-oidc")
+//				.redirectUri("http://client-server:8080/authorized")
+//				// client 为 vue 的回调地址
+				.redirectUri("https://client-server:8848/oauth2callback-standard") // 非弹窗
 				// client 为外网服务的回调地址
 				.redirectUri("https://oidcdebugger.com/debug")
 				//
@@ -91,8 +86,7 @@ public class AuthServerConfig
 				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
 				// client 为 vue 的回调地址
-				.redirectUri("http://client-server:7090/oauth2/callback-pkce") // 弹窗
-//				.redirectUri("http://127.0.0.1:7090/oauth2/callback-pkce") // 弹窗
+				.redirectUri("https://client-server:8848/oauth2callback-enhanced") // 非弹窗
 				// client 为外网服务的回调地址
 				.redirectUri("https://oidcdebugger.com/debug")
 				//
