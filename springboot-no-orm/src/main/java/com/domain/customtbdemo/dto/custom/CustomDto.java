@@ -1,13 +1,13 @@
-package com.domain.customtbdemo.dto;
+package com.domain.customtbdemo.dto.custom;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import chok2.devwork.pojo.ChokDtoBase;
-import chok2.devwork.pojo.ChokDtoConstants;
+import chok2.devwork.pojo.ChokResponseBase;
+import chok2.devwork.pojo.ChokResponseConstants;
 
 // 按具体业务隐藏字段
 @JsonIgnoreProperties(value = {"success", "code", "msg", "path", "timestamp", "data"})
-public class CustomDto<T> extends ChokDtoBase<T>
+public class CustomDto<T> extends ChokResponseBase<T>
 {
 	private static final long serialVersionUID = 1L;
 
@@ -52,7 +52,7 @@ public class CustomDto<T> extends ChokDtoBase<T>
 	public void setCode(String code)
 	{
 		super.setCode(code);
-		if (code.equals(ChokDtoConstants.SUCCESS_CODE))
+		if (code.equals(ChokResponseConstants.SUCCESS_CODE))
 		{
 			this.esbInfo.setReturnCode(CustomDtoConstants.SUCCESS_CODE);
 		}

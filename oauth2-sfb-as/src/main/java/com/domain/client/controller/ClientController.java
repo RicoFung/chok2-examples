@@ -14,8 +14,13 @@ public class ClientController
 	@RequestMapping(value = "/login", method = {RequestMethod.GET, RequestMethod.POST})
 	public String login(Model model, HttpServletRequest request)
 	{
-	    if (request.getAttribute("captchaError") != null) {
-	        model.addAttribute("captchaError", request.getAttribute("captchaError"));
+	    if (request.getAttribute("error") != null) {
+	    	model.addAttribute("error", request.getAttribute("error"));
+	    	model.addAttribute("errorMessage", request.getAttribute("errorMessage"));
+	    }
+	    if (request.getParameter("error") != null) {
+	    	model.addAttribute("error", request.getParameter("error"));
+	    	model.addAttribute("errorMessage", request.getParameter("errorMessage"));
 	    }
 		return "client/login";
 	}

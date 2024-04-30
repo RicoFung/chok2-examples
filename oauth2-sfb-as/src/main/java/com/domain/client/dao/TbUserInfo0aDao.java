@@ -30,6 +30,6 @@ public class TbUserInfo0aDao extends BaseDao
 	
 	public TbUserInfo0aResult getOneByUsername(TbUserInfo0aGetOneByUsernameParam param)
 	{
-		return getOne("getOneByUsername", param);
+		return queryOne("getOneByUsername", param);
 	}
 }

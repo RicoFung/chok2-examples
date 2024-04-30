@@ -14,16 +14,16 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages={"com","chok.common"})
 @EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
 @EnableCaching
-public class Application extends SpringBootServletInitializer
+public class SpringBootNoOrmApp extends SpringBootServletInitializer
 {
 	public static void main(String[] args)
 	{
-		SpringApplication.run(Application.class, args);
+		SpringApplication.run(SpringBootNoOrmApp.class, args);
 	}
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application)
 	{
-		return application.sources(Application.class);
+		return application.sources(SpringBootNoOrmApp.class);
 	}
 }

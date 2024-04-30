@@ -2,7 +2,7 @@ package com.domain.customtbdemo.model.data;
 
 import com.domain.customtbdemo.model.entity.CustomTbDemoEntity;
 
-public class CustomTbDemoGetListData extends CustomTbDemoEntity
+public class CustomTbDemoData extends CustomTbDemoEntity
 {
 
 	/**
@@ -13,7 +13,7 @@ public class CustomTbDemoGetListData extends CustomTbDemoEntity
 	@Override
 	public String toString()
 	{
-		return "CustomTbDemoGetListData [getTcRowid()=" + getTcRowid() + ", getTcCode()=" + getTcCode() + ", getTcName()="
+		return "CustomTbDemoData [getTcRowid()=" + getTcRowid() + ", getTcCode()=" + getTcCode() + ", getTcName()="
 				+ getTcName() + "]";
 	}
 

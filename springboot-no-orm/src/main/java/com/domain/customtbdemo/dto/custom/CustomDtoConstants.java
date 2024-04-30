@@ -1,4 +1,4 @@
-package com.domain.customtbdemo.dto;
+package com.domain.customtbdemo.dto.custom;
 
 public class CustomDtoConstants
 {

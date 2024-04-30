@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.domain.customtbdemo.dto.CustomDto;
+import com.domain.customtbdemo.dto.custom.CustomDto;
 
-import chok2.devwork.pojo.ChokDtoConstants;
+import chok2.devwork.pojo.ChokResponseConstants;
 
 /*******************************************
  * 
@@ -34,7 +34,7 @@ public class CusControllerExceptionAdvice
 	{
 		CustomDto<Object> dto = new CustomDto<Object>();
 		dto.setSuccess(false);
-		dto.setCode(ChokDtoConstants.ERROR_CODE1);
+		dto.setCode(ChokResponseConstants.ERROR_CODE1);
 		dto.setMsg(e.toString());
 		log.error("{}", e);
 		return dto;
@@ -53,7 +53,7 @@ public class CusControllerExceptionAdvice
 		});
 		CustomDto<Object> dto = new CustomDto<Object>();
 		dto.setSuccess(false);
-		dto.setCode(ChokDtoConstants.ERROR_CODE1);
+		dto.setCode(ChokResponseConstants.ERROR_CODE1);
 		dto.setMsg(errors.values().toString());
 		log.error("{}", errors.values().toString());
 		return dto;

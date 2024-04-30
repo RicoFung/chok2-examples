@@ -11,7 +11,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import chok2.devwork.pojo.ChokDto;
+import chok2.devwork.pojo.ChokResponse;
 
 /*******************************************
  * 
@@ -20,14 +20,14 @@ import chok2.devwork.pojo.ChokDto;
  * @author rico.fung
  *
  */
-@RestControllerAdvice(basePackages = { "com.domain.customtbdemo.controller" })
+//@RestControllerAdvice(basePackages = { "com.domain.customtbdemo.controller" })
 public class CusControllerResponseAdvice implements ResponseBodyAdvice<Object>
 {
 	@Override
 	public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> aClass)
 	{
 		// response是ChokDto类型，或者注释了NotControllerResponseAdvice都不进行包装
-		return !methodParameter.getParameterType().isAssignableFrom(ChokDto.class);
+		return !methodParameter.getParameterType().isAssignableFrom(ChokResponse.class);
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class CusControllerResponseAdvice implements ResponseBodyAdvice<Object>
 			try
 			{
 				// 将数据包装在ResultVo里后转换为json串进行返回
-				return objectMapper.writeValueAsString(new ChokDto<Object>(data));
+				return objectMapper.writeValueAsString(new ChokResponse<Object>(data));
 			}
 			catch (JsonProcessingException e)
 			{
@@ -49,6 +49,6 @@ public class CusControllerResponseAdvice implements ResponseBodyAdvice<Object>
 			}
 		}
 		// 否则直接包装成ResultVo返回
-		return new ChokDto<Object>(data);
+		return new ChokResponse<Object>(data);
 	}
 }

@@ -86,6 +86,8 @@ public class ClientSecurityConfig
 		.loginPage("/client/login")
 		// 自定义登录页拦截路径
 		.loginProcessingUrl("/client/loginProcess")
+		// 自定义登录失败拦截路径
+		.failureHandler(new ClientAuthenticationFailureHandler())
 		.and()
 		// 放开自定义登录访问权限
 		.authorizeRequests(authorizeRequests -> authorizeRequests

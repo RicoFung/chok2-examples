@@ -1,4 +1,4 @@
-package com.domain.customtbdemo.dto;
+package com.domain.customtbdemo.dto.custom;
 
 import java.io.Serializable;
 

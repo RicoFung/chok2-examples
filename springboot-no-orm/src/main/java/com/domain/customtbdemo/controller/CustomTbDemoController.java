@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.domain.customtbdemo.dto.CustomDto;
-import com.domain.customtbdemo.model.data.CustomTbDemoGetListData;
+import com.domain.customtbdemo.dto.custom.CustomDto;
+import com.domain.customtbdemo.dto.custom1.Custom1Dto;
+import com.domain.customtbdemo.dto.custom1.Custom1DtoData;
+import com.domain.customtbdemo.model.data.CustomTbDemoData;
 import com.domain.customtbdemo.model.param.CustomTbDemoGetListParam;
 import com.domain.customtbdemo.model.param.ParamMapper;
 import com.domain.customtbdemo.model.query.CustomTbDemoGetListQuery;
@@ -49,10 +51,19 @@ public class CustomTbDemoController
 	@Operation(summary = "列表")
 	@SecurityRequirement(name = "basicAuth")
 	@RequestMapping(value = "/getList", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	public CustomDto<List<CustomTbDemoGetListData>> getList(@RequestBody @Validated CustomTbDemoGetListParam param, BindingResult br)
+	public CustomDto<List<CustomTbDemoData>> getList(@RequestBody @Validated CustomTbDemoGetListParam param, BindingResult br)
 	{
 		CustomTbDemoGetListQuery query = ParamMapper.INSTANCE.paramToQuery(param);
 		return service.getList(query);
+	}
+	
+	@Operation(summary = "列表")
+	@SecurityRequirement(name = "basicAuth")
+	@RequestMapping(value = "/getList1", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	public Custom1Dto<Custom1DtoData<CustomTbDemoData>> getList1(@RequestBody @Validated CustomTbDemoGetListParam param, BindingResult br)
+	{
+		CustomTbDemoGetListQuery query = ParamMapper.INSTANCE.paramToQuery(param);
+		return service.getList1(query);
 	}
 
 }
