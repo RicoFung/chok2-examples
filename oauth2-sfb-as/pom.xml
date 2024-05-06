@@ -135,6 +135,8 @@
 				<filtering>true</filtering>
 				<includes>
 					<include>**/mybatis.xml</include>
+					<include>**/*.properties</include>
+					<include>**/messages*.properties</include>
 					<include>**/application.properties</include>
 					<include>**/application-${profileActive}.properties</include>
 					<include>**/datasource-mybatis-auth-${profileActive}.properties</include>

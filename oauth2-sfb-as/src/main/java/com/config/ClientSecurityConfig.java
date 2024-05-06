@@ -92,6 +92,9 @@ public class ClientSecurityConfig
 		// 放开自定义登录访问权限
 		.authorizeRequests(authorizeRequests -> authorizeRequests
 				.antMatchers(
+						// 国际化切换
+						"/i18n/change",
+						// 客户端登录
 						"/client/login",
 						// 【注意】以下静态资源必须写两种过滤表达式，否则引入静态资源失败
 						"**/jquery-easyui/**",

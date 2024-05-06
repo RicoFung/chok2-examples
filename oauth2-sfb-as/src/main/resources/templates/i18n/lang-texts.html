@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script th:inline="javascript" th:fragment="language-settings">
+    	// 创建一个命名空间对象
+    	var I18n = I18n || {};
+        /*<![CDATA[*/
+        I18n.langTexts = {
+            en: /*[[#{lang.en}]]*/ 'English',
+            zh_CN: /*[[#{lang.zh_CN}]]*/ '中文_简体'
+        };
+        /*]]>*/
+    </script>
+</head>
+<body>
+</body>
+</html>
