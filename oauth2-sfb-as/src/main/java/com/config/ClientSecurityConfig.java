@@ -20,6 +20,7 @@ import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
@@ -43,6 +44,11 @@ import com.domain.client.service.TbUserInfo0aService;
 @EnableWebSecurity(debug = false)
 public class ClientSecurityConfig
 {
+    @Value("${oauth2.client.login-page}")
+    private String LOGIN_PAGE;
+    @Value("${oauth2.client.login-processing-url}")
+    private String LOGIN_PROCESSING_URL;
+    
     @Autowired
     private MessageSource messageSource;
     @Autowired
@@ -76,7 +82,7 @@ public class ClientSecurityConfig
 	{
 		// 默认配置
 		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-		http.formLogin().loginPage("/client/login");
+		http.formLogin().loginPage(LOGIN_PAGE);
 		return http.build();
 	}
 	
@@ -95,26 +101,25 @@ public class ClientSecurityConfig
 		.addFilterBefore(captchaFilter, UsernamePasswordAuthenticationFilter.class)
 		.formLogin()
 		// 自定义登录页
-		.loginPage("/client/login")
+		.loginPage(LOGIN_PAGE)
 		// 自定义登录页拦截路径
-		.loginProcessingUrl("/client/loginProcess")
+		.loginProcessingUrl(LOGIN_PROCESSING_URL)
 		// 自定义登录失败拦截路径
 		.failureHandler(failureHandler(messageSource, localeResolver))
-//		.failureHandler(new ClientAuthenticationFailureHandler())
 		.and()
 		// 放开自定义登录访问权限
 		.authorizeRequests(authorizeRequests -> authorizeRequests
 				.antMatchers(
-						// 国际化切换
-						"/i18n/change",
-						// 客户端登录
-						"/client/login",
 						// 【注意】以下静态资源必须写两种过滤表达式，否则引入静态资源失败
 						"**/jquery-easyui/**",
 						"/jquery-easyui/**",
 						// 【注意】以下静态资源必须写两种过滤表达式，否则引入静态资源失败
 						"**/client/*.js",
-						"/client/*.js"
+						"/client/*.js",
+						// 国际化切换
+						"/i18n/change",
+						// 客户端登录
+						LOGIN_PAGE
 						).permitAll()
 				.anyRequest().authenticated())
 		// 自定义 userDetailsService
@@ -148,7 +153,7 @@ public class ClientSecurityConfig
 	@Bean
 	public PasswordEncoder passwordEncoder()
 	{
-		return MyPasswordEncoderFactories.createDelegatingPasswordEncoder();
+		return ClientPasswordEncoderFactories.createDelegatingPasswordEncoder();
 	}
 	
 //	@Bean

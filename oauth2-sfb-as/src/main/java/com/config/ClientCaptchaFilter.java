@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -16,6 +17,9 @@ import org.springframework.web.servlet.LocaleResolver;
 @Component
 public class ClientCaptchaFilter extends OncePerRequestFilter
 {
+    @Value("${oauth2.client.login-page}")
+    private String LOGIN_PAGE;
+    
     @Autowired
     private MessageSource messageSource;
     @Autowired
@@ -28,7 +32,7 @@ public class ClientCaptchaFilter extends OncePerRequestFilter
 	    String redirectedFrom = request.getParameter("redirectFrom");
 	    if ("i18nChange".equals(redirectedFrom)) 
 	    {
-			request.getRequestDispatcher("/client/login").forward(request, response);
+			request.getRequestDispatcher(LOGIN_PAGE).forward(request, response);
 	    }
 	    else
 	    {
@@ -64,6 +68,6 @@ public class ClientCaptchaFilter extends OncePerRequestFilter
 		// ClientController.java 通过 request.getAttribute 读取
 		request.setAttribute("error", true);
 		request.setAttribute("errorMessage", errorMessage);
-		request.getRequestDispatcher("/client/login").forward(request, response);
+		request.getRequestDispatcher(LOGIN_PAGE).forward(request, response);
 	}
 }
