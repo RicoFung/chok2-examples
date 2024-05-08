@@ -3,6 +3,8 @@
 
     <!-- 应用名称 -->
     <springProperty scope="context" name="APP_NAME" source="spring.application.name"/>
+    <!-- 部署环境 -->
+    <springProperty scope="context" name="APP_ENV" source="spring.profiles.active"/>
     <!-- 日志级别 -->
     <springProperty scope="context" name="LOG_ROOT_LEVEL" source="logging.level.root" defaultValue="INFO"/>
     <!-- 日志根目录-->
@@ -111,7 +113,7 @@
 				<pattern>${LOG_MSG}</pattern>
 			</fullPatternLayout>
 			<staticField>application:${APP_NAME}</staticField>
-			<staticField>environment:DEV</staticField>
+			<staticField>environment:${APP_ENV}</staticField>
 		</encoder>
 	</appender>
 

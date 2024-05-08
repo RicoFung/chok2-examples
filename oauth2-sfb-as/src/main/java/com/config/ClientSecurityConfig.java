@@ -40,7 +40,7 @@ import org.springframework.web.servlet.LocaleResolver;
 
 import com.domain.client.service.TbUserInfo0aService;
 
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity(debug = false)
 public class ClientSecurityConfig
 {
     @Autowired
