@@ -20,6 +20,7 @@ import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -35,12 +36,17 @@ import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.LocaleResolver;
 
 import com.domain.client.service.TbUserInfo0aService;
 
 @EnableWebSecurity(debug = true)
 public class ClientSecurityConfig
 {
+    @Autowired
+    private MessageSource messageSource;
+    @Autowired
+    private LocaleResolver localeResolver;
 	@Autowired
 	private ClientCaptchaFilter	captchaFilter;
 	@Autowired
@@ -58,6 +64,12 @@ public class ClientSecurityConfig
 		return source;
 	}
 
+    @Bean
+	public ClientAuthenticationFailureHandler failureHandler(MessageSource messageSource, LocaleResolver localeResolver)
+	{
+		return new ClientAuthenticationFailureHandler(messageSource, localeResolver);
+	}
+    
 	@Bean("clientAuthServerSecurityFilterChain")
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	public SecurityFilterChain clientAuthServerSecurityFilterChain(HttpSecurity http) throws Exception
@@ -87,7 +99,8 @@ public class ClientSecurityConfig
 		// 自定义登录页拦截路径
 		.loginProcessingUrl("/client/loginProcess")
 		// 自定义登录失败拦截路径
-		.failureHandler(new ClientAuthenticationFailureHandler())
+		.failureHandler(failureHandler(messageSource, localeResolver))
+//		.failureHandler(new ClientAuthenticationFailureHandler())
 		.and()
 		// 放开自定义登录访问权限
 		.authorizeRequests(authorizeRequests -> authorizeRequests

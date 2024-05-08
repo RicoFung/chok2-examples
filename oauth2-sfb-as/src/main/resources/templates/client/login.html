@@ -12,7 +12,7 @@
     <script type="text/javascript" th:src="@{/jquery-easyui/jquery.easyui.min.js}"></script>
     <script type="text/javascript" th:src="@{/jquery-easyui/jquery.easyui.mobile.js}"></script>
     <script type="text/javascript" th:src="${'/jquery-easyui/locale/easyui-lang-' + currentLang + '.js'}"></script>
-    <!-- 引入语言设置脚本 -->
+    <!--  引入语言设置脚本： i18nSelector 会用到 -->
     <th:block th:replace="i18n/lang-texts :: language-settings"></th:block>
 </head>
 <body>
@@ -23,23 +23,23 @@
 	            <span class="m-title" th:text="#{login.title}">Login to Client System</span>
 	        </div>
 	    </header>
-		<form id="ff" action="/client/loginProcess" method="post">
+		<form id="loginForm" action="/client/loginProcess" method="post">
 	        <div style="margin:20px auto;">
-				<input class="easyui-textbox" name="captcha" style="width: 100%" 
+				<input class="easyui-textbox" id="captcha" name="captcha" style="width: 100%" 
 					th:data-label="#{login.form.field.captcha}"
 					th:data-prompt="#{login.form.field.captcha}"
 					th:data-required="true" 
 					th:data-icon-cls="'icon-man'" />
 	        </div>
 	        <div style="margin:20px auto;">
-				<input class="easyui-textbox" name="username" style="width: 100%"
+				<input class="easyui-textbox" id="username" name="username" style="width: 100%"
 					th:data-label="#{login.form.field.username}"
 					th:data-prompt="#{login.form.field.username}"
 					th:data-required="true" 
 					th:data-icon-cls="'icon-man'" />
 	        </div>
 	        <div style="margin:20px auto;">
-				<input class="easyui-textbox" name="password" style="width: 100%"
+				<input class="easyui-textbox" id="password" name="password" style="width: 100%" type="password" 
 					th:data-label="#{login.form.field.password}"
 					th:data-prompt="#{login.form.field.password}"
 					th:data-required="true" 
@@ -51,12 +51,11 @@
 		            data-options="valueField:'id', textField:'text', editable:false, panelHeight:'auto'">
 			    </select>
 			</div>
-			<div style="text-align:center;padding:5px 0">
-		    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:80px" th:text="#{login.form.button.submit}">Submit</a>
-				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetForm()" style="width:80px" th:text="#{login.form.button.reset}">Reset</a>
-				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="backForm()" style="width:80px" th:text="#{login.form.button.back}">Back</a>
-		    </div>
 	    </form>
+		<div style="text-align:center;padding:5px 0">
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:80px" th:text="#{login.form.button.submit}">Submit</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetForm()" style="width:80px" th:text="#{login.form.button.reset}">Reset</a>
+	    </div>
 	</div>
 	<!-- 将当前语言存储在隐藏域中 -->
 	<input type="hidden" id="currentLang" th:value="${currentLang}"/> 

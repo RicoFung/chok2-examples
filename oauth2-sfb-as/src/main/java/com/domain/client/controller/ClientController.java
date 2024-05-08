@@ -15,6 +15,12 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 @RequestMapping("/client")
 public class ClientController
 {
+	/**
+	 * 指向自定义登录页
+	 * @param model
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "/login", method = { RequestMethod.GET, RequestMethod.POST })
 	public String login(Model model, HttpServletRequest request)
 	{
@@ -22,17 +28,7 @@ public class ClientController
 		LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
 		Locale currentLocale = localeResolver.resolveLocale(request);
 		model.addAttribute("currentLang", currentLocale.toLanguageTag().replace('-', '_'));
-		// 回写错误提示
-		if (request.getAttribute("error") != null)
-		{
-			model.addAttribute("error", request.getAttribute("error"));
-			model.addAttribute("errorMessage", request.getAttribute("errorMessage"));
-		}
-		if (request.getParameter("error") != null)
-		{
-			model.addAttribute("error", request.getParameter("error"));
-			model.addAttribute("errorMessage", request.getParameter("errorMessage"));
-		}
+		// 指向 classpath: templates/client/login.html
 		return "client/login";
 	}
 }

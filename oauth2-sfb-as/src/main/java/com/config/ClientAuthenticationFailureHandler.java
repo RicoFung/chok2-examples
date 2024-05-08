@@ -6,35 +6,40 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.web.servlet.LocaleResolver;
 
 public class ClientAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler
 {
+    private final MessageSource messageSource;
+    private final LocaleResolver localeResolver;
+
+	public ClientAuthenticationFailureHandler(MessageSource messageSource, LocaleResolver localeResolver)
+	{
+		this.messageSource = messageSource;
+		this.localeResolver = localeResolver;
+	}
+    
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) throws IOException, ServletException
 	{
-		String errorMessage = "Login Fail.";
-
+		String errorMessage = messageSource.getMessage("login.error.message.default", null, localeResolver.resolveLocale(request));
 		if (exception instanceof UsernameNotFoundException)
 		{
-			errorMessage = "No user found with the username provided.";
+			errorMessage = messageSource.getMessage("login.error.message.nouserfound", null, localeResolver.resolveLocale(request));
 		}
 		if (exception instanceof BadCredentialsException)
 		{
-			errorMessage = "Invalid username or password.";
+			errorMessage = messageSource.getMessage("login.error.message.badcredentials", null, localeResolver.resolveLocale(request));
 		}
-		// 方式一：
-		// ClientController.java 通过 request.getParameter 读取
-		setDefaultFailureUrl("/client/login?error=true&errorMessage=" + errorMessage);
-		super.onAuthenticationFailure(request, response, exception);
-		// 方式二：
 		// ClientController.java 通过 request.getAttribute 读取
-//		request.setAttribute("error", true);
-//		request.setAttribute("errorMessage", errorMessage);
-//		request.getRequestDispatcher("/client/login").forward(request, response);
+		request.setAttribute("error", true);
+		request.setAttribute("errorMessage", errorMessage);
+		request.getRequestDispatcher("/client/login").forward(request, response);
 	}
 }

@@ -5,19 +5,21 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Controller
 @RequestMapping("/i18n")
 public class i18nController
 {
-
+	private static final Logger logger = LoggerFactory.getLogger(i18nController.class);
+	
 	private final LocaleResolver localeResolver;
 
 	public i18nController(LocaleResolver localeResolver)
@@ -25,26 +27,37 @@ public class i18nController
 		this.localeResolver = localeResolver;
 	}
 
+	/**
+	 * 切换语言
+	 * @param lang
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@GetMapping("/change")
-	public String change(@RequestParam("lang") String lang, HttpServletRequest request,
-			HttpServletResponse response, RedirectAttributes redirectAttributes)
+	public String change(@RequestParam("lang") String lang, HttpServletRequest request, HttpServletResponse response)
 	{
-		if (localeResolver == null)
-		{
-			throw new IllegalStateException("No LocaleResolver found: not in a DispatcherServlet request?");
-		}
+		logger.info("RequestParam => lang: {}", lang);
 		Locale newLocale = Locale.forLanguageTag(lang.replace('_', '-'));
 		localeResolver.setLocale(request, response, newLocale);
-
-//	    String referer = request.getHeader("Referer");
-//	    String redirectUrl = "/";
-//		if (referer != null && referer.startsWith("http://auth-server/"))
-//		{
-//			redirectUrl = UriComponentsBuilder.fromUriString(referer).replaceQuery(null).build().toUriString();
-//		}
-//	    return "redirect:" + (redirectUrl != null ? redirectUrl : "/");
-	    
+	
+		String redirectUrl = "/";
 		String referer = request.getHeader("Referer");
-		return "redirect:" + (referer != null ? referer : "/");
+		logger.info("Header <= referer: {}", referer);
+		if (referer != null)
+		{
+			// 使用 UriComponentsBuilder 
+			// 使用 replaceQueryParam() 移除上次的  error、errorMessage、redirectFrom 参数
+			// 使用 queryParam() 添加最新的 redirectFrom 参数
+			redirectUrl = UriComponentsBuilder
+					.fromUriString(referer)
+					.replaceQueryParam("error")
+					.replaceQueryParam("errorMessage")
+					.replaceQueryParam("redirectFrom")
+					.queryParam("redirectFrom", "i18nChange")
+					.build().toUriString();
+		}
+		logger.info("Redirect => url: {}", referer);
+		return "redirect:" + redirectUrl;
 	}
 }

@@ -2,6 +2,8 @@ package com.config;
 
 import java.util.Locale;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +18,8 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 @Configuration
 public class i18nConfig
 {
+	private static final Logger logger = LoggerFactory.getLogger(i18nConfig.class);
+
 	/** 国际化文件路径 */
 	@Value("${spring.messages.basename}")
 	public String	basename;
@@ -33,7 +37,7 @@ public class i18nConfig
 		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
 		messageSource.setBasename(basename);
 		messageSource.setDefaultEncoding(encoding);
-		System.out.println("Configuring MessageSource with basename: " + basename);
+		logger.info("Configuring MessageSource with basename: {}, encoding: {}", basename, encoding);
 		return messageSource;
 	}
 
@@ -41,7 +45,7 @@ public class i18nConfig
 	public LocaleResolver localeResolver()
 	{
 		SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
-		sessionLocaleResolver.setDefaultLocale(Locale.US); // 默认语言设置为英语
+	    sessionLocaleResolver.setDefaultLocale(Locale.getDefault()); // 设置默认语言为系统默认语言
 		return sessionLocaleResolver;
 	}
 
