@@ -57,7 +57,7 @@ public class ClientSecurityConfig
 	@Autowired
 	private ClientLoginProcessingFilter	clientLoginProcessingFilter;
 	@Autowired
-	private ClientPreAuthReferrerFilter	clientPreAuthReferrerFilter;
+	private ClientPreAuthorizeFilter	clientPreAuthorizeFilter;
 	@Autowired
 	TbUserInfo0aService		tbUserInfo0aService;
 	
@@ -85,7 +85,8 @@ public class ClientSecurityConfig
 	{
 		// 默认配置
 		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-		http.addFilterBefore(clientPreAuthReferrerFilter, BasicAuthenticationFilter.class);
+		// 此拦截器用于获取/oauth2/authorize的相关请求参数
+		http.addFilterBefore(clientPreAuthorizeFilter, BasicAuthenticationFilter.class);
 		http.formLogin().loginPage(LOGIN_PAGE);
 		return http.build();
 	}

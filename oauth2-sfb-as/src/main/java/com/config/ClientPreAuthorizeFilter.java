@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
-public class ClientPreAuthReferrerFilter extends OncePerRequestFilter
+public class ClientPreAuthorizeFilter extends OncePerRequestFilter
 {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -24,6 +24,15 @@ public class ClientPreAuthReferrerFilter extends OncePerRequestFilter
 	{
 		if (request.getRequestURI().contains("/oauth2/authorize"))
 		{
+			// 获取 client_id
+			String clientId = request.getParameter("client_id");
+			if (clientId != null)
+			{
+				HttpSession session = request.getSession(true);
+				session.setAttribute("clientId", clientId);
+				logger.info("<== clientId: {}", clientId);
+			}
+			// 获取 redirect_uri
 			String redirectUri = request.getParameter("redirect_uri");
 			if (redirectUri != null)
 			{
