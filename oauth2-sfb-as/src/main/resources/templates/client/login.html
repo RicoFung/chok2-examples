@@ -13,7 +13,7 @@
     <script type="text/javascript" th:src="@{/jquery-easyui/jquery.easyui.mobile.js}"></script>
     <script type="text/javascript" th:src="${'/jquery-easyui/locale/easyui-lang-' + currentLang + '.js'}"></script>
     <!--  引入语言设置脚本： i18nSelector 会用到 -->
-    <th:block th:replace="i18n/lang-texts :: language-settings"></th:block>
+    <th:block th:replace="i18n-block :: language-settings"></th:block>
 </head>
 <body>
 <div style="position: absolute; left: 50%; transform: translateX(-50%); max-width: 500px; width: 100%; padding: 10px;">
@@ -43,7 +43,7 @@
 					th:data-label="#{login.form.field.password}"
 					th:data-prompt="#{login.form.field.password}"
 					th:data-required="true" 
-					th:data-icon-cls="'icon-man'" />
+					th:data-icon-cls="'icon-lock'" />
 	        </div>
 			<div style="margin:20px auto;">
 			    <select class="easyui-combobox" id="i18nSelector" style="width:100%;" 
@@ -55,6 +55,7 @@
 		<div style="text-align:center;padding:5px 0">
 	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:80px" th:text="#{login.form.button.submit}">Submit</a>
 			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetForm()" style="width:80px" th:text="#{login.form.button.reset}">Reset</a>
+			<a th:href="@{${session.refererDomain}}" class="easyui-linkbutton" onclick="resetForm()" style="width:80px" th:text="#{login.form.button.back}">Back</a>
 	    </div>
 	</div>
 	<!-- 将当前语言存储在隐藏域中 -->

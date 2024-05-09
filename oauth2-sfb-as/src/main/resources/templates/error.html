@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title th:text="#{error.title}">错误页</title>
+    <link type="text/css" rel="stylesheet" th:href="@{/jquery-easyui/themes/material-blue/easyui.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{/jquery-easyui/themes/mobile.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{/jquery-easyui/themes/color.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{/jquery-easyui/themes/icon.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{/jquery-easyui/demo/demo.css}" />
+    <script type="text/javascript" th:src="@{/jquery-easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/jquery-easyui/jquery.easyui.min.js}"></script>
+    <script type="text/javascript" th:src="@{/jquery-easyui/jquery.easyui.mobile.js}"></script>
+    <script type="text/javascript" th:src="${'/jquery-easyui/locale/easyui-lang-' + currentLang + '.js'}"></script>
+</head>
+<body>
+<div style="position: absolute; left: 50%; transform: translateX(-50%); max-width: 500px; width: 100%; padding: 10px;">
+    <div class="easyui-panel" th:title="#{error.warning}" style="margin: 0; padding: 10px; box-sizing: border-box; width: 100%;">
+        <h2 th:text="#{error.occurred}">Error Occurred</h2>
+        <p th:text="${errorMessage}">Error details will be displayed here.</p>
+    </div>
+    <div style="margin-top: 2px; box-sizing: border-box; width: 100%;">
+        <a class="easyui-linkbutton c5" style="width:100%" th:href="@{${session.refererDomain}}" th:text="#{button.back}">Back</a>
+    </div>
+</div>
+</body>
+</html>

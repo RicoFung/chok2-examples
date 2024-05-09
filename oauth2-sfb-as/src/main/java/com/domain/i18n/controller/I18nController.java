@@ -1,4 +1,4 @@
-package com.domain.i18n;
+package com.domain.i18n.controller;
 
 import java.util.Locale;
 
@@ -16,13 +16,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Controller
 @RequestMapping("/i18n")
-public class i18nController
+public class I18nController
 {
-	private static final Logger logger = LoggerFactory.getLogger(i18nController.class);
+	private static final Logger logger = LoggerFactory.getLogger(I18nController.class);
 	
 	private final LocaleResolver localeResolver;
 
-	public i18nController(LocaleResolver localeResolver)
+	public I18nController(LocaleResolver localeResolver)
 	{
 		this.localeResolver = localeResolver;
 	}
@@ -34,6 +34,7 @@ public class i18nController
 	 * @param response
 	 * @return
 	 */
+	// 【用于模拟异常】： @RequestMapping(value = "/change", method = { RequestMethod.POST })
 	@GetMapping("/change")
 	public String change(@RequestParam("lang") String lang, HttpServletRequest request, HttpServletResponse response)
 	{

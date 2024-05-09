@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
@@ -15,6 +16,9 @@ import org.springframework.web.servlet.LocaleResolver;
 
 public class ClientAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler
 {
+    @Value("${oauth2.client.login-page}")
+    private String LOGIN_PAGE;
+    
     private final MessageSource messageSource;
     private final LocaleResolver localeResolver;
 
@@ -40,6 +44,6 @@ public class ClientAuthenticationFailureHandler extends SimpleUrlAuthenticationF
 		// ClientController.java 通过 request.getAttribute 读取
 		request.setAttribute("error", true);
 		request.setAttribute("errorMessage", errorMessage);
-		request.getRequestDispatcher("/client/login").forward(request, response);
+		request.getRequestDispatcher(LOGIN_PAGE).forward(request, response);
 	}
 }

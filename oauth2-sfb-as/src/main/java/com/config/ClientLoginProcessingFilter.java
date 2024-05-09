@@ -8,14 +8,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.LocaleResolver;
 
 @Component
-public class ClientCaptchaFilter extends OncePerRequestFilter
+public class ClientLoginProcessingFilter extends OncePerRequestFilter
 {
+    @Value("${oauth2.client.login-page}")
+    private String LOGIN_PAGE;
+    @Value("${oauth2.client.login-processing-url}")
+    private String LOGIN_PROCESSING_URL;
+    
     @Autowired
     private MessageSource messageSource;
     @Autowired
@@ -25,14 +31,14 @@ public class ClientCaptchaFilter extends OncePerRequestFilter
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException
 	{
-	    String redirectedFrom = request.getParameter("redirectFrom");
-	    if ("i18nChange".equals(redirectedFrom)) 
-	    {
-			request.getRequestDispatcher("/client/login").forward(request, response);
-	    }
-	    else
-	    {
-			if ("/client/loginProcess".equals(request.getRequestURI()))
+		String redirectedFrom = request.getParameter("redirectFrom");
+		if ("i18nChange".equals(redirectedFrom)) 
+		{
+			request.getRequestDispatcher(LOGIN_PAGE).forward(request, response);
+		}
+		else
+		{
+			if (LOGIN_PROCESSING_URL.equals(request.getRequestURI()))
 			{
 				// 从 Session 获取正确的验证码
 				String sessionCaptcha = "888888";
@@ -47,7 +53,7 @@ public class ClientCaptchaFilter extends OncePerRequestFilter
 			}
 			// 验证通过，进入下一个过滤器
 			filterChain.doFilter(request, response);
-	    }
+		}
 	}
 	
 	/**
@@ -64,6 +70,6 @@ public class ClientCaptchaFilter extends OncePerRequestFilter
 		// ClientController.java 通过 request.getAttribute 读取
 		request.setAttribute("error", true);
 		request.setAttribute("errorMessage", errorMessage);
-		request.getRequestDispatcher("/client/login").forward(request, response);
+		request.getRequestDispatcher(LOGIN_PAGE).forward(request, response);
 	}
 }
