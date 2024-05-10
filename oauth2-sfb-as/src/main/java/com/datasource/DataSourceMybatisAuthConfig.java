@@ -41,6 +41,8 @@ public class DataSourceMybatisAuthConfig
     private int maximumPoolSize;
     @Value("${datasource.mybatis.auth.maxLifetime}")
     private int maxLifetime;
+    @Value("${datasource.mybatis.auth.idleTimeout}")
+    private int idleTimeout;
     @Value("${datasource.mybatis.auth.mapper-location}")
     private String mapperLocation;
     @Value("${mybatis.config-location}")
@@ -57,6 +59,7 @@ public class DataSourceMybatisAuthConfig
         dataSource.setMinimumIdle(minimumIdle);
         dataSource.setMaximumPoolSize(maximumPoolSize);
         dataSource.setMaxLifetime(maxLifetime);
+        dataSource.setIdleTimeout(idleTimeout);
         return dataSource;
     }
  
