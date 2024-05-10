@@ -15,7 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.LocaleResolver;
 
 @Component
-public class ClientLoginProcessingFilter extends OncePerRequestFilter
+public class AuthLoginAuthenticationFilter extends OncePerRequestFilter
 {
     @Value("${oauth2.client.login-page}")
     private String LOGIN_PAGE;

@@ -43,7 +43,7 @@ import org.springframework.web.servlet.LocaleResolver;
 import com.domain.client.service.TbUserInfo0aService;
 
 @EnableWebSecurity(debug = false)
-public class ClientSecurityConfig
+public class AuthSecurityConfig
 {
     @Value("${oauth2.client.login-page}")
     private String LOGIN_PAGE;
@@ -55,9 +55,9 @@ public class ClientSecurityConfig
     @Autowired
     private LocaleResolver localeResolver;
 	@Autowired
-	private ClientLoginProcessingFilter	clientLoginProcessingFilter;
+	private AuthLoginAuthenticationFilter	authLoginAuthenticationFilter;
 	@Autowired
-	private ClientPreAuthorizeFilter	clientPreAuthorizeFilter;
+	private AuthLoginPreAuthenticationFilter	authLoginPreAuthenticationFilter;
 	@Autowired
 	TbUserInfo0aService		tbUserInfo0aService;
 	
@@ -74,36 +74,44 @@ public class ClientSecurityConfig
 	}
 
     @Bean
-	public ClientAuthenticationFailureHandler failureHandler(MessageSource messageSource, LocaleResolver localeResolver)
+	public AuthLoginFailureHandler failureHandler(MessageSource messageSource, LocaleResolver localeResolver)
 	{
-		return new ClientAuthenticationFailureHandler(messageSource, localeResolver);
+		return new AuthLoginFailureHandler(messageSource, localeResolver);
 	}
     
-	@Bean("clientAuthServerSecurityFilterChain")
+	@Bean("oauth2SecurityFilterChain")
 	@Order(Ordered.HIGHEST_PRECEDENCE)
-	public SecurityFilterChain clientAuthServerSecurityFilterChain(HttpSecurity http) throws Exception
+	public SecurityFilterChain oauth2SecurityFilterChain(HttpSecurity http) throws Exception
 	{
 		// 默认配置
 		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+		// **************************************************************************************** 
 		// 此拦截器用于获取/oauth2/authorize的相关请求参数
-		http.addFilterBefore(clientPreAuthorizeFilter, BasicAuthenticationFilter.class);
+		// **************************************************************************************** 
+		http.addFilterBefore(authLoginPreAuthenticationFilter, BasicAuthenticationFilter.class);
 		http.formLogin().loginPage(LOGIN_PAGE);
 		return http.build();
 	}
 	
-	@Bean
+	@Bean("loginSecurityFilterChain")
 	@Order(Ordered.HIGHEST_PRECEDENCE + 1)
-	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http, @Qualifier("clientAuthServerSecurityFilterChain") SecurityFilterChain securityFilterChain) throws Exception
+	SecurityFilterChain loginSecurityFilterChain(HttpSecurity http, @Qualifier("oauth2SecurityFilterChain") SecurityFilterChain securityFilterChain) throws Exception
 	{
-		DefaultSecurityFilterChain authorizationServerFilterChain = (DefaultSecurityFilterChain) securityFilterChain;
+		DefaultSecurityFilterChain oauth2SecurityFilterChain = (DefaultSecurityFilterChain) securityFilterChain;
 
 		// ---------- //
 		// 自定义登录配置
 		// ---------- //
 		http
-		.requestMatcher(new AndRequestMatcher(new NegatedRequestMatcher(authorizationServerFilterChain.getRequestMatcher())))
+		// **************************************************************************************** 
+		// 这段代码的作用是为了创建一个请求匹配器，该匹配器用于识别那些不应由授权服务器处理的请求。
+		// 通过 new NegatedRequestMatcher(oauth2SecurityFilterChain.getRequestMatcher())，
+		// 它否定了授权服务器的请求匹配器，意味着如果请求不符合授权服务器的路径，就会匹配此安全配置。
+		// 这允许自定义登录和其他安全逻辑独立于授权服务器流程进行处理。
+		// **************************************************************************************** 
+		.requestMatcher(new AndRequestMatcher(new NegatedRequestMatcher(oauth2SecurityFilterChain.getRequestMatcher())))
 		.csrf().disable()
-		.addFilterBefore(clientLoginProcessingFilter, UsernamePasswordAuthenticationFilter.class)
+		.addFilterBefore(authLoginAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 		.formLogin()
 		// 自定义登录页
 		.loginPage(LOGIN_PAGE)
@@ -158,7 +166,7 @@ public class ClientSecurityConfig
 	@Bean
 	public PasswordEncoder passwordEncoder()
 	{
-		return ClientPasswordEncoderFactories.createDelegatingPasswordEncoder();
+		return AuthLoginPasswordEncoderFactory.createDelegatingPasswordEncoder();
 	}
 	
 //	@Bean

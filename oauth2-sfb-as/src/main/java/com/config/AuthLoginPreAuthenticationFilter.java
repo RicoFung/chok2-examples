@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
-public class ClientPreAuthorizeFilter extends OncePerRequestFilter
+public class AuthLoginPreAuthenticationFilter extends OncePerRequestFilter
 {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 

@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.web.servlet.LocaleResolver;
 
-public class ClientAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler
+public class AuthLoginFailureHandler extends SimpleUrlAuthenticationFailureHandler
 {
     @Value("${oauth2.client.login-page}")
     private String LOGIN_PAGE;
@@ -22,7 +22,7 @@ public class ClientAuthenticationFailureHandler extends SimpleUrlAuthenticationF
     private final MessageSource messageSource;
     private final LocaleResolver localeResolver;
 
-	public ClientAuthenticationFailureHandler(MessageSource messageSource, LocaleResolver localeResolver)
+	public AuthLoginFailureHandler(MessageSource messageSource, LocaleResolver localeResolver)
 	{
 		this.messageSource = messageSource;
 		this.localeResolver = localeResolver;
