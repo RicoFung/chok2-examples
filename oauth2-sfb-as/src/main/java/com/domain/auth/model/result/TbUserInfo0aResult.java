@@ -1,6 +1,6 @@
-package com.domain.client.model.result;
+package com.domain.auth.model.result;
 
-import com.domain.client.model.entity.TbUserInfo0a;
+import com.domain.auth.model.entity.TbUserInfo0a;
 
 public class TbUserInfo0aResult extends TbUserInfo0a
 {

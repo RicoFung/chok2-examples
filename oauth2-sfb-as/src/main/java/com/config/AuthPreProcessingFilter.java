@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
-public class AuthLoginPreAuthenticationFilter extends OncePerRequestFilter
+public class AuthPreProcessingFilter extends OncePerRequestFilter
 {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -26,14 +26,15 @@ public class AuthLoginPreAuthenticationFilter extends OncePerRequestFilter
 		{
 			// 获取 client_id
 			String clientId = request.getParameter("client_id");
+			logger.info("==> clientId: {}", clientId);
 			if (clientId != null)
 			{
 				HttpSession session = request.getSession(true);
 				session.setAttribute("clientId", clientId);
-				logger.info("<== clientId: {}", clientId);
 			}
 			// 获取 redirect_uri
 			String redirectUri = request.getParameter("redirect_uri");
+			logger.info("==> redirectUri: {}", redirectUri);
 			if (redirectUri != null)
 			{
 				try

@@ -6,6 +6,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,12 +16,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.LocaleResolver;
 
 @Component
-public class AuthLoginAuthenticationFilter extends OncePerRequestFilter
+public class AuthProcessingFilter extends OncePerRequestFilter
 {
-    @Value("${oauth2.client.login-page}")
-    private String LOGIN_PAGE;
-    @Value("${oauth2.client.login-processing-url}")
-    private String LOGIN_PROCESSING_URL;
+    @Value("${auth.login-page}")
+    private String authLoginPage;
+    @Value("${auth.login-processing-url}")
+    private String authLoginProcessingUrl;
     
     @Autowired
     private MessageSource messageSource;
@@ -32,14 +33,19 @@ public class AuthLoginAuthenticationFilter extends OncePerRequestFilter
 			throws ServletException, IOException
 	{
 		String redirectedFrom = request.getParameter("redirectFrom");
-		if ("i18nChange".equals(redirectedFrom)) 
+		if ("/i18nChange".equals(redirectedFrom)) 
 		{
-			request.getRequestDispatcher(LOGIN_PAGE).forward(request, response);
+			request.getRequestDispatcher(authLoginPage).forward(request, response);
+			return;
 		}
-		else
+		if (authLoginProcessingUrl.equals(request.getRequestURI()))
 		{
-			if (LOGIN_PROCESSING_URL.equals(request.getRequestURI()))
-			{
+			// 从 Session 中获取 clientId
+			HttpSession session = request.getSession(false);
+		    String clientId = session != null ? (String) session.getAttribute("clientId") : null;
+		    // 按 clientId 执行处理逻辑
+		    if ("rico-client".equals(clientId))
+		    {
 				// 从 Session 获取正确的验证码
 				String sessionCaptcha = "888888";
 				// 从 Form 获取提交的验证码
@@ -50,10 +56,14 @@ public class AuthLoginAuthenticationFilter extends OncePerRequestFilter
 					handleCaptchaFailure(request, response);
 					return;
 				}
-			}
-			// 验证通过，进入下一个过滤器
-			filterChain.doFilter(request, response);
+		    }
+		    else
+		    {
+		    	
+		    }
 		}
+		// 验证通过，进入下一个过滤器
+		filterChain.doFilter(request, response);
 	}
 	
 	/**
@@ -70,6 +80,6 @@ public class AuthLoginAuthenticationFilter extends OncePerRequestFilter
 		// ClientController.java 通过 request.getAttribute 读取
 		request.setAttribute("error", true);
 		request.setAttribute("errorMessage", errorMessage);
-		request.getRequestDispatcher(LOGIN_PAGE).forward(request, response);
+		request.getRequestDispatcher(authLoginPage).forward(request, response);
 	}
 }

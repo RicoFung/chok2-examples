@@ -1,4 +1,4 @@
-package com.domain.client.service;
+package com.domain.auth.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -7,9 +7,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.domain.client.dao.TbUserInfo0aDao;
-import com.domain.client.model.param.TbUserInfo0aGetOneByUsernameParam;
-import com.domain.client.model.result.TbUserInfo0aResult;
+import com.domain.auth.dao.TbUserInfo0aDao;
+import com.domain.auth.model.param.TbUserInfo0aGetOneByUsernameParam;
+import com.domain.auth.model.result.TbUserInfo0aResult;
 
 @Service("tbUserInfo0aService")
 public class TbUserInfo0aService implements UserDetailsService

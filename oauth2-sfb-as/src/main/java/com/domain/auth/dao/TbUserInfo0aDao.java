@@ -1,12 +1,12 @@
-package com.domain.client.dao;
+package com.domain.auth.dao;
 
 import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.domain.client.model.param.TbUserInfo0aGetOneByUsernameParam;
-import com.domain.client.model.result.TbUserInfo0aResult;
+import com.domain.auth.model.param.TbUserInfo0aGetOneByUsernameParam;
+import com.domain.auth.model.result.TbUserInfo0aResult;
 
 import chok2.devwork.dao.BaseDao;
 

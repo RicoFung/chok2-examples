@@ -40,24 +40,24 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.LocaleResolver;
 
-import com.domain.client.service.TbUserInfo0aService;
+import com.domain.auth.service.TbUserInfo0aService;
 
 @EnableWebSecurity(debug = false)
 public class AuthSecurityConfig
 {
-    @Value("${oauth2.client.login-page}")
-    private String LOGIN_PAGE;
-    @Value("${oauth2.client.login-processing-url}")
-    private String LOGIN_PROCESSING_URL;
+    @Value("${auth.login-page}")
+    private String authLoginPage;
+    @Value("${auth.login-processing-url}")
+    private String authLoginProcessingUrl;
     
     @Autowired
     private MessageSource messageSource;
     @Autowired
     private LocaleResolver localeResolver;
 	@Autowired
-	private AuthLoginAuthenticationFilter	authLoginAuthenticationFilter;
+	private AuthProcessingFilter	authProcessingFilter;
 	@Autowired
-	private AuthLoginPreAuthenticationFilter	authLoginPreAuthenticationFilter;
+	private AuthPreProcessingFilter	authPreProcessingFilter;
 	@Autowired
 	TbUserInfo0aService		tbUserInfo0aService;
 	
@@ -74,28 +74,28 @@ public class AuthSecurityConfig
 	}
 
     @Bean
-	public AuthLoginFailureHandler failureHandler(MessageSource messageSource, LocaleResolver localeResolver)
+	public AuthProcessingFailureHandler failureHandler(MessageSource messageSource, LocaleResolver localeResolver)
 	{
-		return new AuthLoginFailureHandler(messageSource, localeResolver);
+		return new AuthProcessingFailureHandler(messageSource, localeResolver);
 	}
     
-	@Bean("oauth2SecurityFilterChain")
+	@Bean("authPreProcessingSecurityFilterChain")
 	@Order(Ordered.HIGHEST_PRECEDENCE)
-	public SecurityFilterChain oauth2SecurityFilterChain(HttpSecurity http) throws Exception
+	public SecurityFilterChain authPreProcessingSecurityFilterChain(HttpSecurity http) throws Exception
 	{
 		// 默认配置
 		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
 		// **************************************************************************************** 
 		// 此拦截器用于获取/oauth2/authorize的相关请求参数
 		// **************************************************************************************** 
-		http.addFilterBefore(authLoginPreAuthenticationFilter, BasicAuthenticationFilter.class);
-		http.formLogin().loginPage(LOGIN_PAGE);
+		http.addFilterBefore(authPreProcessingFilter, BasicAuthenticationFilter.class);
+		http.formLogin().loginPage("/auth/forward");
 		return http.build();
 	}
 	
-	@Bean("loginSecurityFilterChain")
+	@Bean("authProcessingSecurityFilterChain")
 	@Order(Ordered.HIGHEST_PRECEDENCE + 1)
-	SecurityFilterChain loginSecurityFilterChain(HttpSecurity http, @Qualifier("oauth2SecurityFilterChain") SecurityFilterChain securityFilterChain) throws Exception
+	SecurityFilterChain authProcessingSecurityFilterChain(HttpSecurity http, @Qualifier("authPreProcessingSecurityFilterChain") SecurityFilterChain securityFilterChain) throws Exception
 	{
 		DefaultSecurityFilterChain oauth2SecurityFilterChain = (DefaultSecurityFilterChain) securityFilterChain;
 
@@ -111,12 +111,12 @@ public class AuthSecurityConfig
 		// **************************************************************************************** 
 		.requestMatcher(new AndRequestMatcher(new NegatedRequestMatcher(oauth2SecurityFilterChain.getRequestMatcher())))
 		.csrf().disable()
-		.addFilterBefore(authLoginAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+		.addFilterBefore(authProcessingFilter, UsernamePasswordAuthenticationFilter.class)
 		.formLogin()
 		// 自定义登录页
-		.loginPage(LOGIN_PAGE)
+		.loginPage(authLoginPage)
 		// 自定义登录页拦截路径
-		.loginProcessingUrl(LOGIN_PROCESSING_URL)
+		.loginProcessingUrl(authLoginProcessingUrl)
 		// 自定义登录失败拦截路径
 		.failureHandler(failureHandler(messageSource, localeResolver))
 		.and()
@@ -127,12 +127,16 @@ public class AuthSecurityConfig
 						"**/jquery-easyui/**",
 						"/jquery-easyui/**",
 						// 【注意】以下静态资源必须写两种过滤表达式，否则引入静态资源失败
+						"**/default/*.js",
+						"/default/*.js",
 						"**/client/*.js",
 						"/client/*.js",
 						// 国际化切换
 						"/i18n/change",
 						// 客户端登录
-						LOGIN_PAGE
+						authLoginPage,
+						"/default/login",
+						"/client/login"
 						).permitAll()
 				.anyRequest().authenticated())
 		// 自定义 userDetailsService
@@ -166,7 +170,7 @@ public class AuthSecurityConfig
 	@Bean
 	public PasswordEncoder passwordEncoder()
 	{
-		return AuthLoginPasswordEncoderFactory.createDelegatingPasswordEncoder();
+		return AuthProcessingFactory.createDelegatingPasswordEncoder();
 	}
 	
 //	@Bean
@@ -194,62 +198,9 @@ public class AuthSecurityConfig
 //	UserDetailsService users()
 //	{
 //		UserDetails user = User.builder().username("admin").password("password")
-//				.passwordEncoder(PasswordEncoderFactories.createDelegatingPasswordEncoder()::encode).roles("ADMIN")
+//				.passwordEncoder(AuthProcessingFactory.createDelegatingPasswordEncoder()::encode).roles("ADMIN")
 //				.build();
 //		return new InMemoryUserDetailsManager(user);
 //	}
 	
-//	@Bean
-//	UserDetailsService users()
-//	{
-//		UserDetails user = User.builder().username("admin").password("password")
-//				.passwordEncoder(MyPasswordEncoderFactories.createDelegatingPasswordEncoder()::encode).roles("ADMIN")
-//				.build();
-//		return new InMemoryUserDetailsManager(user);
-//	}
-	
-//	private void sendAuthorizationResponse(HttpServletRequest request, HttpServletResponse response,
-//			Authentication authentication) throws IOException {
-//
-//		OAuth2AuthorizationCodeRequestAuthenticationToken authorizationCodeRequestAuthentication =
-//				(OAuth2AuthorizationCodeRequestAuthenticationToken) authentication;
-//		UriComponentsBuilder uriBuilder = UriComponentsBuilder
-//				.fromUriString(authorizationCodeRequestAuthentication.getRedirectUri())
-//				.queryParam(OAuth2ParameterNames.CODE, authorizationCodeRequestAuthentication.getAuthorizationCode().getTokenValue());
-//		if (StringUtils.hasText(authorizationCodeRequestAuthentication.getState())) {
-//			uriBuilder.queryParam(OAuth2ParameterNames.STATE, authorizationCodeRequestAuthentication.getState());
-//		}
-//		this.redirectStrategy.sendRedirect(request, response, uriBuilder.toUriString());
-//	}
-
-//	private void sendErrorResponse(HttpServletRequest request, HttpServletResponse response,
-//			AuthenticationException exception) throws IOException {
-//
-//		OAuth2AuthorizationCodeRequestAuthenticationException authorizationCodeRequestAuthenticationException =
-//				(OAuth2AuthorizationCodeRequestAuthenticationException) exception;
-//		OAuth2Error error = authorizationCodeRequestAuthenticationException.getError();
-//		OAuth2AuthorizationCodeRequestAuthenticationToken authorizationCodeRequestAuthentication =
-//				authorizationCodeRequestAuthenticationException.getAuthorizationCodeRequestAuthentication();
-//
-//		if (authorizationCodeRequestAuthentication == null ||
-//				!StringUtils.hasText(authorizationCodeRequestAuthentication.getRedirectUri())) {
-//			// TODO Send default html error response
-//			response.sendError(HttpStatus.BAD_REQUEST.value(), error.toString());
-//			return;
-//		}
-//
-//		UriComponentsBuilder uriBuilder = UriComponentsBuilder
-//				.fromUriString(authorizationCodeRequestAuthentication.getRedirectUri())
-//				.queryParam(OAuth2ParameterNames.ERROR, error.getErrorCode());
-//		if (StringUtils.hasText(error.getDescription())) {
-//			uriBuilder.queryParam(OAuth2ParameterNames.ERROR_DESCRIPTION, error.getDescription());
-//		}
-//		if (StringUtils.hasText(error.getUri())) {
-//			uriBuilder.queryParam(OAuth2ParameterNames.ERROR_URI, error.getUri());
-//		}
-//		if (StringUtils.hasText(authorizationCodeRequestAuthentication.getState())) {
-//			uriBuilder.queryParam(OAuth2ParameterNames.STATE, authorizationCodeRequestAuthentication.getState());
-//		}
-//		this.redirectStrategy.sendRedirect(request, response, uriBuilder.toUriString());
-//	}
 }

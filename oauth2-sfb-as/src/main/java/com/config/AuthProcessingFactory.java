@@ -12,7 +12,7 @@ import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 
 import chok2.util.core.EncryptionUtil;
 
-public final class AuthLoginPasswordEncoderFactory
+public final class AuthProcessingFactory
 {
 
 	@SuppressWarnings("deprecation")

@@ -1,4 +1,4 @@
-package com.domain.client.model.param;
+package com.domain.auth.model.param;
 
 import java.io.Serializable;
 import java.util.Arrays;

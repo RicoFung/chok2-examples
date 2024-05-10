@@ -38,13 +38,13 @@ public class I18nController
 	@GetMapping("/change")
 	public String change(@RequestParam("lang") String lang, HttpServletRequest request, HttpServletResponse response)
 	{
-		logger.info("RequestParam => lang: {}", lang);
+		logger.info("RequestParam ==> lang: {}", lang);
 		Locale newLocale = Locale.forLanguageTag(lang.replace('_', '-'));
 		localeResolver.setLocale(request, response, newLocale);
 	
 		String redirectUrl = "/";
 		String referer = request.getHeader("Referer");
-		logger.info("Header <= referer: {}", referer);
+		logger.info("Header ==> referer: {}", referer);
 		if (referer != null)
 		{
 			// 使用 UriComponentsBuilder 
@@ -55,10 +55,10 @@ public class I18nController
 					.replaceQueryParam("error")
 					.replaceQueryParam("errorMessage")
 					.replaceQueryParam("redirectFrom")
-					.queryParam("redirectFrom", "i18nChange")
+					.queryParam("redirectFrom", "/i18nChange")
 					.build().toUriString();
 		}
-		logger.info("Redirect => url: {}", referer);
+		logger.info("Redirect <== url: {}", referer);
 		return "redirect:" + redirectUrl;
 	}
 }
