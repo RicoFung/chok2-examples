@@ -16,6 +16,7 @@ import java.util.UUID;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,6 +43,9 @@ import com.nimbusds.jose.proc.SecurityContext;
 @Configuration(proxyBeanMethods = false)
 public class AuthServerConfig
 {
+    @Value("${auth.issuer}")
+    private String authIssuer;
+    
 	@Autowired
     private ApplicationContext context;
 
@@ -180,9 +184,16 @@ public class AuthServerConfig
 		return keyPairGenerator.generateKeyPair();
 	}
 
+	/**
+	 * 授权服务器的标识符
+	 * 1. 生成 JWT 令牌中的 iss 声明：这是 JWT 令牌的一部分，标识令牌的发行者。客户端使用这个值验证令牌的合法性。
+	 * 2. 构建 OIDC 发现文档： 如果您的授权服务器支持 OpenID Connect，issuer 用于生成元数据文档（如 /.well-known/openid-configuration），该文档包含如何与授权服务器交互的相关信息。
+	 * 3. 生成完整的授权、令牌和其他端点 URL：在构建端点如授权端点、令牌端点等的绝对 URL 时，issuer 作为基础 URL 的一部分。
+	 * @return
+	 */
 	@Bean
 	public ProviderSettings providerSettings()
 	{
-		return ProviderSettings.builder().issuer("http://auth-server:9000").build();
+		return ProviderSettings.builder().issuer(authIssuer).build();
 	}
 }
