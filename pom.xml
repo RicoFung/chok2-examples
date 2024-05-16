@@ -15,10 +15,10 @@
 	</properties>
 
 	<modules>
-		<module>oauth2-sfb-as</module>
-		<module>oauth2-sfb-rs</module>
-		<module>oauth2-sfb-rs1</module>
-		<module>springboot-no-orm</module>
+		<module>basic-resource-server</module>
+		<module>oauth2-auth-server</module>
+		<module>oauth2-resource-server</module>
+		<module>oauth2-resource1-server</module>
 	</modules>
 
 	<parent>
