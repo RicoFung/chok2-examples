@@ -75,7 +75,7 @@ public class AuthServerConfig
 //				.redirectUri("http://client-server:8080/login/oauth2/code/rico-client-oidc")
 //				.redirectUri("http://client-server:8080/authorized")
 //				// client 为 vue 的回调地址
-				.redirectUri("https://client-server:8848/oauth2callback-standard") // 非弹窗
+				.redirectUri("https://ui-server:8848/oauth2callback-standard") // 非弹窗
 				// client 为外网服务的回调地址
 				.redirectUri("https://oidcdebugger.com/debug")
 				//
@@ -90,7 +90,7 @@ public class AuthServerConfig
 				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
 				// client 为 vue 的回调地址
-				.redirectUri("https://client-server:8848/oauth2callback-enhanced") // 非弹窗
+				.redirectUri("https://ui-server:8848/oauth2callback-enhanced") // 非弹窗
 				// client 为外网服务的回调地址
 				.redirectUri("https://oidcdebugger.com/debug")
 				//

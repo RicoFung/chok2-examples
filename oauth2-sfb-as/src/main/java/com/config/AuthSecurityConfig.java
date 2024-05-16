@@ -89,7 +89,7 @@ public class AuthSecurityConfig
 		// 此拦截器用于获取/oauth2/authorize的相关请求参数
 		// **************************************************************************************** 
 		http.addFilterBefore(authPreProcessingFilter, BasicAuthenticationFilter.class);
-		http.formLogin().loginPage("/auth/forward");
+		http.formLogin().loginPage(authLoginPage);
 		return http.build();
 	}
 	

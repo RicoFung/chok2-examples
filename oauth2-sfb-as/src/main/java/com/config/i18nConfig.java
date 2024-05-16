@@ -58,7 +58,7 @@ public class i18nConfig
 	}
 
 	@Bean
-	public WebMvcConfigurer webMvcConfigurer(LocaleChangeInterceptor localeChangeInterceptor)
+	public WebMvcConfigurer webMvcConfigurer(LocaleChangeInterceptor localeChangeInterceptor, LocaleLoggingInterceptor localeLoggingInterceptor)
 	{
 		return new WebMvcConfigurer()
 		{
@@ -66,6 +66,7 @@ public class i18nConfig
 			public void addInterceptors(InterceptorRegistry registry)
 			{
 				registry.addInterceptor(localeChangeInterceptor);
+	            registry.addInterceptor(localeLoggingInterceptor); // 添加日志拦截器
 			}
 		};
 	}

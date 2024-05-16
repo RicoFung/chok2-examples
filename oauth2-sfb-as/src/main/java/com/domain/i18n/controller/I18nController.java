@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,12 +21,8 @@ public class I18nController
 {
 	private static final Logger logger = LoggerFactory.getLogger(I18nController.class);
 	
-	private final LocaleResolver localeResolver;
-
-	public I18nController(LocaleResolver localeResolver)
-	{
-		this.localeResolver = localeResolver;
-	}
+	@Autowired
+	private LocaleResolver localeResolver;
 
 	/**
 	 * 切换语言
@@ -38,13 +35,13 @@ public class I18nController
 	@GetMapping("/change")
 	public String change(@RequestParam("lang") String lang, HttpServletRequest request, HttpServletResponse response)
 	{
-		logger.info("RequestParam ==> lang: {}", lang);
+		logger.info("==> RequestParam lang: {}", lang);
 		Locale newLocale = Locale.forLanguageTag(lang.replace('_', '-'));
 		localeResolver.setLocale(request, response, newLocale);
 	
 		String redirectUrl = "/";
 		String referer = request.getHeader("Referer");
-		logger.info("Header ==> referer: {}", referer);
+		logger.info("==> Header referer: {}", referer);
 		if (referer != null)
 		{
 			// 使用 UriComponentsBuilder 
@@ -58,7 +55,7 @@ public class I18nController
 					.queryParam("redirectFrom", "/i18nChange")
 					.build().toUriString();
 		}
-		logger.info("Redirect <== url: {}", referer);
+		logger.info("<== Redirect url: {}", redirectUrl);
 		return "redirect:" + redirectUrl;
 	}
 }

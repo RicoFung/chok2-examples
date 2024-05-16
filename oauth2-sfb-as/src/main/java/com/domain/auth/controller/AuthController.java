@@ -5,6 +5,8 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 @RequestMapping("/auth")
 public class AuthController
 {
+	private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 	/**
 	 * 跳转自定义登录页
 	 * @param model
@@ -29,6 +32,7 @@ public class AuthController
 		LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
 		Locale currentLocale = localeResolver.resolveLocale(request);
 		model.addAttribute("currentLang", currentLocale.toLanguageTag().replace('-', '_'));
+		logger.info("currentLang ==> lang: {}", model.getAttribute("currentLang"));
 		// 从会话中获取 clientId
 		HttpSession session = request.getSession(false);
 	    String clientId = session != null ? (String) session.getAttribute("clientId") : null;
