@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <springProfile name="loc">
+		<include resource="logback-spring-loc.xml" />
+	</springProfile>
+    <springProfile name="dev">
+		<include resource="logback-spring-dev.xml" />
+	</springProfile>
+    <springProfile name="uat">
+		<include resource="logback-spring-uat.xml" />
+	</springProfile>
+    <springProfile name="prd">
+		<include resource="logback-spring-prd.xml" />
+	</springProfile>
+</configuration>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title th:text="#{login.title}">Client 登录页面</title>
+    <title th:text="#{login.title}">Admin 登录页面</title>
     <link type="text/css" rel="stylesheet" th:href="@{/jquery-easyui/themes/material-blue/easyui.css}" />
     <link type="text/css" rel="stylesheet" th:href="@{/jquery-easyui/themes/mobile.css}" />
     <link type="text/css" rel="stylesheet" th:href="@{/jquery-easyui/themes/icon.css}" />
@@ -20,10 +20,10 @@
     <div class="easyui-panel" style="margin: 0; padding: 10px; box-sizing: border-box; width: 100%;">
 	    <header id="title">
 	        <div class="m-toolbar">
-	            <span class="m-title" th:text="#{login.title}">Login to Client System</span>
+	            <span class="m-title" th:text="#{login.title}">Login to Admin System</span>
 	        </div>
 	    </header>
-		<form id="loginForm" action="/auth/process" method="post">
+		<form id="loginForm" action="/login/process" method="post">
 	        <div style="margin:20px auto;">
 				<input class="easyui-textbox" id="username" name="username" style="width: 100%"
 					th:data-label="#{login.form.field.username}"
@@ -58,6 +58,6 @@
 	<!-- 将错误消息存储在隐藏域中 -->
 	<input type="hidden" id="errorMessage" th:value="${errorMessage}"/> 
 </div>
-<script type="text/javascript" th:src="@{/default/login.js}"></script>
+<script type="text/javascript" th:src="@{/login.js}"></script>
 </body>
 </html>
