@@ -34,6 +34,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.LocaleResolver;
 
 import com.domain.login.service.LoginService;
+import com.filter.PreProcessingFilter;
+import com.handler.LoginFailureHandler;
+import com.handler.LoginSuccessHandler;
 
 @EnableWebSecurity(debug = false)
 public class SecurityConfig

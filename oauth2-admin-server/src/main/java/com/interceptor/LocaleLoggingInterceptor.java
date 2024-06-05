@@ -1,4 +1,4 @@
-package com.config;
+package com.interceptor;
 
 import java.util.Locale;
 
