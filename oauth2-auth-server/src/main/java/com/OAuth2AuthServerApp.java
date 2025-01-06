@@ -9,10 +9,10 @@ import org.springframework.context.annotation.ComponentScan;
 //自定义（可扫描project外的bean）
 @ComponentScan(basePackages={"com","chok.common"})
 @EnableAutoConfiguration
-public class Application
+public class OAuth2AuthServerApp
 {
 	public static void main(String[] args)
 	{
-		SpringApplication.run(Application.class, args);
+		SpringApplication.run(OAuth2AuthServerApp.class, args);
 	}
 }

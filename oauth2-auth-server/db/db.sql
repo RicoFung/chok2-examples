@@ -49,3 +49,9 @@ insert into OAUTH2_REGISTERED_CLIENT (id, client_id, client_id_issued_at, client
 values ('a6b156d1-b2c9-40d4-885b-b1db2c670f64', 'rico-client', to_timestamp('17-06-2022 15:38:08.062000', 'dd-mm-yyyy hh24:mi:ss.ff'), '{noop}123', null, 'a6b156d1-b2c9-40d4-885b-b1db2c670f64', 'client_secret_basic', 'refresh_token,authorization_code', 'http://127.0.0.1:7090/spring-oauth2-code-v1,http://127.0.0.1:8080/authorized,http://127.0.0.1:7090/oauth2/callback,https://oidcdebugger.com/debug,http://127.0.0.1:8080/login/oauth2/code/rico-client-oidc', 'openid,test.read', '{"@class":"java.util.Collections$UnmodifiableMap","settings.client.require-proof-key":false,"settings.client.require-authorization-consent":false}', '{"@class":"java.util.Collections$UnmodifiableMap","settings.token.reuse-refresh-tokens":true,"settings.token.id-token-signature-algorithm":["org.springframework.security.oauth2.jose.jws.SignatureAlgorithm","RS256"],"settings.token.access-token-time-to-live":["java.time.Duration",300.000000000],"settings.token.access-token-format":{"@class":"org.springframework.security.oauth2.core.OAuth2TokenFormat","value":"self-contained"},"settings.token.refresh-token-time-to-live":["java.time.Duration",3600.000000000]}');
 commit;
 
+CREATE TABLE oauth2_authorization_consent (
+    registered_client_id varchar(100) NOT NULL,
+    principal_name varchar(200) NOT NULL,
+    authorities varchar(1000) NOT NULL,
+    PRIMARY KEY (registered_client_id, principal_name)
+);
