@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title th:text="#{login.title.default}">Client 登录页面</title>
+    <link type="text/css" rel="stylesheet" th:href="@{/jquery-easyui/themes/material-blue/easyui.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{/jquery-easyui/themes/mobile.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{/jquery-easyui/themes/icon.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{/jquery-easyui/demo/demo.css}" />
+    <script type="text/javascript" th:src="@{/jquery-easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/jquery-easyui/jquery.easyui.min.js}"></script>
+    <script type="text/javascript" th:src="@{/jquery-easyui/jquery.easyui.mobile.js}"></script>
+    <script type="text/javascript" th:src="${'/jquery-easyui/locale/easyui-lang-' + currentLang + '.js'}"></script>
+    <!--  引入语言设置脚本： i18nSelector 会用到 -->
+    <th:block th:replace="i18n-block :: language-settings"></th:block>
+</head>
+<body>
+<div style="position: absolute; left: 50%; transform: translateX(-50%); max-width: 500px; width: 100%; padding: 10px;">
+    <div class="easyui-panel" style="margin: 0; padding: 10px; box-sizing: border-box; width: 100%;">
+	    <header id="title">
+	        <div class="m-toolbar">
+	            <span class="m-title" th:text="#{login.title.default}">Login to Client System</span>
+	        </div>
+	    </header>
+		<form id="loginForm" action="/auth/process" method="post">
+	        <div style="margin:20px auto;">
+				<input class="easyui-textbox" id="captcha" name="captcha" style="width: 100%" 
+					th:data-label="#{login.form.field.captcha}"
+					th:data-prompt="#{login.form.field.captcha}"
+					th:data-required="true" 
+					th:data-icon-cls="'icon-man'" />
+	        </div>
+	        <div style="margin:20px auto;">
+				<input class="easyui-textbox" id="username" name="username" style="width: 100%"
+					th:data-label="#{login.form.field.username}"
+					th:data-prompt="#{login.form.field.username}"
+					th:data-required="true" 
+					th:data-icon-cls="'icon-man'" />
+	        </div>
+	        <div style="margin:20px auto;">
+				<input class="easyui-textbox" id="password" name="password" style="width: 100%" type="password" 
+					th:data-label="#{login.form.field.password}"
+					th:data-prompt="#{login.form.field.password}"
+					th:data-required="true" 
+					th:data-icon-cls="'icon-lock'" />
+	        </div>
+			<div style="margin:20px auto;">
+			    <select class="easyui-combobox" id="i18nSelector" style="width:100%;" 
+    				th:attr="label=#{lang.label}"
+		            data-options="valueField:'id', textField:'text', editable:false, panelHeight:'auto'">
+			    </select>
+			</div>
+	    </form>
+		<div style="text-align:center;padding:5px 0">
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:80px" th:text="#{login.form.button.submit}">Submit</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetForm()" style="width:80px" th:text="#{login.form.button.reset}">Reset</a>
+			<a th:href="@{${session.refererDomain}}" class="easyui-linkbutton" onclick="resetForm()" style="width:80px" th:text="#{login.form.button.back}">Back</a>
+	    </div>
+	</div>
+	<!-- 将当前语言存储在隐藏域中 -->
+	<input type="hidden" id="currentLang" th:value="${currentLang}"/> 
+	<!-- 将错误消息存储在隐藏域中 -->
+	<input type="hidden" id="error" th:value="${error}"/> 
+	<!-- 将错误消息存储在隐藏域中 -->
+	<input type="hidden" id="errorMessage" th:value="${errorMessage}"/> 
+</div>
+<script type="text/javascript" th:src="@{/client/login.js}"></script>
+</body>
+</html>
