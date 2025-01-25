@@ -44,15 +44,13 @@
         <!--日志文件路径，日志文件名称-->
         <File>${LOG_HOME}/all_${LOG_SUFFIX}.log</File>
         <!-- 设置滚动策略，当天的日志大小超过 ${MAX_FILE_SIZE} 文件大小时候，新的内容写入新的文件， 默认10MB -->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!--日志文件路径，新的 ALL 日志文件名称，“ i ” 是个变量 -->
             <FileNamePattern>${LOG_DIR}/all_${LOG_SUFFIX}.%i.log.zip</FileNamePattern>
             <!-- 配置日志的滚动时间 ，表示只保留最近 10 天的日志-->
             <MaxHistory>${MAX_HISTORY}</MaxHistory>
             <!--当天的日志大小超过 ${MAX_FILE_SIZE} 文件大小时候，新的内容写入新的文件， 默认10MB-->
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
         </rollingPolicy>
         <!-- 输出的日志内容格式化-->
         <layout class="ch.qos.logback.classic.PatternLayout">
@@ -69,15 +67,13 @@
         <!--日志文件路径，日志文件名称-->
         <File>${LOG_HOME}/err_${LOG_SUFFIX}.log</File>
         <!-- 设置滚动策略，当天的日志大小超过 ${MAX_FILE_SIZE} 文件大小时候，新的内容写入新的文件， 默认10MB -->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!--日志文件路径，新的 ERR 日志文件名称，“ i ” 是个变量 -->
             <FileNamePattern>${LOG_DIR}/err_${LOG_SUFFIX}.%i.log.zip</FileNamePattern>
             <!-- 配置日志的滚动时间 ，表示只保留最近 10 天的日志-->
             <MaxHistory>${MAX_HISTORY}</MaxHistory>
             <!--当天的日志大小超过 ${MAX_FILE_SIZE} 文件大小时候，新的内容写入新的文件， 默认10MB-->
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
         </rollingPolicy>
         <!-- 输出的日志内容格式化-->
         <layout class="ch.qos.logback.classic.PatternLayout">

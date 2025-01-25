@@ -25,12 +25,29 @@ public final class AuthProcessingFactory
 		encoders.put("MD4", new org.springframework.security.crypto.password.Md4PasswordEncoder());
 		encoders.put("MD5", new org.springframework.security.crypto.password.MessageDigestPasswordEncoder("MD5"));
 		encoders.put("noop", org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance());
-		encoders.put("pbkdf2", new Pbkdf2PasswordEncoder());
-		encoders.put("scrypt", new SCryptPasswordEncoder());
+		encoders.put("pbkdf2", new Pbkdf2PasswordEncoder(
+				"secret", // 盐值
+				185000,   // 哈希迭代次数
+				256,       // 哈希长度（位）
+				Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm.PBKDF2WithHmacSHA256 // 算法
+				));
+		encoders.put("scrypt", new SCryptPasswordEncoder(
+				16384, // CPU cost (2^14)
+				8,     // Memory cost
+				1,     // Parallelization
+				32,    // Key length
+				16     // Salt length
+		));
 		encoders.put("SHA-1", new org.springframework.security.crypto.password.MessageDigestPasswordEncoder("SHA-1"));
 		encoders.put("SHA-256",	new org.springframework.security.crypto.password.MessageDigestPasswordEncoder("SHA-256"));
 		encoders.put("sha256", new org.springframework.security.crypto.password.StandardPasswordEncoder());
-		encoders.put("argon2", new Argon2PasswordEncoder());
+		encoders.put("argon2", new Argon2PasswordEncoder(
+			16, // 盐的长度
+			32, // 哈希的长度
+			1,  // 并行性（线程数）
+			65536, // 内存消耗（单位：KB）
+			3      // 哈希迭代次数
+		));
 		// 加入自定义前缀
 //		encoders.put("null", ErpPasswordEncoder());
 		DelegatingPasswordEncoder delegatingPasswordEncoder = new DelegatingPasswordEncoder(encodingId, encoders);

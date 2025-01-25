@@ -3,6 +3,7 @@ package com.config;
 import java.util.Arrays;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -28,18 +29,31 @@ public class ResourceServerConfig
 		source.registerCorsConfiguration("/**", configuration); // 对所有url生效
 		return source;
 	}
-	
+
 	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
-	{
+	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
-		.authorizeRequests((requests) -> requests.anyRequest().authenticated()).oauth2ResourceServer()
-		// 401 Invalid access token
-		.authenticationEntryPoint(new CusOAuth2ExceptionEntryPoint())
-		// 403 insufficient_scope
-		.accessDeniedHandler(new CusAccessDeniedHandler()).jwt();
+				.securityMatcher("/api/v3_1/customtbdemo/**")
+				.authorizeHttpRequests(authorize ->
+						authorize.requestMatchers("/api/v3_1/customtbdemo/**").hasAuthority("SCOPE_test.read")
+				)
+				.oauth2ResourceServer(oauth2ResourceServer ->
+						oauth2ResourceServer.jwt(Customizer.withDefaults())
+				);
 		return http.build();
 	}
+
+//	@Bean
+//	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
+//	{
+//		http
+//		.authorizeRequests((requests) -> requests.anyRequest().authenticated()).oauth2ResourceServer()
+//		// 401 Invalid access token
+//		.authenticationEntryPoint(new CusOAuth2ExceptionEntryPoint())
+//		// 403 insufficient_scope
+//		.accessDeniedHandler(new CusAccessDeniedHandler()).jwt();
+//		return http.build();
+//	}
 
 	// @Bean
 	// SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -66,7 +80,7 @@ public class ResourceServerConfig
 	
     @Bean
     WebSecurityCustomizer ignore() {
-        return web -> web.ignoring().antMatchers(
+        return web -> web.ignoring().requestMatchers(
     	        "/",   
     	        "/swagger-ui",
     	        "/v3/api-docs/**",

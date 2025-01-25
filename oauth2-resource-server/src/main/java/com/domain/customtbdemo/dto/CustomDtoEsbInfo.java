@@ -2,9 +2,9 @@ package com.domain.customtbdemo.dto;
 
 import java.io.Serializable;
 
+import chok2.util.core.TimeUtil;
 import org.springframework.util.ObjectUtils;
 
-import chok2.util.core.TimeUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public class CustomDtoEsbInfo implements Serializable

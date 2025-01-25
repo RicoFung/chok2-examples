@@ -2,10 +2,9 @@ package com.config;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -30,7 +29,7 @@ public class AuthProcessingFailureHandler extends SimpleUrlAuthenticationFailure
     
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-			AuthenticationException exception) throws IOException, ServletException
+										AuthenticationException exception) throws IOException, ServletException
 	{
 		String errorMessage = messageSource.getMessage("login.error.message.default", null, localeResolver.resolveLocale(request));
 		if (exception instanceof UsernameNotFoundException)

@@ -12,12 +12,12 @@ import com.domain.auth.model.param.TbUserInfo0aGetOneByUsernameParam;
 import com.domain.auth.model.result.TbUserInfo0aResult;
 
 @Service("tbUserInfo0aService")
-public class TbUserInfo0aService implements UserDetailsService
+public class TbUserInfo0aService //implements UserDetailsService
 {
 	@Autowired
 	private TbUserInfo0aDao dao;
 
-	@Override
+//	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
 	{
 		TbUserInfo0aGetOneByUsernameParam param = new TbUserInfo0aGetOneByUsernameParam();

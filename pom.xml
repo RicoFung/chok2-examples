@@ -16,7 +16,7 @@
 
 	<modules>
 		<module>basic-resource-server</module>
-		<module>oauth2-admin-server</module>
+		<module>oauth2-client-server</module>
 		<module>oauth2-auth-server</module>
 		<module>oauth2-resource-server</module>
 		<module>oauth2-resource1-server</module>
@@ -25,7 +25,7 @@
 	<parent>
 		<groupId>com.chok2</groupId>
 		<artifactId>chok2-parent</artifactId>
-		<version>2.2</version>
+		<version>3.0</version>
 		<relativePath>../chok2-project-snapshot/chok2-parent/pom.xml</relativePath>
 	</parent>
 </project>

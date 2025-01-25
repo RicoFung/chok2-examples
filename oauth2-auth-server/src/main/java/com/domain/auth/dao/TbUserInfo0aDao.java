@@ -1,7 +1,6 @@
 package com.domain.auth.dao;
 
-import javax.annotation.Resource;
-
+import jakarta.annotation.Resource;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 

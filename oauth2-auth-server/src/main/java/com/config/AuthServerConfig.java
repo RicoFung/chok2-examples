@@ -32,168 +32,174 @@ import org.springframework.security.oauth2.server.authorization.OAuth2Authorizat
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-import org.springframework.security.oauth2.server.authorization.config.ClientSettings;
-import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
+import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 
-@Configuration(proxyBeanMethods = false)
+//@Configuration(proxyBeanMethods = false)
 public class AuthServerConfig
 {
-    @Value("${auth.issuer}")
-    private String authIssuer;
-    
-	@Autowired
-    private ApplicationContext context;
-
-	/**
-	 * 【注册方式：数据库】 认证方式：CLIENT_SECRET_BASIC 注意：OPENID 不可单独使用
-	 * 
-	 * @return
-	 */
-	@Bean
-	public RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate)
-	{
-		// DB 有数据
-//		JdbcRegisteredClientRepository registeredClientRepository = new JdbcRegisteredClientRepository(jdbcTemplate);
-//		return registeredClientRepository;
-		
-		// DB 无数据（即：启动时才写库，生产环境禁用）
-		// -------------------- //
-		// PKCE [N]
-		// -------------------- //
-		RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
-				.clientId("rico-client").clientSecret("{noop}123")
-				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-				// 回调地址名单，不在此列将被拒绝 而且只能使用IP或者域名 ，不能使用 localhost，此处使用 client-server 本地环境通过 hosts 配置
-				// client 为 springboot 的回调地址
-//				.redirectUri("http://client-server:8080/login/oauth2/code/rico-client-oidc")
-//				.redirectUri("http://client-server:8080/authorized")
+//    @Value("${auth.issuer}")
+//    private String authIssuer;
+//
+//	@Autowired
+//    private ApplicationContext context;
+//
+//	/**
+//	 * 【注册方式：数据库】 认证方式：CLIENT_SECRET_BASIC 注意：OPENID 不可单独使用
+//	 *
+//	 * @return
+//	 */
+//	@Bean
+//	public RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate)
+//	{
+//		// DB 有数据
+////		JdbcRegisteredClientRepository registeredClientRepository = new JdbcRegisteredClientRepository(jdbcTemplate);
+////		return registeredClientRepository;
+//
+//		// DB 无数据（即：启动时才写库，生产环境禁用）
+//		// -------------------- //
+//		// PKCE [N]
+//		// -------------------- //
+//		RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
+//				.clientId("rico-client").clientSecret("{noop}123")
+//				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+//				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+//				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+//				// 回调地址名单，不在此列将被拒绝 而且只能使用IP或者域名 ，不能使用 localhost，此处使用 client-server 本地环境通过 hosts 配置
+//				// client 为 springboot 的回调地址
+////				.redirectUri("http://client-server:8080/login/oauth2/code/rico-client-oidc")
+////				.redirectUri("http://client-server:8080/authorized")
+////				// client 为 vue 的回调地址
+//				.redirectUri("https://ui-server:8848/oauth2callback-standard") // 非弹窗
+//				// client 为外网服务的回调地址
+//				.redirectUri("https://oidcdebugger.com/debug")
+//				//
+//				.scope(OidcScopes.OPENID).scope("test.read").build();
+//
+//		// -------------------- //
+//		// PKCE [Y]
+//		// -------------------- //
+//		RegisteredClient registeredPkceClient = RegisteredClient.withId(UUID.randomUUID().toString())
+//				.clientId("rico-client-pkce").clientSecret("{noop}321")
+//				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+//				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+//				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
 //				// client 为 vue 的回调地址
-				.redirectUri("https://ui-server:8848/oauth2callback-standard") // 非弹窗
-				// client 为外网服务的回调地址
-				.redirectUri("https://oidcdebugger.com/debug")
-				//
-				.scope(OidcScopes.OPENID).scope("test.read").build();
-
-		// -------------------- //
-		// PKCE [Y]
-		// -------------------- //
-		RegisteredClient registeredPkceClient = RegisteredClient.withId(UUID.randomUUID().toString())
-				.clientId("rico-client-pkce").clientSecret("{noop}123")
-				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-				// client 为 vue 的回调地址
-				.redirectUri("https://ui-server:8848/oauth2callback-enhanced") // 非弹窗
-				// client 为外网服务的回调地址
-				.redirectUri("https://oidcdebugger.com/debug")
-				//
-				.scope(OidcScopes.OPENID).scope("test.read")
-				// 高级配置
-				.clientSettings(ClientSettings.builder()
-						//
-						.tokenEndpointAuthenticationSigningAlgorithm(SignatureAlgorithm.RS256)
-						// 开启 PKCE
-						.requireProofKey(true).build())
-				.build();
-
-		// Save registered client in db as if in-memory
-		JdbcRegisteredClientRepository registeredClientRepository = new JdbcRegisteredClientRepository(jdbcTemplate);
-		registeredClientRepository.save(registeredClient);
-		registeredClientRepository.save(registeredPkceClient);
-		return registeredClientRepository;
-	}
-
-	@Bean
-	public JdbcTemplate jdbcTemplate()
-	{
-		return new JdbcTemplate((DataSource) context.getBean("dataSourceMybatisAuth"));
-	}
-
-	@Bean
-	public OAuth2AuthorizationService authorizationService(JdbcTemplate jdbcTemplate,
-			RegisteredClientRepository registeredClientRepository)
-	{
-		return new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
-	}
-
-	@Bean
-	public OAuth2AuthorizationConsentService authorizationConsentService(JdbcTemplate jdbcTemplate,
-			RegisteredClientRepository registeredClientRepository)
-	{
-		return new JdbcOAuth2AuthorizationConsentService(jdbcTemplate, registeredClientRepository);
-	}
-
-	/**
-	 * 【注册方式：内存】 认证方式：CLIENT_SECRET_BASIC 注意：OPENID 不可单独使用
-	 * http://oauth2-auth-server:9000/oauth2/authorize?client_id=rico-client&client_secret=123&response_type=code&scope=test.read&redirect_uri=https://www.baidu.com
-	 * 
-	 * @return
-	 */
-	// @Bean
-	// public RegisteredClientRepository registeredClientRepository()
-	// {
-	// RegisteredClient registeredClient =
-	// RegisteredClient.withId(UUID.randomUUID().toString())
-	// .clientId("rico-client")
-	// .clientSecret("{noop}123")
-	// .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-	// .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-	// .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-	// // 回调地址名单，不在此列将被拒绝 而且只能使用IP或者域名 不能使用 localhost
-	// // client 为 springboot 的回调地址
-	// .redirectUri("http://127.0.0.1:8080/login/oauth2/code/rico-client-oidc")
-	// .redirectUri("http://127.0.0.1:8080/authorized")
-	// // client 为 vue 的回调地址
-	// .redirectUri("http://127.0.0.1:7090/spring-oauth2-code-v1") // 非弹窗
-	// .redirectUri("http://127.0.0.1:7090/oauth2/callback") // 弹窗
-	// // client 为外网服务的回调地址
-	// .redirectUri("https://oidcdebugger.com/debug")
-	// .scope(OidcScopes.OPENID)
-	// .scope("test.read")
-	// .build();
-	// return new InMemoryRegisteredClientRepository(registeredClient);
-	// }
-
-	@Bean
-	public JWKSource<SecurityContext> jwkSource() throws NoSuchAlgorithmException
-	{
-		RSAKey rsaKey = generateRsa();
-		JWKSet jwkSet = new JWKSet(rsaKey);
-		return (jwkSelector, securityContext) -> jwkSelector.select(jwkSet);
-	}
-
-	private static RSAKey generateRsa() throws NoSuchAlgorithmException
-	{
-		KeyPair keyPair = generateRsaKey();
-		RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
-		RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-		return new RSAKey.Builder(publicKey).privateKey(privateKey).keyID(UUID.randomUUID().toString()).build();
-	}
-
-	private static KeyPair generateRsaKey() throws NoSuchAlgorithmException
-	{
-		KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-		keyPairGenerator.initialize(2048);
-		return keyPairGenerator.generateKeyPair();
-	}
-
-	/**
-	 * 授权服务器的标识符
-	 * 1. 生成 JWT 令牌中的 iss 声明：这是 JWT 令牌的一部分，标识令牌的发行者。客户端使用这个值验证令牌的合法性。
-	 * 2. 构建 OIDC 发现文档： 如果您的授权服务器支持 OpenID Connect，issuer 用于生成元数据文档（如 /.well-known/openid-configuration），该文档包含如何与授权服务器交互的相关信息。
-	 * 3. 生成完整的授权、令牌和其他端点 URL：在构建端点如授权端点、令牌端点等的绝对 URL 时，issuer 作为基础 URL 的一部分。
-	 * @return
-	 */
-	@Bean
-	public ProviderSettings providerSettings()
-	{
-		return ProviderSettings.builder().issuer(authIssuer).build();
-	}
+//				.redirectUri("https://ui-server:8848/oauth2callback-enhanced") // 非弹窗
+//				// client 为外网服务的回调地址
+//				.redirectUri("https://oidcdebugger.com/debug")
+//				//
+//				.scope(OidcScopes.OPENID).scope("test.read")
+//				// 高级配置
+//				.clientSettings(ClientSettings.builder()
+//						//
+//						.tokenEndpointAuthenticationSigningAlgorithm(SignatureAlgorithm.RS256)
+//						// 开启 PKCE
+//						.requireProofKey(true).build())
+//				.build();
+//
+//		// Save registered client in db as if in-memory
+//		JdbcRegisteredClientRepository registeredClientRepository = new JdbcRegisteredClientRepository(jdbcTemplate);
+//		registeredClientRepository.save(registeredClient);
+//		registeredClientRepository.save(registeredPkceClient);
+//		return registeredClientRepository;
+//	}
+//
+//	@Bean
+//	public JdbcTemplate jdbcTemplate()
+//	{
+//		return new JdbcTemplate((DataSource) context.getBean("dataSourceMybatisAuth"));
+//	}
+//
+//	@Bean
+//	public OAuth2AuthorizationService authorizationService(JdbcTemplate jdbcTemplate,
+//			RegisteredClientRepository registeredClientRepository)
+//	{
+//		return new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
+//	}
+//
+//	@Bean
+//	public OAuth2AuthorizationConsentService authorizationConsentService(JdbcTemplate jdbcTemplate,
+//			RegisteredClientRepository registeredClientRepository)
+//	{
+//		return new JdbcOAuth2AuthorizationConsentService(jdbcTemplate, registeredClientRepository);
+//	}
+//
+//	/**
+//	 * 【注册方式：内存】 认证方式：CLIENT_SECRET_BASIC 注意：OPENID 不可单独使用
+//	 * http://oauth2-auth-server:9000/oauth2/authorize?client_id=rico-client&client_secret=123&response_type=code&scope=test.read&redirect_uri=https://www.baidu.com
+//	 *
+//	 * @return
+//	 */
+//	// @Bean
+//	// public RegisteredClientRepository registeredClientRepository()
+//	// {
+//	// RegisteredClient registeredClient =
+//	// RegisteredClient.withId(UUID.randomUUID().toString())
+//	// .clientId("rico-client")
+//	// .clientSecret("{noop}123")
+//	// .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+//	// .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+//	// .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+//	// // 回调地址名单，不在此列将被拒绝 而且只能使用IP或者域名 不能使用 localhost
+//	// // client 为 springboot 的回调地址
+//	// .redirectUri("http://127.0.0.1:8080/login/oauth2/code/rico-client-oidc")
+//	// .redirectUri("http://127.0.0.1:8080/authorized")
+//	// // client 为 vue 的回调地址
+//	// .redirectUri("http://127.0.0.1:7090/spring-oauth2-code-v1") // 非弹窗
+//	// .redirectUri("http://127.0.0.1:7090/oauth2/callback") // 弹窗
+//	// // client 为外网服务的回调地址
+//	// .redirectUri("https://oidcdebugger.com/debug")
+//	// .scope(OidcScopes.OPENID)
+//	// .scope("test.read")
+//	// .build();
+//	// return new InMemoryRegisteredClientRepository(registeredClient);
+//	// }
+//
+//	@Bean
+//	public JWKSource<SecurityContext> jwkSource() throws NoSuchAlgorithmException
+//	{
+//		RSAKey rsaKey = generateRsa();
+//		JWKSet jwkSet = new JWKSet(rsaKey);
+//		return (jwkSelector, securityContext) -> jwkSelector.select(jwkSet);
+//	}
+//
+//	private static RSAKey generateRsa() throws NoSuchAlgorithmException
+//	{
+//		KeyPair keyPair = generateRsaKey();
+//		RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+//		RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
+//		return new RSAKey.Builder(publicKey).privateKey(privateKey).keyID(UUID.randomUUID().toString()).build();
+//	}
+//
+//	private static KeyPair generateRsaKey() throws NoSuchAlgorithmException
+//	{
+//		KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+//		keyPairGenerator.initialize(2048);
+//		return keyPairGenerator.generateKeyPair();
+//	}
+//
+//	/**
+//	 * 授权服务器的标识符
+//	 * 1. 生成 JWT 令牌中的 iss 声明：这是 JWT 令牌的一部分，标识令牌的发行者。客户端使用这个值验证令牌的合法性。
+//	 * 2. 构建 OIDC 发现文档： 如果您的授权服务器支持 OpenID Connect，issuer 用于生成元数据文档（如 /.well-known/openid-configuration），该文档包含如何与授权服务器交互的相关信息。
+//	 * 3. 生成完整的授权、令牌和其他端点 URL：在构建端点如授权端点、令牌端点等的绝对 URL 时，issuer 作为基础 URL 的一部分。
+//	 * @return
+//	 */
+//	@Bean
+//	public AuthorizationServerSettings authorizationServerSettings() {
+//		return AuthorizationServerSettings.builder()
+//				.issuer(authIssuer) // 设置 Issuer
+//				.build();
+//	}
+////	@Bean
+////	public ProviderSettings providerSettings()
+////	{
+////		return ProviderSettings.builder().issuer(authIssuer).build();
+////	}
 }

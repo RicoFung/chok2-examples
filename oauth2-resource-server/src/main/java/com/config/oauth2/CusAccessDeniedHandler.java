@@ -3,10 +3,10 @@ package com.config.oauth2;
 import java.io.IOException;
 import java.util.Date;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -15,7 +15,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import com.domain.customtbdemo.dto.CustomDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import chok2.devwork.pojo.ChokDtoConstants;
+import chok2.devwork.pojo.ChokResponseConstants;
 
 public class CusAccessDeniedHandler implements AccessDeniedHandler
 {
@@ -28,7 +28,7 @@ public class CusAccessDeniedHandler implements AccessDeniedHandler
 		// 组装数据
 		CustomDto<Object> dto = new CustomDto<Object>();
 		dto.setSuccess(false);
-		dto.setCode(ChokDtoConstants.ERROR_CODE3);
+		dto.setCode(ChokResponseConstants.ERROR_CODE3);
 		dto.setMsg(accessDeniedException.getMessage());
 //		dto.setData(accessDeniedException.getCause() == null ? accessDeniedException.getMessage() : accessDeniedException.getCause());
 		dto.setPath(request.getServletPath());

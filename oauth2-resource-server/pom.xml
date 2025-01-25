@@ -12,8 +12,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
     	<org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
 	</properties>
 
@@ -58,7 +58,7 @@
 			<dependency>
 				<groupId>com.chok2</groupId>
 				<artifactId>chok2-parent</artifactId>
-				<version>2.0.0</version>
+				<version>3.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -88,15 +88,12 @@
 			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
 		</dependency>
 		<!-- spring-boot-properties 迁移工具 -->
+		<!--
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-properties-migrator</artifactId>
-		</dependency>	
-		<!-- inject span and trace IDs into log entries -->
-		<dependency>
-		   <groupId>org.springframework.cloud</groupId>
-		   <artifactId>spring-cloud-starter-sleuth</artifactId>
 		</dependency>
+		-->
 		<!-- springdoc -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
@@ -120,21 +117,16 @@
 		</dependency>
 		<dependency>
 			<groupId>com.chok2</groupId>
-			<artifactId>chok2-devwork-controller</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.chok2</groupId>
 			<artifactId>chok2-devwork-dao</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.chok2</groupId>
 			<artifactId>chok2-component</artifactId>
 		</dependency>
-		<!--  -->
 		<dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-        </dependency>
+			<groupId>com.chok2</groupId>
+			<artifactId>chok2-util-core</artifactId>
+		</dependency>
 	</dependencies>
 
 	<!-- 针对EPO-NEXUS私库发布 -->
